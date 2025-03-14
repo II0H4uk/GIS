@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GIS_Core", "GIS_Core\GIS_Core.vcxproj", "{C2EEB74F-D938-4677-A243-AD7A84041A10}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GIS_Data", "GIS_Data\GIS_Data.vcxproj", "{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{C2EEB74F-D938-4677-A243-AD7A84041A10}.Release|x64.Build.0 = Release|x64
 		{C2EEB74F-D938-4677-A243-AD7A84041A10}.Release|x86.ActiveCfg = Release|Win32
 		{C2EEB74F-D938-4677-A243-AD7A84041A10}.Release|x86.Build.0 = Release|Win32
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Debug|x64.ActiveCfg = Debug|x64
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Debug|x64.Build.0 = Debug|x64
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Debug|x86.ActiveCfg = Debug|Win32
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Debug|x86.Build.0 = Debug|Win32
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Release|x64.ActiveCfg = Release|x64
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Release|x64.Build.0 = Release|x64
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Release|x86.ActiveCfg = Release|Win32
+		{1DC3A88A-CA0B-4913-AA46-A0384C0335C0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
