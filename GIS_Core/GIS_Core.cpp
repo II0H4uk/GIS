@@ -1,17 +1,14 @@
-﻿#include "Graph.h"
-#include "pch.h"
+﻿#include "pch.h"
+#include "ConfigParser.h"
+#include "GraphParser.h"
+#include "BruteForce.h"
 
-int main(int argc, char* argv[])
-{
-    int nodeCount = 3;
+int main(int argc, char* argv[]) {
 
-    std::vector<std::vector<int>> adjList = {
-        {1, 2},
-        {0, 2},
-        {0, 1}
-    };
+    GIS_Data::Config config = GIS_Parser::Config::Parse("../config.ini");
 
-    GIS_Data::Graph graph = GIS_Data::Graph(adjList, nodeCount);
-    std::cout << graph.GetAdjList()[0][0];
+    GIS_Data::Graph graph = GIS_Parser::Graph::Parse(config.GetInput());
+
+    std::cout << GIS_Algs::BruteForce::Start(graph);
     return 0;
 }
