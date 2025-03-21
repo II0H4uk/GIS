@@ -12,6 +12,7 @@ namespace GIS_Data {
 
     class GISDATA_API Graph {
     private:
+        int nodeCount;
         std::vector<std::vector<int>> adjList;
         std::vector<std::variant<int, std::string>> tag;
 
@@ -19,5 +20,6 @@ namespace GIS_Data {
         Graph(const std::vector<std::vector<int>>& adjList, int nodeCount);
 
         std::vector<std::vector<int>> GetAdjList() const;
+        int GetNodeCount() const;
     };
 }

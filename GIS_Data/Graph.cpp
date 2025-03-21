@@ -3,7 +3,7 @@
 
 namespace GIS_Data {
 
-    Graph::Graph(const std::vector<std::vector<int>>& adjList, int nodeCount) :adjList(adjList) {
+    Graph::Graph(const std::vector<std::vector<int>>& adjList, int nodeCount) : adjList(adjList), nodeCount(nodeCount) {
         tag.resize(nodeCount);
 
         for (int i = 0; i < nodeCount; ++i)
@@ -12,5 +12,10 @@ namespace GIS_Data {
 
     std::vector<std::vector<int>> Graph::GetAdjList() const {
         return adjList;
+    }
+
+    int Graph::GetNodeCount() const
+    {
+        return nodeCount;
     }
 }
