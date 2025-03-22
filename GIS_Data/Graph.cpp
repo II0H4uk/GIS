@@ -7,15 +7,18 @@ namespace GIS_Data {
         tag.resize(nodeCount);
 
         for (int i = 0; i < nodeCount; ++i)
-            tag[i] = static_cast<int>(adjList[i].size());
+            tag[i].push_back(static_cast<int>(adjList[i].size()));
+    }
+
+    bool Graph::CompareTags(const TagType& first, const TagType& second) const {
+        return first == second;
     }
 
     std::vector<std::vector<int>> Graph::GetAdjList() const {
         return adjList;
     }
 
-    int Graph::GetNodeCount() const
-    {
+    int Graph::GetNodeCount() const {
         return nodeCount;
     }
 }

@@ -10,14 +10,22 @@
 
 namespace GIS_Data {
 
+    using TagType = std::variant <int,
+        double,
+        std::vector<int>,
+        std::vector<double>,
+        std::string >;
+
     class GISDATA_API Graph {
     private:
         int nodeCount;
         std::vector<std::vector<int>> adjList;
-        std::vector<std::variant<int, std::string>> tag;
-
+        std::vector<std::vector<TagType>> tag;
+        
     public:
         Graph(const std::vector<std::vector<int>>& adjList, int nodeCount);
+
+        bool CompareTags(const TagType& first, const TagType& second) const;
 
         std::vector<std::vector<int>> GetAdjList() const;
         int GetNodeCount() const;
