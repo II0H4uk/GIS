@@ -36,3 +36,5 @@
 # Packages
 \packages
 \build
+*.filters
+*.user
