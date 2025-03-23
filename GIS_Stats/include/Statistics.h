@@ -1,10 +1,14 @@
 #pragma once
 
-#ifdef GISSTATS_EXPORTS
-    #define GISSTATS_API __declspec(dllexport)
+#ifdef _WIN32
+    #ifdef GISSTATS_EXPORTS
+        #define GISSTATS_API __declspec(dllexport)
+    #else
+        #define GISSTATS_API __declspec(dllimport)
+    #endif
 #else
-    #define GISSTATS_API __declspec(dllimport)
-#endif // GISSTATS_EXPORTS
+    #define GISSTATS_API
+#endif
 
 #include "pch.h"
 

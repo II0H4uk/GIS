@@ -1,10 +1,14 @@
 #pragma once
 
-#ifdef GISALGS_EXPORTS
-	#define GISALG_API __declspec(dllexport)
+#ifdef _WIN32
+	#ifdef GISALGS_EXPORTS
+		#define GISALG_API __declspec(dllexport)
+	#else
+		#define GISALG_API __declspec(dllimport)
+	#endif
 #else
-	#define GISALG_API __declspec(dllimport)
-#endif // GISALGS_EXPORTS
+	#define GISALG_API
+#endif
 
 #include "pch.h"
 #include "Graph.h"
