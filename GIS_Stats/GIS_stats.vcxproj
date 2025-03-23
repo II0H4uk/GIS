@@ -22,7 +22,7 @@
     <ClInclude Include="include\Statistics.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Statistics.cpp" />
+    <ClCompile Include="src\Statistics.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

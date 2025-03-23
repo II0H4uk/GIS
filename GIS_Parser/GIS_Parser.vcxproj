@@ -23,8 +23,8 @@
     <ClInclude Include="include\ConfigParser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GraphParser.cpp" />
-    <ClCompile Include="ConfigParser.cpp" />
+    <ClCompile Include="src\GraphParser.cpp" />
+    <ClCompile Include="src\ConfigParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">

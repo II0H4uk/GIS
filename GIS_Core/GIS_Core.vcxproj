@@ -130,8 +130,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GIS_Core.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="src\GIS_Core.cpp" />
+    <ClCompile Include="src\pch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Algs\GIS_Algs.vcxproj">

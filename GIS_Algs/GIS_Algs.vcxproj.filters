@@ -18,9 +18,15 @@
     <ClInclude Include="include\BruteForce.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="include\TruncEnum.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BruteForce.cpp">
+    <ClCompile Include="src\BruteForce.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TruncEnum.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

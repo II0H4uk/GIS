@@ -10,12 +10,16 @@ namespace GIS_Data {
             tag[i].push_back(static_cast<int>(adjList[i].size()));
     }
 
-    bool Graph::CompareTags(const TagType& first, const TagType& second) const {
+    bool CompareTags(const TagType& first, const TagType& second) {
         return first == second;
     }
 
-    std::vector<std::vector<int>> Graph::GetAdjList() const {
+    const std::vector<std::vector<int>>& Graph::GetAdjList() const {
         return adjList;
+    }
+
+    const std::vector<std::vector<TagType>>& Graph::GetTag() const {
+        return tag;
     }
 
     int Graph::GetNodeCount() const {

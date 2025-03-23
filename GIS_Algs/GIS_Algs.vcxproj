@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BruteForce.h" />
+    <ClInclude Include="include\TruncEnum.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BruteForce.cpp" />
+    <ClCompile Include="src\BruteForce.cpp" />
+    <ClCompile Include="src\TruncEnum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">

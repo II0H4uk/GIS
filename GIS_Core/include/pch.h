@@ -1,7 +1,6 @@
 ﻿#ifndef PCH_H
 #define PCH_H
 
-#include <windows.h>
 #include <iostream>
 #include <vector>
 #include <variant>
@@ -11,5 +10,6 @@
 #include <stdexcept>
 #include <optional>
 #include <chrono>
+#include <queue>
 
 #endif //PCH_H

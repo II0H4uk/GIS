@@ -18,5 +18,6 @@ int main(int argc, char* argv[]) {
 
     GIS_Stats::Statistics::Save(duration.count(), result, graph.GetNodeCount());
 
+    //std::cout << duration;
     return 0;
 }
