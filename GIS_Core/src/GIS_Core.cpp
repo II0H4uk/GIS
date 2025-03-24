@@ -14,11 +14,11 @@ int main(int argc, char* argv[]) {
     auto start = std::chrono::high_resolution_clock::now();
     bool result = GIS_Algs::BruteForce::Start(graph1,graph2);
     auto end = std::chrono::high_resolution_clock::now();
-
-    std::cout << result;
+    
+    //std::cout << result;
     std::chrono::duration<double> duration = end - start;
 
-    GIS_Stats::Statistics::Save(duration.count(), result, graph1.GetNodeCount());
+    GIS_Stats::Statistics::Save(duration.count(), result, graph1.GetNodeCount(), config.GetOutput());
 
     //std::cout << duration;
     return 0;

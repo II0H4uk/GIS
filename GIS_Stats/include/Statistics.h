@@ -12,12 +12,14 @@
 
 #include "pch.h"
 
+using namespace std;
+
 namespace GIS_Stats {
 
     class GISSTATS_API Statistics {
     private:
 
     public:
-        static void Save(const double& time, const bool& result, const int& nodeCount);
+        static void Save(const double& time, const bool& result, const int& nodeCount, const string& filePath);
     };
 }
