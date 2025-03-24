@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\FileWriter.h" />
     <ClInclude Include="include\GraphParser.h" />
     <ClInclude Include="include\ConfigParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\FileWriter.cpp" />
     <ClCompile Include="src\GraphParser.cpp" />
     <ClCompile Include="src\ConfigParser.cpp" />
   </ItemGroup>
