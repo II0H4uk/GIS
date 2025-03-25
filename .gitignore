@@ -35,3 +35,7 @@
 
 # Packages
 \packages
+\build
+*.filters
+*.user
+*.stats

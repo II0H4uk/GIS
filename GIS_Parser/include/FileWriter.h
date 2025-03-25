@@ -11,14 +11,15 @@
 #endif
 
 #include "pch.h"
-#include "Graph.h"
+
+using namespace std;
 
 namespace GIS_Parser {
 
-    class GISPARSER_API Graph {
+    class GISPARSER_API FileWriter {
     private:
 
     public:
-        static GIS_Data::Graph Parse(const std::string& filePath);
+        static void WriteStringToFile(const string& str, const string& filePath);
     };
 }

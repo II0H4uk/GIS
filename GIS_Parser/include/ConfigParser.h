@@ -1,17 +1,21 @@
 #pragma once
 
-#ifdef GISPARSER_EXPORTS
-    #define GISGISPARSER_API __declspec(dllexport)
+#ifdef _WIN32
+    #ifdef GISPARSER_EXPORTS
+        #define GISPARSER_API __declspec(dllexport)
+    #else
+        #define GISPARSER_API __declspec(dllimport)
+    #endif
 #else
-    #define GISGISPARSER_API __declspec(dllimport)
-#endif // GISPARSER_EXPORTS
+    #define GISPARSER_API
+#endif
 
 #include "pch.h"
 #include "Config.h"
 
 namespace GIS_Parser {
 
-    class GISGISPARSER_API Config {
+    class GISPARSER_API Config {
     private:
 
     public:

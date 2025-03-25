@@ -1,10 +1,14 @@
 #pragma once
 
-#ifdef GISDATA_EXPORTS
-    #define GISDATA_API __declspec(dllexport)
+#ifdef _WIN32
+    #ifdef GISDATA_EXPORTS
+        #define GISDATA_API __declspec(dllexport)
+    #else
+        #define GISDATA_API __declspec(dllimport)
+    #endif
 #else
-    #define GISDATA_API __declspec(dllimport)
-#endif // GISDATA_EXPORTS
+    #define GISDATA_API
+#endif
 
 #include "pch.h"
 
@@ -12,12 +16,14 @@ namespace GIS_Data {
 
     class GISDATA_API Config {
     private:
-        std::string inputPath;
+        std::string inputPath1;
+        std::string inputPath2;
         std::string outputPath;
     public:
-        Config(const std::string& inputPath, const std::string& outputPath);
+        Config(const std::string& inputPath1,const std::string& inputPath2, const std::string& outputPath);
 
-        std::string GetInput();
+        std::string GetInput1();
+        std::string GetInput2();
         std::string GetOutput();
     };
 }

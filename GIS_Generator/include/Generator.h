@@ -1,10 +1,14 @@
 #pragma once
 
-#ifdef GISGENERATOR_EXPORTS
-    #define GISGENERATOR_API __declspec(dllexport)
+#ifdef _WIN32
+    #ifdef GISGENERATOR_EXPORTS
+        #define GISGENERATOR_API __declspec(dllexport)
+    #else
+        #define GISGENERATOR_API __declspec(dllimport)
+    #endif
 #else
-    #define GISGENERATOR_API __declspec(dllimport)
-#endif // GISGENERATOR_EXPORTS
+    #define GISGENERATOR_API
+#endif
 
 #include "pch.h"
 
