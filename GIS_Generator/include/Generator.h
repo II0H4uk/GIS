@@ -11,6 +11,7 @@
 #endif
 
 #include "pch.h"
+#include "Graph.h"
 
 namespace GIS_Generator {
 
@@ -18,6 +19,8 @@ namespace GIS_Generator {
     private:
 
     public:
-
+        static GIS_Data::GraphPair Generate(bool isIsomorphic);
+        //static GIS_Data::GraphPair Generate(bool isIsomorphic);
+        //void Generate(bool isIsomorphic);
     };
 }
