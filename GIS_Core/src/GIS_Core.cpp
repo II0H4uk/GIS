@@ -19,18 +19,10 @@ int main(int argc, char* argv[]) {
 
     GIS_Stats::Statistics::Save(duration.count(), result, graph.GetNodeCount());
 
-    //std::cout << duration;
+    std::cout << duration;
 
-    //Проверка изморфизма графов
-    //std::cout << "Check generator: ";
-
-    GIS_Data::GraphPair pair = GIS_Generator::Generator::Generate(true);
-    //p.first = 1;
-    //p.second = 3.14;
-
-    //bool isIsomorphic = true; // Измените на false для генерации не изоморфных графов
-    //pair<GIS_Data::Graph, GIS_Data::Graph> graphs = GIS_Generator::Generator::Generate(isIsomorphic);
-    //std::pair <GIS_Data::Graph, GIS_Data::Graph> graphs = GIS_Generator::Generator::Generate(isIsomorphic);
+    GIS_Generator::Generator genertor;
+    GIS_Data::GraphPair pair = genertor.GenerateGraphPair(5, false);
 
     return 0;
 }

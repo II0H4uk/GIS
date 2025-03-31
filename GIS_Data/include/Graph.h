@@ -35,16 +35,4 @@ namespace GIS_Data {
         const std::vector<std::vector<TagType>>& GetTag() const;
         int GetNodeCount() const;
     };
-
-    class GISDATA_API GraphPair {
-    public:
-        GraphPair(const Graph& g1, const Graph& g2, bool flag);
-        void displayGraphs() const;
-        bool getFlag() const;
-
-    private:
-        Graph graph1;
-        Graph graph2;
-        bool flag;
-    };
 }

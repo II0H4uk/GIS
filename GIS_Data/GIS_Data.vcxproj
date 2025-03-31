@@ -141,10 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\GraphPair.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Graph.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\GraphPair.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Graph.cpp" />
   </ItemGroup>
