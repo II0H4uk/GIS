@@ -17,11 +17,9 @@ namespace GIS_Algs {
 
 	class GISALG_API TruncEnum {
 	private:
-
+		static bool CompareGraphs(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2, std::vector<int>& mapping, std::vector<bool>& used, int depth = 0);
 	public:
-		static bool Start(const GIS_Data::Graph& graphF, const GIS_Data::Graph& graphS);
-		static int FindStartNode(const std::vector<bool>& visitedNodes);
-		static bool CheckVisitedNodes(const std::vector<bool>& visitedF, const std::vector<bool>& visitedS);
-		static bool CompareGraphs(const GIS_Data::Graph& graphF, const GIS_Data::Graph& graphS, std::vector<bool>& visitedF, std::vector<bool>& visitedS,  const int& nodeF, const int& nodeS);
+		static bool Start(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2);
 	};
+	
 }

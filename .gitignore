@@ -32,9 +32,11 @@
 *.app
 \.vs
 \x64
+*.sh
 
 # Packages
 \packages
 \build
 *.filters
 *.user
+*.stats

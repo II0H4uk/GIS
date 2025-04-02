@@ -1,80 +1,63 @@
 #include "pch.h"
 #include "TruncEnum.h"
+#include <algorithm>
 
 namespace GIS_Algs {
 
-    bool TruncEnum::Start(const GIS_Data::Graph& graphF, const GIS_Data::Graph& graphS) {
+    bool TruncEnum::Start(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2) {
+        if (g1.GetNodeCount() != g2.GetNodeCount()) return false;
 
-        if (graphF.GetNodeCount() != graphS.GetNodeCount())
-            return false;
+        std::vector<int> mapping(g1.GetNodeCount(), -1);
+        std::vector<bool> used(g2.GetNodeCount(), false);
 
-        std::vector<bool> visitedF(graphF.GetNodeCount());
-        std::vector<bool> visitedS(graphS.GetNodeCount());
+        return CompareGraphs(g1, g2, mapping, used, 0);
+    }
 
-        while (CheckVisitedNodes(visitedF, visitedS)) {
+    bool TruncEnum::CompareGraphs(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2, std::vector<int>& mapping, std::vector<bool>& used, int depth) {
+        if (depth == g1.GetNodeCount()) {
 
-            int currF = FindStartNode(visitedF);
-            int currS = FindStartNode(visitedS);
+            for (int i = 0; i < g1.GetNodeCount(); ++i) {
+                std::vector<int> mappedNeighbors;
+                for (int neighbor : g1.GetAdjList()[i]) {
+                    mappedNeighbors.push_back(mapping[neighbor]);
+                }
+                std::sort(mappedNeighbors.begin(), mappedNeighbors.end());
 
-            for (int i = 0; i < graphF.GetNodeCount(); ++i) {
-                if (visitedS[i])
-                    continue;
+                std::vector<int> neighbors2 = g2.GetAdjList()[mapping[i]];
+                std::sort(neighbors2.begin(), neighbors2.end());
 
-                if (CompareGraphs(graphF, graphS, visitedF, visitedS, currF, i))
-                    return true;
-
+                if (mappedNeighbors != neighbors2) return false;
             }
+            return true;
         }
 
-        
+        for (int i = 0; i < g2.GetNodeCount(); ++i) {
+            if (used[i]) continue;
 
-        return false;
-    }
 
-    int TruncEnum::FindStartNode(const std::vector<bool>& visitedNodes) {
+            if (g1.GetAdjList()[depth].size() != g2.GetAdjList()[i].size()) continue;
 
-        for (int i = 0; i < visitedNodes.size(); ++i)
-            if (!visitedNodes[i])
-                return i;
-        return -1;
-    }
 
-    bool TruncEnum::CheckVisitedNodes(const std::vector<bool>& visitedF, const std::vector<bool>& visitedS)
-    {
-        for (int i = 0; i < visitedF.size(); ++i) {
-            //if (!visitedF[i] || !visitedS[i])
-        }
-        return false;
-    }
+            const auto& tags1 = g1.GetTag()[depth];
+            const auto& tags2 = g2.GetTag()[i];
 
-    bool TruncEnum::CompareGraphs(const GIS_Data::Graph& graphF, const GIS_Data::Graph& graphS, std::vector<bool>& visitedF, std::vector<bool>& visitedS, const int& nodeF, const int& nodeS) {
-
-        std::queue<int> queueF;
-        std::queue<int> queueS;
-
-        queueF.push(nodeF);
-        queueS.push(nodeS);
-
-        visitedF[nodeF] = true;
-        visitedS[nodeS] = true;
-
-        while (queueF.size() > 0) {
-
-            int currF = queueF.front();
-            int currS = queueS.front();
-
-            queueF.pop();
-            queueS.pop();
-
-            if (graphF.GetTag()[currF] != graphS.GetTag()[currS])
-                return false;
-
-            for (int i = 0; i < graphF.GetAdjList()[currF].size(); ++i) {
-                queueF.push(graphF.GetAdjList()[currF][i]);
-                queueS.push(graphS.GetAdjList()[currS][i]);
+            if (tags1.size() != tags2.size()) continue;
+            bool tagsEqual = true;
+            for (size_t j = 0; j < tags1.size(); ++j) {
+                if (!GIS_Data::CompareTags(tags1[j], tags2[j])) {
+                    tagsEqual = false;
+                    break;
+                }
             }
-        }
+            if (!tagsEqual) continue;
 
-        return true;
+            mapping[depth] = i;
+            used[i] = true;
+
+            if (CompareGraphs(g1, g2, mapping, used, depth + 1)) return true;
+
+            used[i] = false;
+        }
+        return false;
     }
 }

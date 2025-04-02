@@ -2,6 +2,7 @@
 #include "ConfigParser.h"
 #include "GraphParser.h"
 #include "BruteForce.h"
+#include "TruncEnum.h"
 #include "Statistics.h"
 #include "Generator.h"
 
@@ -9,16 +10,17 @@ int main(int argc, char* argv[]) {
 
     GIS_Data::Config config = GIS_Parser::Config::Parse("../config.ini");
 
-    GIS_Data::Graph graph = GIS_Parser::Graph::Parse(config.GetInput());
+    GIS_Data::Graph graph1 = GIS_Parser::Graph::Parse(config.GetInput1());
+    GIS_Data::Graph graph2 = GIS_Parser::Graph::Parse(config.GetInput2());
 
     auto start = std::chrono::high_resolution_clock::now();
-    bool result = GIS_Algs::BruteForce::Start(graph);
+    //bool result = GIS_Algs::TruncEnum::Start(graph1, graph2);
+    bool result = GIS_Algs::BruteForce::Start(graph1,graph2);
     auto end = std::chrono::high_resolution_clock::now();
-
+    
     std::chrono::duration<double> duration = end - start;
 
-    GIS_Stats::Statistics::Save(duration.count(), result, graph.GetNodeCount());
-
+    GIS_Stats::Statistics::Save(duration.count(), result, graph1.GetNodeCount(), config.GetOutput());
     std::cout << duration;
 
     GIS_Generator::Generator genertor;

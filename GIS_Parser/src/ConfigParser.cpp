@@ -10,7 +10,8 @@ namespace GIS_Parser {
 
         std::string line;
 
-        std::string input;
+        std::string input1;
+        std::string input2;
         std::string output;
 
         while (std::getline(file, line)) {
@@ -26,15 +27,17 @@ namespace GIS_Parser {
             std::string key = line.substr(0, pos);
             std::string val = line.substr(pos + 1);
 
-            if (key == "Input")
-                input = val;
+            if (key == "Input1")
+                input1 = val;
+            else if (key == "Input2")
+                input2 = val;
             else if (key == "Output")
                 output = val;
         }
 
         file.close();
 
-        return GIS_Data::Config(input, output);
+        return GIS_Data::Config(input1,input2, output);
     }
 }
 

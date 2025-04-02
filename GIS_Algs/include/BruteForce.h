@@ -19,6 +19,6 @@ namespace GIS_Algs {
     private:
 
     public:
-        static bool Start(const GIS_Data::Graph& graph);
+        static bool Start(const GIS_Data::Graph& graph1,const GIS_Data::Graph& graph2);
     };
 }

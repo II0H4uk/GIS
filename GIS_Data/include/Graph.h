@@ -20,7 +20,7 @@ namespace GIS_Data {
         std::vector<double>,
         std::string >;
 
-    bool CompareTags(const TagType& first, const TagType& second);
+    bool GISDATA_API CompareTags(const TagType& first, const TagType& second);
 
     class GISDATA_API Graph {
     private:
