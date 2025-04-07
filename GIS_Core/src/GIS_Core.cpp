@@ -4,6 +4,7 @@
 #include "BruteForce.h"
 #include "TruncEnum.h"
 #include "Statistics.h"
+#include "Generator.h"
 
 int main(int argc, char* argv[]) {
 
@@ -20,6 +21,10 @@ int main(int argc, char* argv[]) {
     std::chrono::duration<double> duration = end - start;
 
     GIS_Stats::Statistics::Save(duration.count(), result, graph1.GetNodeCount(), config.GetOutput());
+    std::cout << duration;
+
+    GIS_Generator::Generator genertor;
+    GIS_Data::GraphPair pair = genertor.GenerateGraphPair(5, false);
 
     return 0;
 }

@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Algs\include;$(SolutionDir)GIS_Data\include;$(SolutionDir)GIS_Parser\include;$(SolutionDir)GIS_Stats\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Algs\include;$(SolutionDir)GIS_Data\include;$(SolutionDir)GIS_Generator\include;$(SolutionDir)GIS_Parser\include;$(SolutionDir)GIS_Stats\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,6 +139,9 @@
     </ProjectReference>
     <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">
       <Project>{1dc3a88a-ca0b-4913-aa46-a0384c0335c0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_Generator\GIS_Generator.vcxproj">
+      <Project>{0bf8a754-2dae-404c-a3cc-0be58f304596}</Project>
     </ProjectReference>
     <ProjectReference Include="..\GIS_Parser\GIS_Parser.vcxproj">
       <Project>{7c4885d8-5bce-461b-b121-eab76748f198}</Project>

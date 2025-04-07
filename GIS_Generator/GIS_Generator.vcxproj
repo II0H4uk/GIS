@@ -24,6 +24,11 @@
   <ItemGroup>
     <ClCompile Include="src\Generator.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">
+      <Project>{1dc3a88a-ca0b-4913-aa46-a0384c0335c0}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -118,7 +123,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Core\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Core\include;$(SolutionDir)GIS_Data\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
