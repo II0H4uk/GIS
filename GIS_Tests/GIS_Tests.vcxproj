@@ -110,6 +110,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="tests\TruncEnumTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Graph_Data\IsoGraph1_1.graph" />
