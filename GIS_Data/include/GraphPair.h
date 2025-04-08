@@ -15,12 +15,14 @@
 namespace GIS_Data {
 
     class GISDATA_API GraphPair {
-    public:
-        GraphPair(const Graph& g1, const Graph& g2, bool flag);
-
+    
     private:
         Graph graph1;
         Graph graph2;
         bool flag;
+    public:
+        GraphPair(const Graph& g1, const Graph& g2, bool flag);
+        const Graph GetGraph1() const;
+        const Graph GetGraph2() const;
     };
 }
