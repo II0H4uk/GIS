@@ -3,20 +3,20 @@
 
 namespace GIS_Parser {
 
-    void FileWriter::WriteStringToFile(const string& str, const string& filePath)
+    void FileWriter::WriteStringToFile(const std::string& str, const std::string& filePath)
     {
         try {
-            ofstream outfile(filePath);
+            std::ofstream outfile(filePath);
 
             if (!outfile.is_open()) {
-                throw ios_base::failure("File opening error");
+                throw std::ios_base::failure("File opening error");
             }
 
-            outfile << str << endl;
+            outfile << str << std::endl;
             outfile.close();
         }
-        catch (const ios_base::failure& e) {
-            cerr << "Error when writing to a file: " << e.what() << endl;
+        catch (const std::ios_base::failure& e) {
+            std::cerr << "Error when writing to a file: " << e.what() << std::endl;
         }
     }
 }

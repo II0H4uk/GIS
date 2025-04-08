@@ -10,16 +10,9 @@
     #define GISGENERATOR_API
 #endif
 
-#include "pch.h"
 #include "Graph.h"
 #include "GraphPair.h"
-
-#include <iostream>
-#include <vector>
 #include <random>
-#include <algorithm>
-#include <unordered_map>
-#include <numeric>
 
 namespace GIS_Generator {
 

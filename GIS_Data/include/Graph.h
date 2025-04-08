@@ -10,7 +10,9 @@
     #define GISDATA_API
 #endif
 
-#include "pch.h"
+#include <variant>
+#include <vector>
+#include <string>
 
 namespace GIS_Data {
 

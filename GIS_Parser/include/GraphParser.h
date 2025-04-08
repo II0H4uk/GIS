@@ -10,8 +10,8 @@
     #define GISPARSER_API
 #endif
 
-#include "pch.h"
 #include "Graph.h"
+#include <string>
 
 namespace GIS_Parser {
 

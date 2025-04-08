@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "TruncEnum.h"
-#include <algorithm>
 
 namespace GIS_Algs {
 

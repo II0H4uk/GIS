@@ -10,8 +10,8 @@
 	#define GISALG_API
 #endif
 
-#include "pch.h"
 #include "Graph.h"
+#include <vector>
 
 namespace GIS_Algs {
 

@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "BruteForce.h"
-#include <iterator>
-#include <vector>
-#include <algorithm>
 
 std::vector<std::vector<int>> applyPermutation(std::vector<std::vector<int>> adjList, std::vector<int> perm);
 bool isEqual(std::vector<std::vector<int>> adjList1,std::vector<std::vector<int>> adjList2);

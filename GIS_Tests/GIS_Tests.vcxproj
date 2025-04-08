@@ -50,7 +50,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -58,7 +58,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;$(SolutionDir)packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.1.7\build\native\include\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)src;$(SolutionDir)GIS_Algs\include;$(SolutionDir)GIS_Data\include;$(SolutionDir)GIS_Generator\include;$(SolutionDir)GIS_Parser\include;$(SolutionDir)GIS_Stats\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -98,11 +98,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\pch.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\test.cpp" />
+    <ClCompile Include="tests\BaseTests.cpp" />
+    <ClCompile Include="tests\BruteForceTests.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -111,7 +112,30 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Graph_Data\IsoGraph1_1.graph" />
+    <None Include="Graph_Data\IsoGraph1_2.graph" />
+    <None Include="Graph_Data\NotIsoGraph1.graph" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GIS_Algs\GIS_Algs.vcxproj">
+      <Project>{96bd3770-69b1-4d11-9fd5-ef82ff1c10c1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_Core\GIS_Core.vcxproj">
+      <Project>{c2eeb74f-d938-4677-a243-ad7a84041a10}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">
+      <Project>{1dc3a88a-ca0b-4913-aa46-a0384c0335c0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_Generator\GIS_Generator.vcxproj">
+      <Project>{0bf8a754-2dae-404c-a3cc-0be58f304596}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_Parser\GIS_Parser.vcxproj">
+      <Project>{7c4885d8-5bce-461b-b121-eab76748f198}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GIS_stats\GIS_stats.vcxproj">
+      <Project>{9680ba8a-4a83-47d1-80ae-0bd6b62c38bd}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
