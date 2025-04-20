@@ -5,16 +5,21 @@
 #include "TruncEnum.h"
 #include "Statistics.h"
 #include "Generator.h"
+#include "HyperGtaphToGraph.h"
 
 int main(int argc, char* argv[]) {
 
     GIS_Data::Config config = GIS_Parser::Config::Parse("../config.ini");
 
     GIS_Generator::Generator genertor;
-    GIS_Data::GraphPair pair = genertor.GenerateGraphPair(8, true);
+    //GIS_Data::GraphPair pair = genertor.GenerateGraphPair(8, true);
 
     /*GIS_Data::Graph graph1 = GIS_Parser::Graph::Parse(config.GetInput1());
     GIS_Data::Graph graph2 = GIS_Parser::Graph::Parse(config.GetInput2());*/
+
+    auto [graph1, fixNodes1] = GIS_Parser::HyperGraphToGraph::Convert(config.GetInput1());
+    auto [graph2, fixNodes2] = GIS_Parser::HyperGraphToGraph::Convert(config.GetInput2());
+    GIS_Data::GraphPair pair(graph1, graph2, true);
 
     auto start1 = std::chrono::high_resolution_clock::now();
     bool result1 = GIS_Algs::BruteForce::Start(pair.GetGraph1(), pair.GetGraph2());

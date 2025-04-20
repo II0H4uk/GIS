@@ -11,15 +11,14 @@
 #endif
 
 #include "Graph.h"
-#include <string>
+#include <tuple>
 
 namespace GIS_Parser {
 
-    class GISPARSER_API Graph {
+    class GISPARSER_API HyperGraphToGraph {
     private:
 
     public:
-        static GIS_Data::Graph Parse(const std::string& filePath);
-        static std::vector<std::vector<int>> ReadData(const std::string& filePath);
+        static std::tuple<GIS_Data::Graph, int> Convert(const std::string& filePath);
     };
 }

@@ -22,9 +22,11 @@
     <ClInclude Include="include\FileWriter.h" />
     <ClInclude Include="include\GraphParser.h" />
     <ClInclude Include="include\ConfigParser.h" />
+    <ClInclude Include="include\HyperGtaphToGraph.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\HyperGtaphToGraph.cpp" />
     <ClCompile Include="src\FileWriter.cpp" />
     <ClCompile Include="src\GraphParser.cpp" />
     <ClCompile Include="src\ConfigParser.cpp" />
