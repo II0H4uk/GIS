@@ -22,7 +22,7 @@ namespace GIS_Data {
         bool flag;
     public:
         GraphPair(const Graph& g1, const Graph& g2, bool flag);
-        const Graph GetGraph1() const;
-        const Graph GetGraph2() const;
+        Graph& GetGraph1();
+        Graph& GetGraph2();
     };
 }

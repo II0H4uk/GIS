@@ -36,5 +36,6 @@ namespace GIS_Data {
         const std::vector<std::vector<int>>& GetAdjList() const;
         const std::vector<std::vector<TagType>>& GetTag() const;
         int GetNodeCount() const;
+        void AddEmptyNodes(int nodeDiff);
     };
 }

@@ -22,6 +22,7 @@
     <ClInclude Include="include\BruteForce.h" />
     <ClInclude Include="include\TruncEnum.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="include\SubGraphIso.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BruteForce.cpp" />
@@ -29,6 +30,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\TruncEnum.cpp" />
+    <ClCompile Include="src\SubGraphIso.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">

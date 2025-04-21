@@ -25,4 +25,14 @@ namespace GIS_Data {
     int Graph::GetNodeCount() const {
         return nodeCount;
     }
+
+    void Graph::AddEmptyNodes(int nodeDiff) {
+        nodeCount += nodeDiff;
+        adjList.resize(nodeCount);
+        tag.resize(nodeCount);
+
+        for (int i = 0; i < nodeDiff; ++i) {
+            tag[nodeCount + i].push_back(0);
+        }
+    }
 }
