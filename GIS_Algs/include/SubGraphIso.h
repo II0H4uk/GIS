@@ -19,6 +19,7 @@ namespace GIS_Algs {
     private:
         static const std::vector<int> InitBijection(int fixNodeCount, int nodeCount);
         static void MatchNodes(std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2);
+        static int FindStartPoint(const std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2);
     public:
         static const std::vector<int> Start(const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2, int fixNodeCount);
     };
