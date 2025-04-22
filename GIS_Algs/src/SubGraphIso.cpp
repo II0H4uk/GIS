@@ -38,17 +38,19 @@ namespace GIS_Algs {
             std::vector<int> currNeigh2 = graph2.GetAdjList()[bijection[currNode]];
 
             for (int i = 0; i < currNeigh1.size(); ++i) {
-                if (std::find(subGraph1.begin(), subGraph1.end(), currNeigh1[i]) != subGraph1.end() && !visited[currNeigh1[i]]) {
+                if (visited[currNeigh1[i]])
+                    continue;
+                if (std::find(subGraph1.begin(), subGraph1.end(), currNeigh1[i]) != subGraph1.end()) {
                     queue.push(currNeigh1[i]);
                     visited[currNeigh1[i]] = true;
                 }
 
-                if (bijection[currNode] > -1)
-                    break;
+                if (bijection[currNeigh1[i]] > -1)
+                    continue;
 
                 for (int j = 0; j < currNeigh2.size(); ++j) {
-                    if (graph1.GetTag()[currNode] == graph2.GetTag()[currNeigh2[j]]) {
-                        bijection[currNode] = currNeigh2[j];
+                    if (graph1.GetTag()[currNeigh1[i]] == graph2.GetTag()[currNeigh2[j]] && std::find(bijection.begin(), bijection.end(), currNeigh2[j]) == bijection.end()) {
+                        bijection[currNeigh1[i]] = currNeigh2[j];
                         break;
                     }
                 }
