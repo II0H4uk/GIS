@@ -11,13 +11,13 @@ namespace GIS_Stats {
         for (int i = 0; i < result.size(); ++i) {
             if (result[i] == 0 && i != 0)
                 continue;
-            bijection += std::format("{}, {}", i, result[i]);
+            bijection += std::format("{} -> {}", i, result[i]) + "\n";
         }
 
         std::string statisticsInfo = std::string("Graph Isomorphism Comparison Statistics") + "\n\n" + 
                                 "Number of nodes: " + std::to_string(nodeCount) + "\n" +
                                 "Work time: " + std::to_string(time) + "\n" +
-                                "Isomorphism Result: " + bijection + "\n";
+                                "Isomorphism Result:\n" + bijection + "\n";
 
         std::cout << statisticsInfo;
 

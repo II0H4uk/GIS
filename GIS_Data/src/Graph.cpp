@@ -32,7 +32,7 @@ namespace GIS_Data {
         tag.resize(nodeCount);
 
         for (int i = 0; i < nodeDiff; ++i) {
-            tag[nodeCount + i].push_back(0);
+            tag[nodeCount + i - 1].push_back(0);
         }
     }
 }

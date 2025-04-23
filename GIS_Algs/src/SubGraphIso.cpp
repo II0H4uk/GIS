@@ -34,6 +34,9 @@ namespace GIS_Algs {
             int currNode = queue.front();
             queue.pop();
 
+            if (bijection[currNode] == -1)
+                continue;
+
             std::vector<int> currNeigh1 = graph1.GetAdjList()[currNode];
             std::vector<int> currNeigh2 = graph2.GetAdjList()[bijection[currNode]];
 

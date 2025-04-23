@@ -11,7 +11,7 @@ namespace GIS_Core {
     void Benchmark::Init(const GIS_Data::Config config) {
 
         auto [pair, fixedNodes] = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), true);
-        CorrectGraphsNodes(pair.GetGraph1(), pair.GetGraph2());
+        //CorrectGraphsNodes(pair.GetGraph1(), pair.GetGraph2());
 
         auto start = std::chrono::high_resolution_clock::now();
         std::vector<int> result = GIS_Algs::SubGraphIso::Start(pair.GetGraph1(), pair.GetGraph2(), fixedNodes);
