@@ -10,7 +10,7 @@ namespace GIS_Core {
 
     void Benchmark::Init(const GIS_Data::Config config) {
 
-        auto [pair, fixedNodes] = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), true);
+        auto [pair, fixedNodes1, fixedNodes2] = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), true);
         //CorrectGraphsNodes(pair.GetGraph1(), pair.GetGraph2());
 
         auto start = std::chrono::high_resolution_clock::now();
@@ -41,11 +41,11 @@ namespace GIS_Core {
         return GIS_Data::GraphPair(graph1, graph2, isomorph);
     }
 
-    std::tuple<GIS_Data::GraphPair, int> Benchmark::ReadHyperGraphs(const std::string& input1, const std::string& input2, bool isomorph) {
+    std::tuple<GIS_Data::GraphPair, std::vector<int>, std::vector<int>> Benchmark::ReadHyperGraphs(const std::string& input1, const std::string& input2, bool isomorph) {
 
         auto [graph1, fixNodes1] = GIS_Parser::HyperGraphToGraph::Convert(input1);
         auto [graph2, fixNodes2] = GIS_Parser::HyperGraphToGraph::Convert(input2);
-        return { GIS_Data::GraphPair(graph1, graph2, isomorph), fixNodes1 };
+        return { GIS_Data::GraphPair(graph1, graph2, isomorph), fixNodes1, fixNodes2 };
     }
 
     GIS_Data::GraphPair Benchmark::GenGraphs(int nodeCount, bool isomorph) {

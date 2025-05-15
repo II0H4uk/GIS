@@ -21,7 +21,7 @@ namespace GIS_Core {
         static void CorrectGraphsNodes(GIS_Data::Graph& graph1, GIS_Data::Graph& graph2);
         static GIS_Data::GraphPair GenGraphs(int nodeCount, bool isomorph);
         static GIS_Data::GraphPair ReadGraphs(const std::string& input1, const std::string& input2, bool isomorph);
-        static std::tuple<GIS_Data::GraphPair, int> ReadHyperGraphs(const std::string& input1, const std::string& input2, bool isomorph);
+        static std::tuple<GIS_Data::GraphPair, std::vector<int>, std::vector<int>> ReadHyperGraphs(const std::string& input1, const std::string& input2, bool isomorph);
     public:
         static void Init(const GIS_Data::Config config);
     };

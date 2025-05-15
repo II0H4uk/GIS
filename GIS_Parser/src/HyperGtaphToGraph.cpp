@@ -3,11 +3,11 @@
 #include "GraphParser.h"
 
 namespace GIS_Parser {
-    std::tuple<GIS_Data::Graph, int> GIS_Parser::HyperGraphToGraph::Convert(const std::string& filePath)
+    std::tuple<GIS_Data::Graph, std::vector<int>> GIS_Parser::HyperGraphToGraph::Convert(const std::string& filePath)
     {
         std::vector<std::vector<int>> netList = GIS_Parser::Graph::ReadData(filePath);
 
-        std::vector<std::vector<int>> adjList(netList[0][1]);
+        std::vector<std::vector<int>> adjList(netList.size() - 1);
 
         for (int i = 1; i < netList.size(); ++i)
         {
@@ -26,6 +26,6 @@ namespace GIS_Parser {
         for (int i = 0; i < adjList.size(); ++i)
             std::sort(adjList[i].begin(), adjList[i].end());
 
-        return { GIS_Data::Graph(adjList, adjList.size()) , netList[0][0] };
+        return { GIS_Data::Graph(adjList, adjList.size()) , netList[0] };
     }
 }
