@@ -18,10 +18,9 @@ namespace GIS_Core {
 
     class GISCORE_API Benchmark {
     private:
-        static void CorrectGraphsNodes(GIS_Data::Graph& graph1, GIS_Data::Graph& graph2);
-        static GIS_Data::GraphPair GenGraphs(int nodeCount, bool isomorph);
-        static GIS_Data::GraphPair ReadGraphs(const std::string& input1, const std::string& input2, bool isomorph);
-        static std::tuple<GIS_Data::GraphPair, std::vector<int>, std::vector<int>> ReadHyperGraphs(const std::string& input1, const std::string& input2, bool isomorph);
+        static GIS_Data::GraphPair GenGraphs(int nodeCount, int numCliques = 5, int maxClSize = 6);
+        static GIS_Data::GraphPair ReadGraphs(const std::string& input1, const std::string& input2);
+        static std::tuple<GIS_Data::GraphPair, std::vector<int>, std::vector<int>> ReadHyperGraphs(const std::string& input1, const std::string& input2);
     public:
         static void Init(const GIS_Data::Config config);
     };

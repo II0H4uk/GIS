@@ -2,72 +2,78 @@
 #include "SubGraphIso.h"
 
 namespace GIS_Algs {
-    const std::vector<int> GIS_Algs::SubGraphIso::Start(const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2, int fixNodeCount) {
-        
-        std::vector<int> bijection = InitBijection(fixNodeCount, graph1.GetNodeCount());
 
+    std::vector<int> SubGraphIso::Start(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2) {
 
+        auto simMat = GIS_Algs::SubGraphIso::CalcSimMat(g1, g2);
+        auto approx = GIS_Algs::SubGraphIso::GreedyMatch(simMat);
 
-        return bijection;
+        return approx;
     }
 
-    const std::vector<int> SubGraphIso::InitBijection(int fixNodeCount, int nodeCount) {
-
-        std::vector<int> bijection(nodeCount, -1);
-        for (int i = 0; i < fixNodeCount; ++i) {
-            bijection[i] = i;
+    std::pair<int, int> SubGraphIso::CalcVertTags(const std::vector<std::vector<int>>& G, int v) {
+        int degree = G[v].size();
+        int neighbor_sum = 0;
+        for (int u : G[v]) {
+            neighbor_sum += G[u].size();
         }
-        return bijection;
+        return { degree, neighbor_sum };
     }
 
-    void SubGraphIso::MatchNodes(std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2) {
-        
-        int startPoint = FindStartPoint(bijection, subGraph1, subGraph2, graph1, graph2);
+    std::vector<std::vector<double>> SubGraphIso::CalcSimMat(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2) {
 
-        std::queue<int> queue;
-        queue.push(startPoint);
+        std::vector<std::vector<double>> sim(g1.GetNodeCount(), std::vector<double>(g2.GetNodeCount()));
 
-        std::vector<bool> visited(graph1.GetAdjList().size());
-        visited[startPoint] = true;
-
-        while (queue.size() > 0) {
-            int currNode = queue.front();
-            queue.pop();
-
-            if (bijection[currNode] == -1)
-                continue;
-
-            std::vector<int> currNeigh1 = graph1.GetAdjList()[currNode];
-            std::vector<int> currNeigh2 = graph2.GetAdjList()[bijection[currNode]];
-
-            for (int i = 0; i < currNeigh1.size(); ++i) {
-                if (visited[currNeigh1[i]])
-                    continue;
-                if (std::find(subGraph1.begin(), subGraph1.end(), currNeigh1[i]) != subGraph1.end()) {
-                    queue.push(currNeigh1[i]);
-                    visited[currNeigh1[i]] = true;
-                }
-
-                if (bijection[currNeigh1[i]] > -1)
-                    continue;
-
-                for (int j = 0; j < currNeigh2.size(); ++j) {
-                    if (graph1.GetTag()[currNeigh1[i]] == graph2.GetTag()[currNeigh2[j]] && std::find(bijection.begin(), bijection.end(), currNeigh2[j]) == bijection.end()) {
-                        bijection[currNeigh1[i]] = currNeigh2[j];
-                        break;
-                    }
-                }
+        for (int i = 0; i < g1.GetNodeCount(); ++i) {
+            //auto [d1, s1] = CalcVertTags(g1.GetAdjList(), i);  //заменить на переменные в классе
+            for (int j = 0; j < g2.GetNodeCount(); ++j) {
+                //auto [d2, s2] = CalcVertTags(g2.GetAdjList(), j); //заменить на переменные в классе
+                //double diff = sqrt(pow(d1 - d2, 2) + pow(s1 - s2, 2));
+                //sim[i][j] = 1.0 / (1.0 + diff);
+                sim[i][j] = CompareTags(g1.GetTag()[i], g2.GetTag()[j], g1.GetNeighDegLv());
             }
         }
+        return sim;
     }
 
-    int SubGraphIso::FindStartPoint(const std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2) {
-        
-        for (int i = 0; i < subGraph1.size(); ++i) {
-            if (bijection[subGraph1[i]] > -1 && std::find(subGraph2.begin(), subGraph2.end(), bijection[subGraph1[i]]) != subGraph2.end())
-                return subGraph1[i];
+    double SubGraphIso::CompareTags(const std::vector<GIS_Data::TagType>& tags1, const std::vector<GIS_Data::TagType>& tags2, int n)
+    {
+        double sumSquares = 0.0;
+
+        for (int i = 0; i < n; ++i) {
+            if (std::holds_alternative<int>(tags1[i]) &&
+                std::holds_alternative<int>(tags2[i])) {
+
+                double diff = static_cast<double>(std::get<int>(tags1[i]) - std::get<int>(tags2[i]));
+                sumSquares += diff * diff;
+            }
         }
 
-        return -1;
+        return 1.0 / (1.0 + std::sqrt(sumSquares));
+    }
+
+    std::vector<int> SubGraphIso::GreedyMatch(const std::vector<std::vector<double>>& simMat, double error) {
+
+        std::vector<bool> used(simMat[0].size(), false);
+        std::vector<int> matching(simMat.size(), -1);
+
+        for (int i = 0; i < simMat.size(); ++i) {
+
+            double maxVal = -1;
+            int maxId = -1;
+
+            for (int j = 0; j < simMat[0].size(); ++j) {
+                if (!used[j] && simMat[i][j] > maxVal) {
+                    maxVal = simMat[i][j];
+                    maxId = j;
+                }
+            }
+
+            if (maxVal >= error) {
+                matching[i] = maxId;
+                used[maxId] = true;
+            }
+        }
+        return matching;
     }
 }

@@ -17,11 +17,12 @@ namespace GIS_Algs {
 
     class GISALG_API SubGraphIso {
     private:
-        static const std::vector<int> InitBijection(int fixNodeCount, int nodeCount);
-        static void MatchNodes(std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2);
-        static int FindStartPoint(const std::vector<int>& bijection, const std::vector<int>& subGraph1, const std::vector<int>& subGraph2, const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2);
+        static std::vector<std::vector<double>> CalcSimMat(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2);
+        static std::vector<int> GreedyMatch(const std::vector<std::vector<double>>& simMat, double error = 0.3);
+        static std::pair<int, int> CalcVertTags(const std::vector<std::vector<int>>& G, int v);
+        static double CompareTags(const std::vector<GIS_Data::TagType>& tags1, const std::vector<GIS_Data::TagType>& tags2, int n);
     public:
-        static const std::vector<int> Start(const GIS_Data::Graph& graph1, const GIS_Data::Graph& graph2, int fixNodeCount);
+        static std::vector<int> Start(const GIS_Data::Graph& g1, const GIS_Data::Graph& g2);
     };
 }
 
