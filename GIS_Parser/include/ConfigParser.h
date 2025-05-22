@@ -19,6 +19,6 @@ namespace GIS_Parser {
     private:
 
     public:
-        static GIS_Data::Config Parse(const std::string& filePath);
+        static const GIS_Data::Config Parse(const std::string& filePath);
     };
 }

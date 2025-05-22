@@ -19,10 +19,11 @@ namespace GIS_Data {
     private:
         Graph graph1;
         Graph graph2;
-        bool flag;
+        std::vector<int> bijection;
     public:
-        GraphPair(const Graph& g1, const Graph& g2, bool flag);
-        const Graph GetGraph1() const;
-        const Graph GetGraph2() const;
+        GraphPair(const Graph& g1, const Graph& g2, const std::vector<int>& bijection);
+        const Graph& GetGraph1() const;
+        const Graph& GetGraph2() const;
+        const std::vector<int>& GetBijection() const;
     };
 }

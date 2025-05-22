@@ -19,6 +19,6 @@ namespace GIS_Parser {
     private:
 
     public:
-        static std::tuple<GIS_Data::Graph, int> Convert(const std::string& filePath);
+        static std::tuple<GIS_Data::Graph, std::vector<int>> Convert(const std::string& filePath);
     };
 }

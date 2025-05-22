@@ -27,14 +27,18 @@ namespace GIS_Data {
     class GISDATA_API Graph {
     private:
         int nodeCount;
+        int neighDegLv;
         std::vector<std::vector<int>> adjList;
         std::vector<std::vector<TagType>> tag;
-        
+
+        std::vector<std::vector<TagType>> CalcNodesDeg(const std::vector<std::vector<int>>& adjList, int maxDepth);
+        void AddToTagInt(TagType& tag, int value);
     public:
-        Graph(const std::vector<std::vector<int>>& adjList, int nodeCount);
+        Graph(const std::vector<std::vector<int>>& adjList, int nodeCount, int neighDegLv = 0);
 
         const std::vector<std::vector<int>>& GetAdjList() const;
         const std::vector<std::vector<TagType>>& GetTag() const;
         int GetNodeCount() const;
+        int GetNeighDegLv() const;
     };
 }
