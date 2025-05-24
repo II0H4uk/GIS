@@ -12,6 +12,7 @@ namespace GIS_Core {
 
         //auto [pair, fixedNodes1, fixedNodes2] = ReadHyperGraphs(config.GetInput1(), config.GetInput2());
         GIS_Data::GraphPair pair = GenGraphs(10000, 7000, 20);
+        NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
 
         std::vector<int> matching = GIS_Algs::SubGraphIso::Start(pair.GetGraph1(), pair.GetGraph2());
 
@@ -37,6 +38,13 @@ namespace GIS_Core {
         GIS_Data::Graph graph1 = GIS_Parser::Graph::Parse(input1);
         GIS_Data::Graph graph2 = GIS_Parser::Graph::Parse(input2);
         return GIS_Data::GraphPair(graph1, graph2, std::vector<int>());
+    }
+
+    void Benchmark::NormalizeGraphs(GIS_Data::Graph& g1, GIS_Data::Graph& g2) {
+        int g1Size = g1.GetAdjList().size();
+        int g2Size = g2.GetAdjList().size();
+
+        (g1Size > g2Size ? g2 : g1).NormalizeGraph(std::abs(g1Size - g2Size));
     }
 
     std::tuple<GIS_Data::GraphPair, std::vector<int>, std::vector<int>> Benchmark::ReadHyperGraphs(const std::string& input1, const std::string& input2) {

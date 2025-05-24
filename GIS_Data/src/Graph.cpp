@@ -5,13 +5,8 @@
 namespace GIS_Data {
 
     Graph::Graph(const std::vector<std::vector<int>>& adjList, int nodeCount, int neighDegLv) : adjList(adjList), nodeCount(nodeCount), neighDegLv(neighDegLv) {
-        //tag.resize(nodeCount);
 
         tag = CalcNodesDeg(adjList, neighDegLv);
-        //for (int i = 0; i < nodeCount; ++i) {
-        //    tag[i].push_back(static_cast<int>(adjList[i].size()));
-        //    //tag[i].push_back();
-        //}
     }
 
     std::vector<std::vector<TagType>> Graph::CalcNodesDeg(const std::vector<std::vector<int>>& adjList, int maxDepth) {
@@ -75,5 +70,16 @@ namespace GIS_Data {
 
     int Graph::GetNeighDegLv() const {
         return neighDegLv;
+    }
+
+    void Graph::NormalizeGraph(int diff) {
+        int baseNodeCount = nodeCount;
+        nodeCount += diff;
+
+        adjList.resize(nodeCount);
+        tag.resize(nodeCount);
+        for (int i = 0; i < nodeCount - baseNodeCount; ++i) {
+            tag[baseNodeCount + i].resize(tag[0].size());
+        }
     }
 }

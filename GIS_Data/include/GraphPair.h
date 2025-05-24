@@ -22,8 +22,8 @@ namespace GIS_Data {
         std::vector<int> bijection;
     public:
         GraphPair(const Graph& g1, const Graph& g2, const std::vector<int>& bijection);
-        const Graph& GetGraph1() const;
-        const Graph& GetGraph2() const;
+        Graph& GetGraph1();
+        Graph& GetGraph2();
         const std::vector<int>& GetBijection() const;
     };
 }

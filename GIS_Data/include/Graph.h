@@ -40,5 +40,6 @@ namespace GIS_Data {
         const std::vector<std::vector<TagType>>& GetTag() const;
         int GetNodeCount() const;
         int GetNeighDegLv() const;
+        void NormalizeGraph(int count);
     };
 }
