@@ -141,6 +141,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="src\ValidateMatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Algs\GIS_Algs.vcxproj">
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="include\Benchmark.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="include\ValidateMatch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

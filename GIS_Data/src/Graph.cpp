@@ -71,15 +71,4 @@ namespace GIS_Data {
     int Graph::GetNeighDegLv() const {
         return neighDegLv;
     }
-
-    void Graph::NormalizeGraph(int diff) {
-        int baseNodeCount = nodeCount;
-        nodeCount += diff;
-
-        adjList.resize(nodeCount);
-        tag.resize(nodeCount);
-        for (int i = 0; i < nodeCount - baseNodeCount; ++i) {
-            tag[baseNodeCount + i].resize(tag[0].size());
-        }
-    }
 }

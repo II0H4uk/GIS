@@ -3,18 +3,18 @@
 
 namespace GIS_Data {
 
-    GraphPair::GraphPair(const Graph& g1, const Graph& g2, const std::vector<int>& bijection)
-        : graph1(g1), graph2(g2), bijection(bijection) { }
+    GraphPair::GraphPair(const KoenigGraph& g1, const KoenigGraph& g2, const std::vector<std::pair<int, int>>& fixedNodes)
+        : graph1(g1), graph2(g2), fixedNodes(fixedNodes) { }
 
-    Graph& GraphPair::GetGraph1() {
+    KoenigGraph& GraphPair::GetGraph1() {
         return graph1;
     }
 
-    Graph& GraphPair::GetGraph2() {
+    KoenigGraph& GraphPair::GetGraph2() {
         return graph2;
     }
 
-    const std::vector<int>& GraphPair::GetBijection() const {
-        return bijection;
+    const std::vector<std::pair<int, int>>& GraphPair::GetBijection() const {
+        return fixedNodes;
     }
 }

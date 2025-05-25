@@ -10,20 +10,20 @@
     #define GISDATA_API
 #endif
 
-#include "Graph.h"
+#include "KoenigGraph.h"
 
 namespace GIS_Data {
 
     class GISDATA_API GraphPair {
     
     private:
-        Graph graph1;
-        Graph graph2;
-        std::vector<int> bijection;
+        KoenigGraph graph1;
+        KoenigGraph graph2;
+        std::vector<std::pair<int, int>> fixedNodes;
     public:
-        GraphPair(const Graph& g1, const Graph& g2, const std::vector<int>& bijection);
-        Graph& GetGraph1();
-        Graph& GetGraph2();
-        const std::vector<int>& GetBijection() const;
+        GraphPair(const KoenigGraph& g1, const KoenigGraph& g2, const std::vector<std::pair<int, int>>& fixedNodes);
+        KoenigGraph& GetGraph1();
+        KoenigGraph& GetGraph2();
+        const std::vector<std::pair<int, int>>& GetBijection() const;
     };
 }

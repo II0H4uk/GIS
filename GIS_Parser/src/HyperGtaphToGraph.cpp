@@ -3,7 +3,7 @@
 #include "GraphParser.h"
 
 namespace GIS_Parser {
-    std::tuple<GIS_Data::Graph, std::vector<int>> GIS_Parser::HyperGraphToGraph::Convert(const std::string& filePath)
+    std::tuple<GIS_Data::Graph, std::vector<int>> GIS_Parser::HyperGraphToKoenig::Convert(const std::string& filePath)
     {
         std::vector<std::vector<int>> netList = GIS_Parser::Graph::ReadData(filePath);
 

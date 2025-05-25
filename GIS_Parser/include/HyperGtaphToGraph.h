@@ -15,7 +15,7 @@
 
 namespace GIS_Parser {
 
-    class GISPARSER_API HyperGraphToGraph {
+    class GISPARSER_API HyperGraphToKoenig {
     private:
 
     public:

@@ -9,7 +9,7 @@ namespace GIS_Generator {
         GIS_Data::Graph g1 = GenerateCliqueOverlapGraph(nodeCount, numCliques, maxClSize);
         auto [g2, perm] = GenIsoGraph(g1);
 
-        return GIS_Data::GraphPair(g1, g2, perm);
+        return GIS_Data::GraphPair(GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), std::vector<std::pair<int, int>>{});
     }
 
     GIS_Data::Graph Generator::GenGraph(const int nodeCount) {
