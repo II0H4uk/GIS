@@ -8,6 +8,7 @@
 #include "KoenigGraph.h"
 #include "BipartGraph.h"
 #include "MaxMatching.h"
+#include "ValidateMatch.h"
 
 namespace GIS_Core {
 
@@ -20,8 +21,9 @@ namespace GIS_Core {
         NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
         
         GIS_Data::BipartGraph bipartGraph(pair.GetGraph1().GetTags(), pair.GetGraph2().GetTags());
-        std::vector<int> matching = GIS_Algs::MaxMatching::Start(bipartGraph);
+        std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bipartGraph);
 
+        ValidateMatch::Start(pair, matching);
         /*int correctCount = 0;
 
         std::cout << "Bijection (G1 -> G2):\n";

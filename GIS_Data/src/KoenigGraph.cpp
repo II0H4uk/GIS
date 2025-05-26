@@ -2,7 +2,7 @@
 #include "KoenigGraph.h"
 
 namespace GIS_Data {
-    KoenigGraph::KoenigGraph(const std::vector<std::vector<int>>& netList, int tagsLevel) : hyperEdgeCount(netList.size()), nodeCount(0), tagsLevel(tagsLevel) {
+    KoenigGraph::KoenigGraph(const std::vector<std::vector<int>>& netList, int tagsLevel) : netList(netList), hyperEdgeCount(netList.size()), nodeCount(0), tagsLevel(tagsLevel) {
 
         for (int i = 0; i < hyperEdgeCount; ++i)
             for (int j = 0; j < netList[i].size(); ++j)
@@ -25,6 +25,10 @@ namespace GIS_Data {
 
     std::vector<std::vector<int>>& KoenigGraph::GetAdjList() {
         return adjList;
+    }
+
+    std::vector<std::vector<int>>& KoenigGraph::GetNetList() {
+        return netList;
     }
 
     std::vector<std::vector<TagType>> KoenigGraph::GetTags() {

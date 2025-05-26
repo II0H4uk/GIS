@@ -21,6 +21,7 @@ namespace GIS_Data {
         int hyperEdgeCount;
         int tagsLevel;
         std::vector<std::vector<int>> adjList;
+        std::vector<std::vector<int>> netList;
         std::vector<std::vector<TagType>> tag;
         void CalcTags();
 
@@ -28,6 +29,7 @@ namespace GIS_Data {
         KoenigGraph(const std::vector<std::vector<int>>& hyperGraph, int tagsLevel);
 
         std::vector<std::vector<int>>& GetAdjList();
+        std::vector<std::vector<int>>& GetNetList();
         std::vector<std::vector<TagType>> GetTags();
         int  GetNodeCount();
         int GetHyperEdgeCount();

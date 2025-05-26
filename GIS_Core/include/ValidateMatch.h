@@ -10,10 +10,14 @@
     #define GISCORE_API
 #endif
 
+#include "GraphPair.h"
+
 namespace GIS_Core {
 
     class GISCORE_API ValidateMatch {
+    private:
 
-
+    public:
+        static void Start(const GIS_Data::GraphPair& pair, std::vector<std::pair<int, int>>& matching);
     };
 }

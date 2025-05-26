@@ -22,6 +22,7 @@ namespace GIS_Data {
         std::vector<std::pair<int, int>> fixedNodes;
     public:
         GraphPair(const KoenigGraph& g1, const KoenigGraph& g2, const std::vector<std::pair<int, int>>& fixedNodes);
+
         KoenigGraph& GetGraph1();
         KoenigGraph& GetGraph2();
         const std::vector<std::pair<int, int>>& GetBijection() const;

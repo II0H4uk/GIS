@@ -2,7 +2,7 @@
 #include "MaxMatching.h"
 
 namespace GIS_Algs {
-    std::vector<int> MaxMatching::Start(const GIS_Data::BipartGraph& bipartGraph) {
-        return std::vector<int>();
+    std::vector<std::pair<int, int>> MaxMatching::Start(const GIS_Data::BipartGraph& bipartGraph) {
+        return std::vector<std::pair<int, int>>();
     }
 }
