@@ -49,13 +49,10 @@ namespace GIS_Core {
     }*/
 
     void Benchmark::NormalizeGraphs(GIS_Data::KoenigGraph& g1, GIS_Data::KoenigGraph& g2) {
-        int g1Nodes = g1.GetNodeCount();
-        int g2Nodes = g2.GetNodeCount();
-        int g1Edges = g1.GetHyperEdgeCount();
-        int g2Edges = g2.GetHyperEdgeCount();
-
-        Normalize(g1, g2, g1Nodes, g2Nodes, g2Nodes, g1Nodes, true);
-        Normalize(g1, g2, g1Edges, g2Edges, g2Nodes + g2Edges, g1Nodes + g1Edges, false);
+        if (g1.GetNodeCount() != g2.GetNodeCount())
+            Normalize(g1, g2, g1.GetNodeCount(), g2.GetNodeCount(), g2.GetNodeCount(), g1.GetNodeCount(), true);
+        if (g1.GetHyperEdgeCount() != g2.GetHyperEdgeCount())
+            Normalize(g1, g2, g1.GetHyperEdgeCount(), g2.GetHyperEdgeCount(), g2.GetNodeCount() + g2.GetHyperEdgeCount(), g1.GetNodeCount() + g1.GetHyperEdgeCount(), false);
     }
 
     void Benchmark::Normalize(GIS_Data::KoenigGraph& g1, GIS_Data::KoenigGraph& g2, int g1Nodes, int g2Nodes, int offset1, int offset2, bool isNode) {

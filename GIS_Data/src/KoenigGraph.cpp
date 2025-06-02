@@ -60,13 +60,14 @@ namespace GIS_Data {
 
     void KoenigGraph::CalcTags() {
         int totalVertices = adjList.size();
-        tag.resize(totalVertices, std::vector<TagType>(tagsLevel, 0));
+        tag.resize(totalVertices, std::vector<TagType>(tagsLevel + 1, 0));
 
         for (int start = 0; start < totalVertices; ++start) {
             std::vector<bool> visited(totalVertices, false);
             std::queue<std::pair<int, int>> q;
             visited[start] = true;
             q.push({start, 0});
+            std::get<int>(tag[start][0]) = adjList[start].size();
 
             while (!q.empty()) {
                 auto [v, depth] = q.front();
@@ -75,14 +76,15 @@ namespace GIS_Data {
                 if (depth == tagsLevel) continue;
 
                 for (int neighbor : adjList[v]) {
-                    if (!visited[neighbor]) {
-                        visited[neighbor] = true;
-                        if (depth < tagsLevel - 1) {
-                            q.push({ neighbor, depth + 1 });
-                        }
-                        if (depth + 1 <= tagsLevel) {
-                            std::get<int>(tag[start][depth]) += adjList[neighbor].size();
-                        }
+                    if (visited[neighbor])
+                        continue;
+
+                    visited[neighbor] = true;
+                    if (depth < tagsLevel - 1) {
+                        q.push({ neighbor, depth + 1 });
+                    }
+                    if (depth + 1 <= tagsLevel) {
+                        std::get<int>(tag[start][depth + 1]) += adjList[neighbor].size();
                     }
                 }
             }
