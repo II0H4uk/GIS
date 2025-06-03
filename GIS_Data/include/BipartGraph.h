@@ -11,12 +11,17 @@
 #endif
 
 #include "Graph.h"
+#include <cmath>
 
 namespace GIS_Data {
 
     class GISDATA_API BipartGraph {
     private:
         std::vector<std::vector<int>> adjList;
+
+        std::vector<double> TagToVector(const std::vector<TagType>& tag);
+        double EuclideanDistance(const std::vector<double>& vec1, const std::vector<double>& vec2);
+        std::vector<int> FindClosest(const std::vector<double>& target, const std::vector<std::vector<double>>& points, double threshold, size_t k);
 
     public:
         BipartGraph(std::vector<std::vector<TagType>> tags1, std::vector<std::vector<TagType>> tags2);
