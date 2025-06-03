@@ -20,5 +20,7 @@ namespace GIS_Data {
 
     public:
         BipartGraph(std::vector<std::vector<TagType>> tags1, std::vector<std::vector<TagType>> tags2);
+        BipartGraph(const std::vector<std::vector<int>>& adjacencyList);
+        const std::vector<std::vector<int>>& GetAdjList() const { return adjList; }
     };
 }
