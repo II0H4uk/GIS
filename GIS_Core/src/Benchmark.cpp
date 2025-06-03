@@ -21,7 +21,7 @@ namespace GIS_Core {
         NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
         
         GIS_Data::BipartGraph bipartGraph(pair.GetGraph1().GetTags(), pair.GetGraph2().GetTags());
-        std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bipartGraph);
+        std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bipartGraph, 100);
 
         ValidateMatch::Start(pair, matching);
         /*int correctCount = 0;

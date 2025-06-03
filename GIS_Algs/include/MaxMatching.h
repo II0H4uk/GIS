@@ -18,6 +18,6 @@ namespace GIS_Algs {
     private:
 
     public:
-        static std::vector<std::pair<int, int>> Start(const GIS_Data::BipartGraph& bipartGraph);
+        static std::vector<std::pair<int, int>> Start(const GIS_Data::BipartGraph& bipartGraph, int n);
     };
 }
