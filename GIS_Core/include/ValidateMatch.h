@@ -18,6 +18,6 @@ namespace GIS_Core {
     private:
 
     public:
-        static void Start(const GIS_Data::GraphPair& pair, std::vector<std::pair<int, int>>& matching);
+        static void Start(GIS_Data::GraphPair& pair, std::vector<std::pair<int, int>>& matching);
     };
 }
