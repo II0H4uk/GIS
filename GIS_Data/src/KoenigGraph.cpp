@@ -2,7 +2,7 @@
 #include "KoenigGraph.h"
 
 namespace GIS_Data {
-    KoenigGraph::KoenigGraph(const std::vector<std::vector<int>>& netList, int tagsLevel) : netList(netList), hyperEdgeCount(netList.size()), nodeCount(0), tagsLevel(tagsLevel) {
+    KoenigGraph::KoenigGraph(const std::vector<std::vector<int>>& netlist, const std::vector<Element>& elements, int tagsLevel) : netList(netList), hyperEdgeCount(netList.size()), nodeCount(0), tagsLevel(tagsLevel), elements(elements) {
 
         for (int i = 0; i < hyperEdgeCount; ++i)
             for (int j = 0; j < netList[i].size(); ++j)
@@ -31,8 +31,8 @@ namespace GIS_Data {
         return netList;
     }
 
-    std::vector<std::vector<TagType>> KoenigGraph::GetTags() {
-        return tag;
+    std::vector<Element>& KoenigGraph::GetElements() {
+        return elements;
     }
 
     int KoenigGraph::GetNodeCount() {
@@ -46,16 +46,16 @@ namespace GIS_Data {
     void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {
 
         adjList.insert(adjList.begin() + offset, diff, std::vector<int>{});
-        tag.insert(tag.begin() + offset, diff, std::vector<TagType>{});
 
-        for (int i = 0; i < diff; ++i) {
-            tag[offset + i].resize(tag[0].size());
-        }
-
-        if (isNode)
+        if (isNode) {
             nodeCount += diff;
-        else
+            for (int i = 0; i < diff; ++i) {
+                elements.push_back(Element("empty", 0, {0}, {0, 0}));
+            }
+        }
+        else {
             hyperEdgeCount += diff;
+        }
     }
 
     void KoenigGraph::CalcTags() {

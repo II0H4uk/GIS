@@ -93,8 +93,4 @@ namespace GIS_Data {
     BipartGraph::BipartGraph(const std::vector<std::vector<int>>& adjacencyList)
         : adjList(adjacencyList) {
     }
-
-    BipartGraph::BipartGraph(const std::vector<std::vector<int>>& adjacencyList)
-        : adjList(adjacencyList) {
-    }
 }

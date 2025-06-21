@@ -11,7 +11,7 @@
 #endif
 
 #include <vector>
-#include "Graph.h"
+#include "Element.h"
 
 namespace GIS_Data {
 
@@ -22,15 +22,15 @@ namespace GIS_Data {
         int tagsLevel;
         std::vector<std::vector<int>> adjList;
         std::vector<std::vector<int>> netList;
-        std::vector<std::vector<TagType>> tag;
+        std::vector<Element> elements;
         void CalcTags();
 
     public:
-        KoenigGraph(const std::vector<std::vector<int>>& hyperGraph, int tagsLevel);
+        KoenigGraph(const std::vector<std::vector<int>>& hyperGraph, const std::vector<Element>& elements, int tagsLevel);
 
         std::vector<std::vector<int>>& GetAdjList();
         std::vector<std::vector<int>>& GetNetList();
-        std::vector<std::vector<TagType>> GetTags();
+        std::vector<Element>& GetElements();
         int  GetNodeCount();
         int GetHyperEdgeCount();
 
