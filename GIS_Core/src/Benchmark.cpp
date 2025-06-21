@@ -20,7 +20,7 @@ namespace GIS_Core {
         GIS_Data::GraphPair pair = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), 2);
         NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
         
-        GIS_Data::BipartGraph bipartGraph(pair.GetGraph1().GetTags(), pair.GetGraph2().GetTags());
+        GIS_Data::BipartGraph bipartGraph(pair.GetGraph1().GetElements(), pair.GetGraph1().GetElements());
         std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bipartGraph, 100);
 
         ValidateMatch::Start(pair, matching);

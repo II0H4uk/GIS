@@ -26,12 +26,12 @@ namespace GIS_Data {
         void CalcTags();
 
     public:
-        KoenigGraph(const std::vector<std::vector<int>>& hyperGraph, const std::vector<Element>& elements, int tagsLevel);
+        KoenigGraph(const std::vector<std::vector<int>>& netlist, const std::vector<Element>& elements, int tagsLevel);
 
         std::vector<std::vector<int>>& GetAdjList();
         std::vector<std::vector<int>>& GetNetList();
         std::vector<Element>& GetElements();
-        int  GetNodeCount();
+        int GetNodeCount();
         int GetHyperEdgeCount();
 
         void NormalizeGraph(int diff, int offset, bool isNode);

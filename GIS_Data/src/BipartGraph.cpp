@@ -3,7 +3,7 @@
 
 namespace GIS_Data {
 
-    std::vector<double> BipartGraph::TagToVector(const std::vector<TagType>& tag)
+    std::vector<double> BipartGraph::TagToVector(const std::vector<Element>& tag)
     {
         std::vector<double> result;
         for (const auto& t : tag) {
@@ -65,15 +65,15 @@ namespace GIS_Data {
         return result;
     }
 
-    BipartGraph::BipartGraph(std::vector<std::vector<TagType>> tags1, std::vector<std::vector<TagType>> tags2) {
-        const size_t nodeCount = tags1.size();
+    BipartGraph::BipartGraph(const std::vector<Element>& elems1, const std::vector<Element>& elems2) {
+        const size_t nodeCount = elems1.size();
         adjList.resize(nodeCount);
 
         std::vector<std::vector<double>> points1, points2;
-        for (const auto& tag : tags1) {
+        for (const auto& tag : elems1) {
             points1.push_back(TagToVector(tag));
         }
-        for (const auto& tag : tags2) {
+        for (const auto& tag : elems2) {
             points2.push_back(TagToVector(tag));
         }
 
