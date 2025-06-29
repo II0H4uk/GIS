@@ -10,9 +10,7 @@
     #define GISPARSER_API
 #endif
 
-#include "pch.h"
-
-using namespace std;
+#include <string>
 
 namespace GIS_Parser {
 
@@ -20,6 +18,6 @@ namespace GIS_Parser {
     private:
 
     public:
-        static void WriteStringToFile(const string& str, const string& filePath);
+        static void WriteStringToFile(const std::string& str, const std::string& filePath);
     };
 }

@@ -21,10 +21,16 @@
   <ItemGroup>
     <ClInclude Include="include\BruteForce.h" />
     <ClInclude Include="include\TruncEnum.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="include\SubGraphIso.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BruteForce.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\TruncEnum.cpp" />
+    <ClCompile Include="src\SubGraphIso.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GIS_Data\GIS_Data.vcxproj">
@@ -123,9 +129,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;GISALGS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Core\include;$(SolutionDir)GIS_Data\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)GIS_Data\include;$(ProjectDir)include;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

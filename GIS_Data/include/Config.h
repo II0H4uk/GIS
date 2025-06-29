@@ -10,7 +10,7 @@
     #define GISDATA_API
 #endif
 
-#include "pch.h"
+#include <string>
 
 namespace GIS_Data {
 
@@ -22,8 +22,8 @@ namespace GIS_Data {
     public:
         Config(const std::string& inputPath1,const std::string& inputPath2, const std::string& outputPath);
 
-        std::string GetInput1();
-        std::string GetInput2();
-        std::string GetOutput();
+        const std::string& GetInput1() const;
+        const std::string& GetInput2() const;
+        const std::string& GetOutput() const;
     };
 }

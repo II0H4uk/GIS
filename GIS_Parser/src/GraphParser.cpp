@@ -4,6 +4,14 @@
 namespace GIS_Parser {
 
     GIS_Data::Graph Graph::Parse(const std::string& filePath) {
+        
+        std::vector<std::vector<int>> adjList = ReadData(filePath);
+
+        return GIS_Data::Graph(adjList, adjList.size());
+    }
+
+    std::vector<std::vector<int>> Graph::ReadData(const std::string& filePath)
+    {
         std::vector<std::vector<int>> adjList;
         std::ifstream file(filePath);
 
@@ -30,6 +38,6 @@ namespace GIS_Parser {
 
         file.close();
 
-        return GIS_Data::Graph(adjList, adjList.size());
+        return adjList;
     }
 }

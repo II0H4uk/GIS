@@ -3,7 +3,7 @@
 
 namespace GIS_Parser {
 
-    GIS_Data::Config Config::Parse(const std::string& filePath) {
+    const GIS_Data::Config Config::Parse(const std::string& filePath) {
         std::ifstream file(filePath);
         if (!file.is_open())
             throw std::runtime_error("Bad config file: " + filePath);

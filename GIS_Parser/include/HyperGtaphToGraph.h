@@ -10,15 +10,15 @@
     #define GISPARSER_API
 #endif
 
-#include "Config.h"
-#include <string>
+#include "Graph.h"
+#include <tuple>
 
 namespace GIS_Parser {
 
-    class GISPARSER_API Config {
+    class GISPARSER_API HyperGraphToGraph {
     private:
 
     public:
-        static const GIS_Data::Config Parse(const std::string& filePath);
+        static std::tuple<GIS_Data::Graph, std::vector<int>> Convert(const std::string& filePath);
     };
 }

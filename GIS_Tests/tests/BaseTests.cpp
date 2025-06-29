@@ -1,5 +1,5 @@
 #include "pch.h"
 
-TEST(TestCaseName, TestName) {
+TEST(BaseTests, CompileTest) {
     EXPECT_EQ(1, 1);
 }

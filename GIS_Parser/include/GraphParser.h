@@ -10,8 +10,8 @@
     #define GISPARSER_API
 #endif
 
-#include "pch.h"
 #include "Graph.h"
+#include <string>
 
 namespace GIS_Parser {
 
@@ -20,5 +20,6 @@ namespace GIS_Parser {
 
     public:
         static GIS_Data::Graph Parse(const std::string& filePath);
+        static std::vector<std::vector<int>> ReadData(const std::string& filePath);
     };
 }
