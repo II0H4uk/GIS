@@ -141,12 +141,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\BipartGraph.h" />
     <ClInclude Include="include\GraphPair.h" />
     <ClInclude Include="include\Config.h" />
     <ClInclude Include="include\Graph.h" />
+    <ClInclude Include="include\KoenigGraph.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BipartGraph.cpp" />
+    <ClCompile Include="src\KoenigGraph.cpp" />
     <ClCompile Include="src\GraphPair.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
     </ClCompile>

@@ -21,10 +21,12 @@
   <ItemGroup>
     <ClInclude Include="include\BruteForce.h" />
     <ClInclude Include="include\TruncEnum.h" />
+    <ClInclude Include="include\MaxMatching.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="include\SubGraphIso.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\MaxMatching.cpp" />
     <ClCompile Include="src\BruteForce.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

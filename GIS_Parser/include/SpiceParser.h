@@ -10,15 +10,12 @@
     #define GISPARSER_API
 #endif
 
-#include "Graph.h"
-#include <tuple>
-
 namespace GIS_Parser {
 
-    class GISPARSER_API HyperGraphToKoenig {
+    class GISPARSER_API SpiceParser {
     private:
 
     public:
-        static std::tuple<GIS_Data::Graph, std::vector<int>> Convert(const std::string& filePath);
+        static void Start();
     };
 }
