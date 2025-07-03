@@ -2,7 +2,7 @@
 #include "Benchmark.h"
 #include "SubGraphIso.h"
 #include "Statistics.h"
-#include "HyperGtaphToGraph.h"
+#include "HyperGraphToGraph.h"
 #include "Generator.h"
 #include "GraphParser.h"
 #include "KoenigGraph.h"
@@ -17,13 +17,13 @@ namespace GIS_Core {
         //auto [pair, fixedNodes1, fixedNodes2] = ReadHyperGraphs(config.GetInput1(), config.GetInput2());
         //GIS_Data::GraphPair pair = GenGraphs(10000, 7000, 20);
 
-        GIS_Data::GraphPair pair = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), 2);
+        /*GIS_Data::GraphPair pair = ReadHyperGraphs(config.GetInput1(), config.GetInput2(), 2);    ---
         NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
         
         GIS_Data::BipartGraph bipartGraph(pair.GetGraph1().GetElements(), pair.GetGraph1().GetElements());
         std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bipartGraph, 100);
 
-        ValidateMatch::Start(pair, matching);
+        ValidateMatch::Start(pair, matching);*/ //---
         /*int correctCount = 0;
 
         std::cout << "Bijection (G1 -> G2):\n";
@@ -62,7 +62,7 @@ namespace GIS_Core {
             g1.NormalizeGraph(g2Nodes - g1Nodes, offset2, isNode);
     }
 
-    GIS_Data::GraphPair Benchmark::ReadHyperGraphs(const std::string& input1, const std::string& input2, int tagsLevel) {
+    /*GIS_Data::GraphPair Benchmark::ReadHyperGraphs(const std::string& input1, const std::string& input2, int tagsLevel) {
 
         std::vector<std::vector<int>> netList1 = GIS_Parser::Graph::ReadData(input1);
         std::vector<std::vector<int>> netList2 = GIS_Parser::Graph::ReadData(input2);
@@ -78,7 +78,7 @@ namespace GIS_Core {
         netList2.erase(netList2.begin(), netList2.begin() + 2);
 
         return GIS_Data::GraphPair(GIS_Data::KoenigGraph(netList1, tagsLevel), GIS_Data::KoenigGraph(netList2, tagsLevel), fixNodes);
-    }
+    }*/
 
     GIS_Data::GraphPair Benchmark::GenGraphs(int nodeCount, int numCliques, int maxClSize) {
 

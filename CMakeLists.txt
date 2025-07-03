@@ -1,77 +1,30 @@
-cmake_minimum_required(VERSION 3.5)
+# Set CMake minimum required version.
+cmake_minimum_required(VERSION 3.16)
 
+# Set project name.
+set(PROJECT_NAME GIS)
+project(${PROJECT_NAME})
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT GIS_Core)
+configure_file(${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}/config.ini COPYONLY)
+
+# Set standard for C++.
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -g")
+if(WIN32)
+    message(STATUS "Building for Windows...")
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) # Auto-export symbols in DLLs
+elseif(UNIX AND NOT APPLE)
+    message(STATUS "Building for Linux...")
+endif()
 
-project(GIS)
-
-file(GLOB SOURCE_EXE "GIS_Core/src/*.cpp")
-add_executable(GIS ${SOURCE_EXE})
-
-file(COPY config.ini DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY Graph_Data DESTINATION ${CMAKE_BINARY_DIR})
-
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/refs/heads/main.zip
-)
-FetchContent_MakeAvailable(googletest)
-
-target_include_directories(GIS PRIVATE
-    GIS_Algs/include
-    GIS_Core/include
-    GIS_Data/include
-    GIS_Generator/include
-    GIS_Parser/include
-    GIS_Stats/include
-    GIS_Tests/include
-)
-
-add_subdirectory(GIS_Algs)
+# Add project's subdirectories.
 add_subdirectory(GIS_Data)
+add_subdirectory(GIS_Algs)
 add_subdirectory(GIS_Generator)
 add_subdirectory(GIS_Parser)
 add_subdirectory(GIS_Stats)
+add_subdirectory(GIS_Core)
+
+# Add subdirectory responsible for testing.
 add_subdirectory(GIS_Tests)
-
-target_link_libraries(GIS PRIVATE GIS_Algs)
-target_link_libraries(GIS PRIVATE GIS_Data)
-target_link_libraries(GIS PRIVATE GIS_Generator)
-target_link_libraries(GIS PRIVATE GIS_Parser)
-target_link_libraries(GIS PRIVATE GIS_Stats)
-
-add_custom_command(TARGET GIS POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:GIS_Algs>
-        $<TARGET_FILE_DIR:GIS>
-)
-
-add_custom_command(TARGET GIS POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:GIS_Data>
-        $<TARGET_FILE_DIR:GIS>
-)
-
-add_custom_command(TARGET GIS POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:GIS_Generator>
-        $<TARGET_FILE_DIR:GIS>
-)
-
-add_custom_command(TARGET GIS POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:GIS_Parser>
-        $<TARGET_FILE_DIR:GIS>
-)
-
-add_custom_command(TARGET GIS POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        $<TARGET_FILE:GIS_Stats>
-        $<TARGET_FILE_DIR:GIS>
-)

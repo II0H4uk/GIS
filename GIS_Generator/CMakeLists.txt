@@ -1,8 +1,24 @@
-file(GLOB SOURCES "src/*.cpp")
+# create lib
+add_library(GIS_Generator)
 
-add_library(GIS_Generator SHARED ${SOURCES})
+target_sources(GIS_Generator
+	PRIVATE
+		src/Generator.cpp
+		src/pch.cpp
+		include/Generator.h
+)
 
-target_include_directories(GIS_Generator PUBLIC include ../GIS_Core/include)
-target_include_directories(GIS_Generator PUBLIC include ../GIS_Data/include)
+# add headers
+target_include_directories(GIS_Generator
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-target_compile_definitions(GIS_Generator PRIVATE GISGENERATOR_EXPORTS)
+# add pch
+target_precompile_headers(GIS_Generator PRIVATE src/pch.h)
+
+# link to other lib
+target_link_libraries(GIS_Generator
+    PRIVATE
+        GIS_Data
+)

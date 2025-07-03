@@ -1,18 +1,11 @@
 #pragma once
 
-#ifdef _WIN32
-    #ifdef GISDATA_EXPORTS
-        #define GISDATA_API __declspec(dllexport)
-    #else
-        #define GISDATA_API __declspec(dllimport)
-    #endif
-#else
-    #define GISDATA_API
-#endif
+#include <string>
+#include <vector>
 
 namespace GIS_Data {
 
-    class GISDATA_API Element {
+    class Element {
     private:
         std::string type;
         int pinCount;

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "HyperGtaphToGraph.h"
+#include "HyperGraphToGraph.h"
 #include "GraphParser.h"
 
 namespace GIS_Parser {

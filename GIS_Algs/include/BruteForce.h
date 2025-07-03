@@ -1,20 +1,10 @@
 #pragma once
 
-#ifdef _WIN32
-    #ifdef GISALGS_EXPORTS
-        #define GISALG_API __declspec(dllexport)
-    #else
-        #define GISALG_API __declspec(dllimport)
-    #endif
-#else
-    #define GISALG_API
-#endif
-
 #include "Graph.h"
 
 namespace GIS_Algs {
 
-    class GISALG_API BruteForce {
+    class BruteForce {
     private:
 
     public:

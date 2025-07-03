@@ -1,42 +1,38 @@
-file(GLOB SOURCES "src/*.cpp")
-file(GLOB TESTS "tests/*.cpp")
+include(FetchContent)
 
-add_executable(GIS_Tests ${SOURCES} ${TESTS})
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.11.0
+)
+FetchContent_MakeAvailable(googletest)
 
-target_link_libraries(GIS_Tests PRIVATE
-	gtest
-	gtest_main
-	GIS_Algs
-	GIS_Data
-	GIS_Generator
-	GIS_Parser
-	GIS_Stats
+add_executable(GIS_Tests)
+
+target_sources(GIS_Tests
+	PRIVATE
+		src/main.cpp
+		src/BaseTests.cpp
+		src/BruteForceTests.cpp
+		src/MaxMatching.cpp
+		src/TruncEnumTests.cpp
+		src/pch.cpp
 )
 
-target_include_directories(GIS_Tests PRIVATE
-	${PROJECT_SOURCE_DIR}/GIS_Algs/include
-	${PROJECT_SOURCE_DIR}/GIS_Data/include
-	${PROJECT_SOURCE_DIR}/GIS_Generator/include
-	${PROJECT_SOURCE_DIR}/GIS_Parser/include
-	${PROJECT_SOURCE_DIR}/GIS_Stats/include
-	${PROJECT_SOURCE_DIR}/GIS_Tests/include
-	${PROJECT_SOURCE_DIR}/GIS_Tests/src
+# link to other lib
+target_link_libraries(GIS_Tests
+	PRIVATE
+		GIS_Algs
+		GIS_Data
+		GIS_Generator
+		GIS_Parser
+		GIS_Stats
+		gtest_main
 )
 
-#set_target_properties(GIS_Tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests/test")
-# include(GoogleTest)
-# gtest_discover_tests(GIS_Tests)
+# add pch
+target_precompile_headers(GIS_Tests PRIVATE src/pch.h)
 
-## Create the custom target before loop.
-#add_custom_target(examples)
-#
-#foreach (FILE ${EXAMPLE_FILES})
-#    # Every executable target should have unique name.
-#    # E.g. if every example source is given in form '<name>.c'
-#    # Then we could use '<name>' as the executable target
-#    string(REPLACE ".c" "" TARGET_NAME "${FILE}")
-#    # Create an executable
-#    add_executable({$TARGET_NAME} EXCLUDE_FROM_ALL ${FILE})
-#    # And make 'examples' to depend from that executable
-#    add_dependencies(examples ${TARGET_NAME})
-#endforeach ()
+# add tests to CTest
+enable_testing()
+add_test(NAME AllTests COMMAND GIS_Tests)

@@ -59,7 +59,7 @@ namespace GIS_Data {
     }
 
     void KoenigGraph::CalcTags() {
-        int totalVertices = adjList.size();
+        /*int totalVertices = adjList.size();
         tag.resize(totalVertices, std::vector<TagType>(tagsLevel + 1, 0));
 
         for (int start = 0; start < totalVertices; ++start) {
@@ -88,6 +88,6 @@ namespace GIS_Data {
                     }
                 }
             }
-        }
+        }*/
     }
 }

@@ -1,15 +1,5 @@
 #pragma once
 
-#ifdef _WIN32
-    #ifdef GISDATA_EXPORTS
-        #define GISDATA_API __declspec(dllexport)
-    #else
-        #define GISDATA_API __declspec(dllimport)
-    #endif
-#else
-    #define GISDATA_API
-#endif
-
 #include <variant>
 #include <vector>
 #include <string>
@@ -22,9 +12,9 @@ namespace GIS_Data {
         std::vector<double>,
         std::string >;
 
-    bool GISDATA_API CompareTags(const TagType& first, const TagType& second);
+    bool CompareTags(const TagType& first, const TagType& second);
 
-    class GISDATA_API Graph {
+    class Graph {
     private:
         int nodeCount;
         int neighDegLv;

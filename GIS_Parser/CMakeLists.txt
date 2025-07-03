@@ -1,9 +1,28 @@
-file(GLOB SOURCES "src/*.cpp")
+# create lib
+add_library(GIS_Parser)
 
-add_library(GIS_Parser SHARED ${SOURCES})
+target_sources(GIS_Parser
+	PRIVATE
+		src/ConfigParser.cpp
+		src/FileWriter.cpp
+		src/GraphParser.cpp
+		src/HyperGraphToGraph.cpp
+		src/SpiceParser.cpp
+		src/Utils.cxx
+		src/pch.cpp
+		include/ConfigParser.h
+		include/FileWriter.h
+		include/GraphParser.h
+		include/HyperGraphToGraph.h
+		include/SpiceParser.h
+		include/Utils.hxx
+)
 
-target_include_directories(GIS_Parser PUBLIC include ../GIS_Core/include ../GIS_Data/include)
+# add headers
+target_include_directories(GIS_Parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_compile_definitions(GIS_Parser PRIVATE GISPARSER_EXPORTS)
+# add pch
+target_precompile_headers(GIS_Parser PRIVATE src/pch.h)
 
-target_link_libraries(GIS_Parser PUBLIC GIS_Data)
+# link to other lib
+target_link_libraries(GIS_Parser PRIVATE GIS_Data)

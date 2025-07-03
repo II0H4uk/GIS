@@ -1,21 +1,11 @@
 #pragma once
 
-#ifdef _WIN32
-    #ifdef GISDATA_EXPORTS
-        #define GISDATA_API __declspec(dllexport)
-    #else
-        #define GISDATA_API __declspec(dllimport)
-    #endif
-#else
-    #define GISDATA_API
-#endif
-
 #include "Element.h"
 #include <cmath>
 
 namespace GIS_Data {
 
-    class GISDATA_API BipartGraph {
+    class BipartGraph {
     private:
         std::vector<std::vector<int>> adjList;
 

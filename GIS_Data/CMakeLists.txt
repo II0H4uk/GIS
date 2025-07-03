@@ -1,7 +1,29 @@
-file(GLOB SOURCES "src/*.cpp")
+# create lib
+add_library(GIS_Data)
 
-add_library(GIS_Data SHARED ${SOURCES})
+target_sources(GIS_Data
+	PRIVATE
+		src/BipartGraph.cpp
+		src/Config.cpp
+		src/Element.cpp
+		src/Graph.cpp
+		src/GraphPair.cpp
+		src/KoenigGraph.cpp
+		src/pch.cpp
 
-target_include_directories(GIS_Data PUBLIC include ../GIS_Core/include)
+		include/BipartGraph.h
+		include/Config.h
+		include/Element.h
+		include/Graph.h
+		include/GraphPair.h
+		include/KoenigGraph.h
+)
 
-target_compile_definitions(GIS_Data PRIVATE GISDATA_EXPORTS)
+# add headers
+target_include_directories(GIS_Data
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
+# add pch
+target_precompile_headers(GIS_Data PRIVATE src/pch.h)

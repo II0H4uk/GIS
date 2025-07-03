@@ -6,7 +6,7 @@ namespace GIS_Data {
     std::vector<double> BipartGraph::TagToVector(const std::vector<Element>& tag)
     {
         std::vector<double> result;
-        for (const auto& t : tag) {
+        /*for (const auto& t : tag) {
             if (std::holds_alternative<int>(t)) {
                 result.push_back(static_cast<double>(std::get<int>(t)));
             }
@@ -23,7 +23,7 @@ namespace GIS_Data {
                 const auto& vec = std::get<std::vector<double>>(t);
                 result.insert(result.end(), vec.begin(), vec.end());
             }
-        }
+        }*/
         return result;
     }
 
@@ -70,12 +70,12 @@ namespace GIS_Data {
         adjList.resize(nodeCount);
 
         std::vector<std::vector<double>> points1, points2;
-        for (const auto& tag : elems1) {
+        /*for (const auto& tag : elems1) {
             points1.push_back(TagToVector(tag));
         }
         for (const auto& tag : elems2) {
             points2.push_back(TagToVector(tag));
-        }
+        }*/
 
         const double threshold = 1.0;
         const size_t maxEdges = 5;
