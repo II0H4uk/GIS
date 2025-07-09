@@ -3,7 +3,7 @@
 
 namespace GIS_Data {
 
-    std::vector<double> BipartGraph::TagToVector(const std::vector<Element>& tag)
+    std::vector<double> BipartGraph::TagToVector(const Circuits::Utils::Subcircuit& circuit)
     {
         std::vector<double> result;
         /*for (const auto& t : tag) {
@@ -65,17 +65,17 @@ namespace GIS_Data {
         return result;
     }
 
-    BipartGraph::BipartGraph(const std::vector<Element>& elems1, const std::vector<Element>& elems2) {
-        const size_t nodeCount = elems1.size();
+    BipartGraph::BipartGraph(const GIS_Data::GraphPair& circuits) {
+        /*const size_t nodeCount = elems1.size();
         adjList.resize(nodeCount);
 
         std::vector<std::vector<double>> points1, points2;
-        /*for (const auto& tag : elems1) {
+        for (const auto& tag : elems1) {
             points1.push_back(TagToVector(tag));
         }
         for (const auto& tag : elems2) {
             points2.push_back(TagToVector(tag));
-        }*/
+        }
 
         const double threshold = 1.0;
         const size_t maxEdges = 5;
@@ -87,7 +87,7 @@ namespace GIS_Data {
             for (int j : closest) {
                 adjList[i].push_back(j);
             }
-        }
+        }*/
     }
 
     BipartGraph::BipartGraph(const std::vector<std::vector<int>>& adjacencyList)

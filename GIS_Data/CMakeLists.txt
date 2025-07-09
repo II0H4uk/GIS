@@ -5,18 +5,16 @@ target_sources(GIS_Data
 	PRIVATE
 		src/BipartGraph.cpp
 		src/Config.cpp
-		src/Element.cpp
-		src/Graph.cpp
 		src/GraphPair.cpp
 		src/KoenigGraph.cpp
 		src/pch.cpp
 
 		include/BipartGraph.h
 		include/Config.h
-		include/Element.h
-		include/Graph.h
 		include/GraphPair.h
 		include/KoenigGraph.h
+		src/pch.h
+		include/Subcircuit.h
 )
 
 # add headers

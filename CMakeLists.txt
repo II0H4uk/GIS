@@ -28,3 +28,7 @@ add_subdirectory(GIS_Core)
 
 # Add subdirectory responsible for testing.
 add_subdirectory(GIS_Tests)
+
+# Add data
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Graph_data 
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

@@ -4,18 +4,14 @@ add_library(GIS_Parser)
 target_sources(GIS_Parser
 	PRIVATE
 		src/ConfigParser.cpp
-		src/FileWriter.cpp
-		src/GraphParser.cpp
-		src/HyperGraphToGraph.cpp
 		src/SpiceParser.cpp
-		src/Utils.cxx
+		src/FileWriter.cpp
+		src/CircuitLayout.cpp
 		src/pch.cpp
 		include/ConfigParser.h
-		include/FileWriter.h
-		include/GraphParser.h
-		include/HyperGraphToGraph.h
 		include/SpiceParser.h
-		include/Utils.hxx
+		include/FileWriter.h
+		include/CircuitLayout.h
 )
 
 # add headers

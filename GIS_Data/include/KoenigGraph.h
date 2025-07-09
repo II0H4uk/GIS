@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "Element.h"
+#include "Subcircuit.h"
 
 namespace GIS_Data {
 
@@ -12,15 +12,15 @@ namespace GIS_Data {
         int tagsLevel;
         std::vector<std::vector<int>> adjList;
         std::vector<std::vector<int>> netList;
-        std::vector<Element> elements;
+        Circuits::Utils::Subcircuit circuit;
         void CalcTags();
 
     public:
-        KoenigGraph(const std::vector<std::vector<int>>& netlist, const std::vector<Element>& elements, int tagsLevel);
+        KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
 
         std::vector<std::vector<int>>& GetAdjList();
         std::vector<std::vector<int>>& GetNetList();
-        std::vector<Element>& GetElements();
+        Circuits::Utils::Subcircuit& GetCircuit();
         int GetNodeCount();
         int GetHyperEdgeCount();
 

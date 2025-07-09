@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graph.h"
 #include "GraphPair.h"
+#include <BipartGraph.h>
 #include <random>
 
 namespace GIS_Generator {
@@ -17,10 +17,10 @@ namespace GIS_Generator {
         void AddNoise(std::vector<std::vector<int>>& adjList, std::vector<int>& permutation, double noise);
         bool HasEdge(const std::vector<std::vector<int>>& adjList, int u, int v);
     public:
-        Generator() : gen(rd()) {}
+        /*Generator() : gen(rd()) {}
         GIS_Data::GraphPair GenerateGraphPair(const int nodeCount, int numCliques, int maxClSize);
         std::pair<GIS_Data::Graph, std::vector<int>> GenIsoGraph(const GIS_Data::Graph& graph);
         GIS_Data::Graph GenGraph(const int nodeCount);
-        GIS_Data::Graph GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize);
+        GIS_Data::Graph GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize);*/
     };
 }

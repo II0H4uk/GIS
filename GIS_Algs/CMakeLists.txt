@@ -3,15 +3,9 @@ add_library(GIS_Algs)
 
 target_sources(GIS_Algs
 	PRIVATE
-		src/BruteForce.cpp
 		src/MaxMatching.cpp
-		src/SubGraphIso.cpp
-		src/TruncEnum.cpp
 		src/pch.cpp
-		include/BruteForce.h
 		include/MaxMatching.h
-		include/SubGraphIso.h
-		include/TruncEnum.h
 )
 
 # add headers

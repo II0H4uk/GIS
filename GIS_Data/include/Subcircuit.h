@@ -20,12 +20,13 @@ namespace Circuits::Utils {
     struct TopologyComponent {
         std::string id; ///< Id of topology component.
         std::vector<std::string> chain; ///< Chain.
+        std::vector<int> chainInt;  ///< Chain int.
         std::string typeComponent; ///< Type of the component.
         double lengthComponent = 0.0; ///< Length of the component.
         double widthComponent = 0.0; ///< Width of the component.
         Point centerCoordinate; ///< Point of topology connection.
         std::map<std::string, double> parametersComponent; ///< Parameters component.
-        const Point someDefaultPoint; ///< Default point.
+        Point someDefaultPoint; ///< Default point.
 
         /// @brief Constructor by default.
         TopologyComponent() : id(""), typeComponent(""), lengthComponent(0), widthComponent(0), centerCoordinate(someDefaultPoint)
@@ -52,29 +53,5 @@ namespace Circuits::Utils {
         std::string name; ///< Name of the sub-sub-circuit.
         std::vector<std::string> pins; ///< Pins.
         std::vector<TopologyComponent> components; ///< Components.
-    };
-
-
-    /// \class SpiceParser
-    /// \brief A Spice Parser class for parse SPICE-files and extract data to struct and create output file.
-    class SpiceParser{
-        public:
-          /// @brief pulls out a subcircuit from the file
-          /// @param fileName the name of the file that stores information for reduction in the spice format (.sp, .net)
-          /// @return the recognized subcircuit described in the spice format(directive .SUBCKT)
-          Subcircuit ExtractSubcircuit(const std::string &fileName);
-          /// @brief creates a file with a reduced element
-          /// @param outputFileName the name of the file for the output file of the reduction in the spice format (.sp, .net)
-          void CreateOutputFileReduction(const Subcircuit subckt, const std::string &outputFileName);
-
-        private:
-          /// @brief recognizes one component on line
-          /// @param line string for parse
-          /// @return one component topology
-          TopologyComponent parseComponent(const std::string& line);
-          /// @brief recognized subcircuit from a string starting with the SUBCKT directive
-          /// @param line string for parse
-          /// @return subcircuit
-          Subcircuit parseSubcircuitLine(const std::string& line);
     };
 };

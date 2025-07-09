@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Config.h"
-#include "Graph.h"
 #include "GraphPair.h"
 
 namespace GIS_Core {

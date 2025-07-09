@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "KoenigGraph.h"
+#include <Subcircuit.h>
 
 namespace GIS_Data {
-    KoenigGraph::KoenigGraph(const std::vector<std::vector<int>>& netlist, const std::vector<Element>& elements, int tagsLevel) : netList(netList), hyperEdgeCount(netList.size()), nodeCount(0), tagsLevel(tagsLevel), elements(elements) {
+    KoenigGraph::KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel) {
 
         for (int i = 0; i < hyperEdgeCount; ++i)
             for (int j = 0; j < netList[i].size(); ++j)
@@ -31,8 +32,8 @@ namespace GIS_Data {
         return netList;
     }
 
-    std::vector<Element>& KoenigGraph::GetElements() {
-        return elements;
+    Circuits::Utils::Subcircuit& KoenigGraph::GetCircuit() {
+        return circuit;
     }
 
     int KoenigGraph::GetNodeCount() {
@@ -45,7 +46,7 @@ namespace GIS_Data {
 
     void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {
 
-        adjList.insert(adjList.begin() + offset, diff, std::vector<int>{});
+        /*adjList.insert(adjList.begin() + offset, diff, std::vector<int>{});
 
         if (isNode) {
             nodeCount += diff;
@@ -55,7 +56,7 @@ namespace GIS_Data {
         }
         else {
             hyperEdgeCount += diff;
-        }
+        }*/
     }
 
     void KoenigGraph::CalcTags() {

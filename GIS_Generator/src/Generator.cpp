@@ -4,20 +4,20 @@
 
 namespace GIS_Generator {
 
-    GIS_Data::GraphPair Generator::GenerateGraphPair(const int nodeCount, int numCliques, int maxClSize) {
-        //GIS_Data::Graph g1 = GenGraph(nodeCount);
-        GIS_Data::Graph g1 = GenerateCliqueOverlapGraph(nodeCount, numCliques, maxClSize);
-        auto [g2, perm] = GenIsoGraph(g1);
-        throw std::logic_error("Not implemented");
-        //return GIS_Data::GraphPair(GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), std::vector<std::pair<int, int>>{});
-    }
+    //GIS_Data::GraphPair Generator::GenerateGraphPair(const int nodeCount, int numCliques, int maxClSize) {
+    //    //GIS_Data::Graph g1 = GenGraph(nodeCount);
+    //    GIS_Data::Graph g1 = GenerateCliqueOverlapGraph(nodeCount, numCliques, maxClSize);
+    //    auto [g2, perm] = GenIsoGraph(g1);
+    //    throw std::logic_error("Not implemented");
+    //    //return GIS_Data::GraphPair(GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), std::vector<std::pair<int, int>>{});
+    //}
 
-    GIS_Data::Graph Generator::GenGraph(const int nodeCount) {
+    /*GIS_Data::Graph Generator::GenGraph(const int nodeCount) {
         std::vector<std::vector<int>> adjList(nodeCount);
 
         for (int i = 0; i < nodeCount - 1; ++i) {
             AddEdge(adjList, i, i + 1);
-        }
+        }*/
 
         /*for (int i = 0; i < nodeCount; ++i) {
             while (deg[i] < 3) {
@@ -31,7 +31,7 @@ namespace GIS_Generator {
             }
         }*/
 
-        for (int k = 0; k < nodeCount * 2; ++k) {
+        /*for (int k = 0; k < nodeCount * 2; ++k) {
             int j = GenRandNum(nodeCount);
             int i = GenRandNum(nodeCount);
 
@@ -42,9 +42,9 @@ namespace GIS_Generator {
         }
 
         return GIS_Data::Graph(adjList, nodeCount);
-    }
+    }*/
 
-    bool Generator::CheckEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
+    /*bool Generator::CheckEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
         return std::find(adjList[u].begin(), adjList[u].end(), v) != adjList[u].end();
     }
 
@@ -80,9 +80,9 @@ namespace GIS_Generator {
         shuffle(permutation.begin(), permutation.end(), gen);
 
         return permutation;
-    }
+    }*/
 
-    void Generator::AddNoise(std::vector<std::vector<int>>& adjList, std::vector<int>& permutation, double noise) {
+    /*void Generator::AddNoise(std::vector<std::vector<int>>& adjList, std::vector<int>& permutation, double noise) {
         int baseSize = adjList.size();
         int noiseNodes = baseSize * noise;
         int edgeCount = 0;
@@ -114,9 +114,9 @@ namespace GIS_Generator {
             adjList[baseSize + i].push_back(j);
             adjList[j].push_back(baseSize + i);
         }
-    }
+    }*/
 
-    GIS_Data::Graph Generator::GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize) {
+    /*GIS_Data::Graph Generator::GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize) {
         std::vector<std::vector<int>> adjList(nodeCount);
         //int numCliques = nodeCount / 10;
 
@@ -143,9 +143,9 @@ namespace GIS_Generator {
         }
 
         return GIS_Data::Graph(adjList, nodeCount, 2);
-    }
+    }*/
 
-    bool Generator::HasEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
+    /*bool Generator::HasEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
         return std::find(adjList[u].begin(), adjList[u].end(), v) != adjList[u].end();
-    }
+    }*/
 }

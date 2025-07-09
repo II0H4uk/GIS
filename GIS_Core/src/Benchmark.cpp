@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "Benchmark.h"
-#include "SubGraphIso.h"
 #include "Statistics.h"
-#include "HyperGraphToGraph.h"
 #include "Generator.h"
-#include "GraphParser.h"
 #include "KoenigGraph.h"
 #include "BipartGraph.h"
 #include "MaxMatching.h"
@@ -13,6 +10,8 @@
 namespace GIS_Core {
 
     void Benchmark::Init(const GIS_Data::Config config) {
+
+
 
         //auto [pair, fixedNodes1, fixedNodes2] = ReadHyperGraphs(config.GetInput1(), config.GetInput2());
         //GIS_Data::GraphPair pair = GenGraphs(10000, 7000, 20);
@@ -80,9 +79,9 @@ namespace GIS_Core {
         return GIS_Data::GraphPair(GIS_Data::KoenigGraph(netList1, tagsLevel), GIS_Data::KoenigGraph(netList2, tagsLevel), fixNodes);
     }*/
 
-    GIS_Data::GraphPair Benchmark::GenGraphs(int nodeCount, int numCliques, int maxClSize) {
+    /*GIS_Data::GraphPair Benchmark::GenGraphs(int nodeCount, int numCliques, int maxClSize) {
 
         GIS_Generator::Generator generator;
         return generator.GenerateGraphPair(nodeCount, numCliques, maxClSize);
-    }
+    }*/
 }

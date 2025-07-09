@@ -13,9 +13,7 @@ target_sources(GIS_Tests
 	PRIVATE
 		src/main.cpp
 		src/BaseTests.cpp
-		src/BruteForceTests.cpp
 		src/MaxMatching.cpp
-		src/TruncEnumTests.cpp
 		src/pch.cpp
 )
 
