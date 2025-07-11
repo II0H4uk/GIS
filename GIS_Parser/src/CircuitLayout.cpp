@@ -16,6 +16,8 @@ namespace GIS_Parser {
 
         CreateSubCircuit(mainCircInd, values);
 
+        mainCirc.netsCount = netsCount;
+
         return mainCirc;
     }
 
@@ -46,7 +48,7 @@ namespace GIS_Parser {
 
         for (int i = 0; i < chain.size(); ++i) {
             if (nets.find(chain[i]) == nets.end())
-                nets[chain[i]] = netCount++;
+                nets[chain[i]] = netsCount++;
             vals.push_back(nets[chain[i]]);
         }
         return vals;
@@ -73,7 +75,7 @@ namespace GIS_Parser {
     }
 
     void CircuitLayout::Init(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
-        netCount = 0;
+        netsCount = 0;
         globNets.clear();
         CircuitLayout::circuits = circuits;
 

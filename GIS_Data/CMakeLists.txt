@@ -7,12 +7,14 @@ target_sources(GIS_Data
 		src/Config.cpp
 		src/GraphPair.cpp
 		src/KoenigGraph.cpp
+		src/Element.cpp
 		src/pch.cpp
 
 		include/BipartGraph.h
 		include/Config.h
 		include/GraphPair.h
 		include/KoenigGraph.h
+		include/Element.h
 		src/pch.h
 		include/Subcircuit.h
 )
