@@ -122,7 +122,7 @@ namespace GIS_Data {
         return levels;
     }
 
-    std::vector<std::vector<int>> KoenigGraph::TranspAdjList() {
+    const std::vector<std::vector<int>> KoenigGraph::TranspAdjList() const {
         std::vector<std::vector<int>> revList(adjList.size());
         for (int i = 0; i < adjList.size(); ++i) {
             for (int j = 0; j < adjList[i].size(); ++j) {
@@ -164,23 +164,23 @@ namespace GIS_Data {
         return endNodes;
     }
 
-    std::vector<std::vector<int>>& KoenigGraph::GetAdjList() {
+    const std::vector<std::vector<int>>& KoenigGraph::GetAdjList() const {
         return adjList;
     }
 
-    std::vector<std::vector<int>>& KoenigGraph::GetNetList() {
+    const std::vector<std::vector<int>>& KoenigGraph::GetNetList() const {
         return netList;
     }
 
-    std::vector<Element>& KoenigGraph::GetElements() {
+    const std::vector<Element>& KoenigGraph::GetElements() const {
         return elements;
     }
 
-    int KoenigGraph::GetNodeCount() {
+    const int KoenigGraph::GetNodeCount() const {
         return nodeCount;
     }
 
-    int KoenigGraph::GetHyperEdgeCount() {
+    const int KoenigGraph::GetHyperEdgeCount() const {
         return hyperEdgeCount;
     }
 }

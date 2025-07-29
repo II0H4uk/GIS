@@ -5,6 +5,7 @@
 #include <SpiceParser.h>
 #include <BipartGraph.h>
 #include <MaxMatching.h>
+#include <EnhancedMatching.h>
 
 int main(int argc, char* argv[]) {
 
@@ -18,10 +19,8 @@ int main(int argc, char* argv[]) {
     GIS_Data::KoenigGraph koenG2(circuit2, 2);
     GIS_Data::GraphPair pair(koenG1, koenG2, {});
 
-    GIS_Core::Benchmark::NormalizeGraphs(pair.GetGraph1(), pair.GetGraph2());
-
-    GIS_Data::BipartGraph bGraph(pair);
-    std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bGraph, 100);
+    std::vector<std::pair<int, std::vector<int>>> result = GIS_Algs::EnhancedMatching::Start(koenG1, koenG2, GIS_Data::BipartGraph(pair));
+    //std::vector<std::pair<int, int>> matching = GIS_Algs::MaxMatching::Start(bGraph, 100);
 
     return 0;
 }
