@@ -6,11 +6,11 @@ namespace GIS_Data {
     GraphPair::GraphPair(const KoenigGraph& g1, const KoenigGraph& g2, const std::vector<std::pair<int, int>>& fixedNodes)
         : graph1(g1), graph2(g2), fixedNodes(fixedNodes) { }
 
-    KoenigGraph& GraphPair::GetGraph1() {
+    const KoenigGraph& GraphPair::GetGraph1() const {
         return graph1;
     }
 
-    KoenigGraph& GraphPair::GetGraph2() {
+    const KoenigGraph& GraphPair::GetGraph2() const {
         return graph2;
     }
 

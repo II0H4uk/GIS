@@ -7,23 +7,46 @@
 namespace GIS_Algs {
     std::vector<std::pair<int, int>> EnhancedMatching::Start(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, GIS_Data::BipartGraph& bGraph) {
 
-        std::vector<std::pair<int, std::vector<int>>> chainMatch = MatchChains(kGraph1, kGraph2);
+        std::vector<std::unordered_set<int>> chainMatch = MatchChains(kGraph1, kGraph2);
 
-        CorrectBGraph(bGraph, kGraph1.GetAdjList(), kGraph2.GetAdjList(), chainMatch);
+        CorrectBGraph(bGraph, kGraph1, kGraph2, chainMatch);
 
         return MaxMatching::Start(bGraph, 100);
     }
 
-    void EnhancedMatching::CorrectBGraph(GIS_Data::BipartGraph& bGraph, const std::vector<std::vector<int>>& adjList1, const std::vector<std::vector<int>>& adjList2, std::vector<std::pair<int, std::vector<int>>>& chainMatch) {
+    void EnhancedMatching::CorrectBGraph(GIS_Data::BipartGraph& bGraph, const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, std::vector<std::unordered_set<int>>& chainMatch) {
+        
         std::vector<std::vector<int>> bAdjList = bGraph.GetAdjList();
-        for (int i = 0; i < bAdjList.size(); ++i) {
+        
+        std::vector<int> inChainsSec;
+        std::vector<int> outChainsSec;
+
+        std::vector<std::vector<int>> adjList1T1 = TranspAdjList(kGraph1.GetAdjList());
+        std::vector<std::vector<int>> adjList1T2 = TranspAdjList(kGraph2.GetAdjList());
+
+        for (int i = 0; i < kGraph1.GetNodeCount(); ++i) {
             for (int j = 0; j < bAdjList[i].size(); ++j) {
-                //if (chainMatch[i]. )
+
+                int currNode = bAdjList[i][j] - kGraph1.GetNodeCount();
+
+                for (int k = 0; k < adjList1T1[i].size(); ++k) {
+                    if (!(ContainsAny(chainMatch[adjList1T1[i][k] - kGraph1.GetNodeCount()], adjList1T2[currNode]) &&
+                        ContainsAny(chainMatch[kGraph1.GetAdjList()[i][k] - kGraph1.GetNodeCount()], kGraph2.GetAdjList()[currNode]))) {
+                        bGraph.EraseElem(i, j);
+                        j--;
+                    }
+                }
             }
         }
     }
 
-    std::vector<std::pair<int, std::vector<int>>> EnhancedMatching::MatchChains(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
+    bool EnhancedMatching::ContainsAny(const std::unordered_set<int>& set, const std::vector<int>& vec) {
+        return std::any_of(vec.begin(), vec.end(), [&set](int x) {
+            return set.count(x) > 0;
+        });
+    }
+
+    std::vector<std::unordered_set<int>> EnhancedMatching::MatchChains(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
 
         std::vector<std::vector<int>> chGraph1 = CreateChainGraph(kGraph1);
         std::vector<std::vector<int>> chGraph2 = CreateChainGraph(kGraph2);
@@ -38,12 +61,11 @@ namespace GIS_Algs {
         int max2 = *std::max_element(adjLv2.begin(), adjLv2.end());
 
         if (max1 == max2) {
-            std::vector<std::pair<int, std::vector<int>>> matching(chGraph1.size());
+            std::vector<std::unordered_set<int>> matching(chGraph1.size());
             for (int i = 0; i < adjLv1.size(); ++i)
                 for (int j = 0; j < adjLv2.size(); ++j)
                     if (adjLv1[i] == adjLv2[j]) {
-                        matching[i].first = i + kGraph1.GetNodeCount();
-                        matching[i].second = { j + kGraph2.GetNodeCount() };
+                        matching[i].insert(j + kGraph2.GetNodeCount());
                     }
 
             return matching;
@@ -53,12 +75,11 @@ namespace GIS_Algs {
 
         std::vector<int> levelMatch = MatchLevels(weights);
 
-        std::vector<std::pair<int, std::vector<int>>> chainMatch(adjLv1.size());
+        std::vector<std::unordered_set<int>> chainMatch(adjLv1.size());
         for (int i = 0; i < adjLv1.size(); ++i) {
-            chainMatch[i].first = i + kGraph1.GetNodeCount();
             for (int j = 0; j < adjLv2.size(); ++j) {
                 if (levelMatch[adjLv1[i]] == adjLv2[j])
-                    chainMatch[i].second.push_back(j + kGraph2.GetNodeCount());
+                    chainMatch[i].insert(j + kGraph2.GetNodeCount());
             }
         }
 

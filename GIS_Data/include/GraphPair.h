@@ -13,8 +13,8 @@ namespace GIS_Data {
     public:
         GraphPair(const KoenigGraph& g1, const KoenigGraph& g2, const std::vector<std::pair<int, int>>& fixedNodes);
 
-        KoenigGraph& GetGraph1();
-        KoenigGraph& GetGraph2();
+        const KoenigGraph& GetGraph1() const;
+        const KoenigGraph& GetGraph2() const;
         const std::vector<std::pair<int, int>>& GetBijection() const;
     };
 }
