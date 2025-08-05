@@ -20,16 +20,16 @@ namespace GIS_Data {
         std::vector<int> FindStart();
         std::vector<int> FindEnd();
         std::vector<int> Levels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startNodes);
-        std::vector<std::vector<int>> TranspAdjList();
     public:
         KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
 
-        std::vector<std::vector<int>>& GetAdjList();
-        std::vector<std::vector<int>>& GetNetList();
-        std::vector<Element>& GetElements();
-        int GetNodeCount();
-        int GetHyperEdgeCount();
+        const std::vector<std::vector<int>>& GetAdjList() const;
+        const std::vector<std::vector<int>>& GetNetList() const;
+        const std::vector<Element>& GetElements() const;
+        const int GetNodeCount() const;
+        const int GetHyperEdgeCount() const;
 
         void NormalizeGraph(int diff, int offset, bool isNode);
+        const std::vector<std::vector<int>> TranspAdjList() const;
     };
 }

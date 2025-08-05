@@ -77,7 +77,9 @@ namespace GIS_Parser {
     void CircuitLayout::Init(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
         netsCount = 0;
         globNets.clear();
+        circuitsId.clear();
         CircuitLayout::circuits = circuits;
+        mainCirc = Circuits::Utils::Subcircuit();
 
         for (int i = 0; i < circuits.size(); ++i)
             circuitsId[circuits[i].name] = i;

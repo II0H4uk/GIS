@@ -4,8 +4,10 @@ add_library(GIS_Algs)
 target_sources(GIS_Algs
 	PRIVATE
 		src/MaxMatching.cpp
+		src/EnhancedMatching.cpp
 		src/pch.cpp
 		include/MaxMatching.h
+		include/EnhancedMatching.h
 )
 
 # add headers
