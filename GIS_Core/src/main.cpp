@@ -35,8 +35,9 @@ int main(int argc, char* argv[]) {
     std::sort(result.begin(), result.end());
 
     for (int i = 0; i < result.size(); ++i) {
-        std::cout << result[i].first << " -> " << result[i].second - koenG1.GetNodeCount();
-        std::cout << "\n";
+        if (result[i].first >= koenG1.GetNodeCount())
+            break;
+        std::cout << result[i].first << " -> " << result[i].second - koenG1.GetNodeCount() << "\n";
     }
 
     return 0;
