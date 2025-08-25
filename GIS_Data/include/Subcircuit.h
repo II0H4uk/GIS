@@ -37,11 +37,11 @@ namespace Circuits::Utils {
     /// @brief Structure describing a single recognized sub-circuit from the spice format
     struct Subcircuit {
         /// @brief Default constructor.
-        Subcircuit():name(""), pins(),components(),netsCount(0){}
+        Subcircuit():name(""), pins(),components(),inputNets(0), netsCount(0) {}
 
         /// @brief Constructor accepting parameters.
         Subcircuit(std::string name, const std::vector<std::string>& pins, const std::vector<TopologyComponent>& components) :
-            name(name), pins(pins), components(components), netsCount(0) {
+            name(name), pins(pins), components(components), inputNets(0), netsCount(0) {
             if (name.empty()) {
                 throw std::invalid_argument("Subcircuit name cannot be empty.");
             }
@@ -53,6 +53,7 @@ namespace Circuits::Utils {
         std::string name; ///< Name of the sub-sub-circuit.
         std::vector<std::string> pins; ///< Pins.
         std::vector<TopologyComponent> components; ///< Components.
+        std::vector<int> inputNets;
         int netsCount; ///< Nets counter
     };
 };

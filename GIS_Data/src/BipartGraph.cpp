@@ -3,10 +3,10 @@
 
 namespace GIS_Data {
 
-    BipartGraph::BipartGraph(const GIS_Data::GraphPair& circuits) {
+    BipartGraph::BipartGraph(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
 
-        std::vector<Element> elems1 = circuits.GetGraph1().GetElements();
-        std::vector<Element> elems2 = circuits.GetGraph2().GetElements();
+        std::vector<Element> elems1 = kGraph1.GetElements();
+        std::vector<Element> elems2 = kGraph2.GetElements();
         adjList = std::vector<std::vector<int>>(elems1.size() + elems2.size());
 
         for (size_t i = 0; i < elems1.size(); ++i) {

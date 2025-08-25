@@ -5,9 +5,11 @@ target_sources(GIS_Algs
 	PRIVATE
 		src/MaxMatching.cpp
 		src/EnhancedMatching.cpp
+		src/SignalMatching.cpp
 		src/pch.cpp
 		include/MaxMatching.h
 		include/EnhancedMatching.h
+		include/SignalMatching.h
 )
 
 # add headers

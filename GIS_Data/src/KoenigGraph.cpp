@@ -6,33 +6,38 @@ namespace GIS_Data {
     KoenigGraph::KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel) :
         nodeCount(circuit.components.size()),
         hyperEdgeCount(circuit.netsCount),
-        netList(hyperEdgeCount),
+        tagsLevel(tagsLevel),
         adjList(nodeCount + hyperEdgeCount),
-        tagsLevel(tagsLevel) {
+        adjListT(nodeCount + hyperEdgeCount),
+        netList(hyperEdgeCount),
+        inputChains(circuit.inputNets) {
+
+        for (int i = 0; i < inputChains.size(); ++i)
+            inputChains[i] += nodeCount;
 
         for (int i = 0; i < circuit.components.size(); ++i) {
-            for (int j = 0; j < circuit.components[i].chainInt.size(); ++j) {
+            elemsType[circuit.components[i].id[0]].push_back(i);
+            for (int j = 0; j < circuit.components[i].chainInt.size(); ++j)
                 netList[circuit.components[i].chainInt[j]].push_back(i);
-            }
         }
 
         for (int i = 0; i < hyperEdgeCount; ++i) {
             int currHyperEdge = nodeCount + i;
+            elemsType['N'].push_back(i + hyperEdgeCount - 1);
 
             for (int node : netList[i]) {
-                if (circuit.components[node].chainInt.back() == i)
+                if (circuit.components[node].chainInt.back() == i) {
                     adjList[node].push_back(currHyperEdge);
-                else
+                    adjListT[currHyperEdge].push_back(node);
+                }
+                else {
                     adjList[currHyperEdge].push_back(node);
+                    adjListT[node].push_back(currHyperEdge);
+                }
             }
         }
 
-        std::vector<std::vector<int>> neighDeg = CalcNeighDeg();
-        std::vector<std::vector<int>> adjLv = CalcAdjLevels();
-
-        std::vector<Circuits::Utils::TopologyComponent> c = circuit.components;
-        for (int i = 0; i < nodeCount; ++i)
-            elements.push_back(Element(c[i].id, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, neighDeg[i], adjLv[0][i], adjLv[1][i]));
+        InitElems(circuit, false);
     }
 
     void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {
@@ -122,6 +127,25 @@ namespace GIS_Data {
         return levels;
     }
 
+    void KoenigGraph::InitElems(const Circuits::Utils::Subcircuit& circuit, bool topology) {
+
+        std::vector<std::vector<int>> neighDeg;
+        std::vector<std::vector<int>> adjLv;
+
+        if (topology) {
+            neighDeg = CalcNeighDeg();
+            adjLv = CalcAdjLevels();
+        }
+
+        std::vector<Circuits::Utils::TopologyComponent> c = circuit.components;
+        for (int i = 0; i < nodeCount; ++i)
+            if (topology)
+                elements.push_back(Element(c[i].id, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, neighDeg[i], adjLv[0][i], adjLv[1][i]));
+            else
+                elements.push_back(Element(c[i].id, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, { }, -1, -1));
+
+    }
+
     const std::vector<std::vector<int>> KoenigGraph::TranspAdjList() const {
         std::vector<std::vector<int>> revList(adjList.size());
         for (int i = 0; i < adjList.size(); ++i) {
@@ -168,6 +192,10 @@ namespace GIS_Data {
         return adjList;
     }
 
+    const std::vector<std::vector<int>>& KoenigGraph::GetAdjListT() const {
+        return adjListT;
+    }
+
     const std::vector<std::vector<int>>& KoenigGraph::GetNetList() const {
         return netList;
     }
@@ -176,11 +204,19 @@ namespace GIS_Data {
         return elements;
     }
 
+    const std::vector<int>& KoenigGraph::GetInputChains() const {
+        return inputChains;
+    }
+
     const int KoenigGraph::GetNodeCount() const {
         return nodeCount;
     }
 
     const int KoenigGraph::GetHyperEdgeCount() const {
         return hyperEdgeCount;
+    }
+
+    const std::unordered_map<char, std::vector<int>>& KoenigGraph::GetElemsType() const {
+        return elemsType;
     }
 }

@@ -6,10 +6,55 @@
 #include "BipartGraph.h"
 #include "MaxMatching.h"
 #include "ValidateMatch.h"
+#include <EnhancedMatching.h>
+#include <SignalMatching.h>
 
 namespace GIS_Core {
 
-    void Benchmark::Init(const GIS_Data::Config config) {
+    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
+
+        std::vector<std::pair<int, int>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 64, 10000);
+
+        int count = 0;
+        for (int i = 0; i < result.size(); ++i) {
+            if (result[i].first == result[i].second)
+                count++;
+        }
+
+        std::cout << "Node count:" << kGraph1.GetNodeCount();
+        std::cout << "\nChain count:" << kGraph1.GetHyperEdgeCount();
+        std::cout << "\nMatch count:" << count;
+        std::cout << "\nresult size:" << result.size();
+
+        /*for (int i = 0; i < result.size(); ++i) {
+            if (result[i].first >= kGraph1.GetNodeCount())
+                break;
+            std::cout << result[i].first << " -> " << result[i].second << "\n";
+        }*/
+
+    }
+
+    void Benchmark::MaxMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
+
+        GIS_Data::BipartGraph bGraph = GIS_Data::BipartGraph(kGraph1, kGraph2);
+
+        //отображение двудольного графа
+        /*for (int i = 0; i < bGraph.GetAdjList().size(); ++i) {
+            std::cout << i << ": ";
+            for (int j = 0; j < bGraph.GetAdjList()[i].size(); ++j) {
+                std::cout << bGraph.GetAdjList()[i][j] << ", ";
+            }
+            std::cout << "\n";
+        }*/
+
+        std::vector<std::pair<int, int>> result = GIS_Algs::EnhancedMatching::Start(kGraph1, kGraph2, bGraph);
+        std::sort(result.begin(), result.end());
+
+        for (int i = 0; i < result.size(); ++i) {
+            if (result[i].first >= kGraph1.GetNodeCount())
+                break;
+            std::cout << result[i].first << " -> " << result[i].second - kGraph1.GetNodeCount() << "\n";
+        }
 
 
 

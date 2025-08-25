@@ -12,9 +12,9 @@ namespace GIS_Parser {
         mainCirc.pins = circuits[mainCircInd].pins;
 
         std::unordered_map<std::string, int> nets;
-        std::vector<int> values = GetNets(mainCirc.pins, nets);
+        mainCirc.inputNets = GetNets(mainCirc.pins, nets);
 
-        CreateSubCircuit(mainCircInd, values);
+        CreateSubCircuit(mainCircInd, mainCirc.inputNets);
 
         mainCirc.netsCount = netsCount;
 
