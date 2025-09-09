@@ -25,6 +25,7 @@ namespace GIS_Data {
         std::vector<int> FindEnd();
         std::vector<int> Levels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startNodes);
         void InitElems(const Circuits::Utils::Subcircuit& circuit, bool topology);
+        bool CheckPinDir(char type, int net, const std::vector<int>& chains);
     public:
         KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
 

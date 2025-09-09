@@ -16,8 +16,8 @@ namespace GIS_Algs {
         static std::string QuantKey(const std::vector<double>& sig, int scale = 1000);
         static void MatchInputs(const GIS_Data::KoenigGraph& g1, const std::vector<int>& in1, const GIS_Data::KoenigGraph& g2, std::vector<int>& in2);
         static std::vector<std::vector<double>> GenerateSignals(int inputsCount, int iterations);
-        static std::vector<std::pair<int, int>> MatchElems(const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1, const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2, int quantScale = 1000);
+        static std::vector<std::pair<std::vector<int>, std::vector<int>>> MatchElems(const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1, const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2, int quantScale = 1000);
     public:
-        static std::vector<std::pair<int, int>> Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations = 64, int quantScale = 1000);
+        static std::vector<std::pair<std::vector<int>, std::vector<int>>> Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations = 64, int quantScale = 1000);
     };
 }

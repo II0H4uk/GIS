@@ -1,27 +1,12 @@
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <cstdint>
-#include <iomanip>
-#include <iostream>
-#include <limits>
-#include <numeric>
-#include <queue>
-#include <random>
-#include <sstream>
-#include <string>
-#include <unordered_map>
-#include <utility>
-#include <vector>
-
 #include "pch.h"
+
 #include <KoenigGraph.h>
 #include <SignalMatching.h>
 
 namespace GIS_Algs {
 
     // Отрефакторено
-    std::vector<std::pair<int, int>> SignalMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations, int quantScale) {
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations, int quantScale) {
 
         std::vector<int> inputs1 = GetInputNets(g1);
         std::vector<int> inputs2 = GetInputNets(g2);
@@ -36,7 +21,7 @@ namespace GIS_Algs {
         std::vector<std::vector<double>> S1 = RunStochastic(g1, topo1, inputs1, iterations, inputSignals);
         std::vector<std::vector<double>> S2 = RunStochastic(g2, topo2, inputs2, iterations, inputSignals);
 
-        std::vector<std::pair<int, int>> elemMap = MatchElems(g1, S1, g2, S2, quantScale);
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> elemMap = MatchElems(g1, S1, g2, S2, quantScale);
 
         return elemMap;
     }
@@ -92,7 +77,7 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<std::pair<int, int>> SignalMatching::MatchElems(
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::MatchElems(
         const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1,
         const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2,
         int quantScale
@@ -100,6 +85,10 @@ namespace GIS_Algs {
         std::vector<std::pair<int, int>> mapping;
         mapping.reserve(std::min(g1.GetNodeCount(), g2.GetNodeCount()));
 
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> clusters;
+
+        std::vector<std::pair<int, int>> a;
+        int single = 0;
         for (auto& elems1 : g1.GetElemsType()) {
             auto elems2 = g2.GetElemsType().find(elems1.first);
             if (elems2 == g2.GetElemsType().end()) continue;
@@ -115,12 +104,18 @@ namespace GIS_Algs {
                 auto q2 = typeQuant2.find(q1.first);
                 if (q2 == typeQuant2.end()) continue;
 
+                clusters.push_back({q1.second, q2->second});
+                /*if (q1.second.size() == 1 && q2->second.size() == 1)
+                    single++;
+                else
+                    a.push_back({ q1.second.size(), q2->second.size() });
+
                 int c = std::min(q1.second.size(), q2->second.size());
                 for (int i = 0; i < c; ++i)
-                    mapping.emplace_back(q1.second[i], q2->second[i]);
+                    mapping.emplace_back(q1.second[i], q2->second[i]);*/
             }
         }
-        return mapping;
+        return clusters;
     }
 
     std::vector<int> SignalMatching::HungarianAlg(const std::vector<std::vector<double>>& cost) {
@@ -304,10 +299,33 @@ namespace GIS_Algs {
             value[inputNets[i]] = inputBits[i];
 
         for (int e : topoOrder) {
-            double sum = 0.0;
+            char elType = e < g.GetNodeCount() ? g.GetElements()[e].GetType() : 'N';
+            switch (elType) {
+            case 'M':
+                if (value[g.GetAdjListT()[e][1]] > 0.6)
+                    value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            case 'D':
+                if (value[g.GetAdjListT()[e][0]] > 0.8)
+                    value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            case 'R':
+                if (value[g.GetAdjListT()[e][0]] > 0.1)
+                    value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            case 'N':
+                value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            default:
+                if (value[g.GetAdjListT()[e][0]] > 0.5)
+                    value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            }
+
+            /*double sum = 0.0;
             for (int node : g.GetAdjListT()[e])
                 sum += value[node];
-            value[e] += sum / g.GetAdjListT()[e].size();
+            value[e] += sum / g.GetAdjListT()[e].size();*/
         }
 
         return value;

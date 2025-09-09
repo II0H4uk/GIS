@@ -25,8 +25,8 @@ namespace GIS_Data {
             int currHyperEdge = nodeCount + i;
             elemsType['N'].push_back(i + hyperEdgeCount - 1);
 
-            for (int node : netList[i]) {
-                if (circuit.components[node].chainInt.back() == i) {
+            for (int node : netList[i]) {   //circuit.components[node].chainInt.back() == i
+                if (adjList[node].size() == 0 && CheckPinDir(circuit.components[node].id[0], i, circuit.components[node].chainInt)) {
                     adjList[node].push_back(currHyperEdge);
                     adjListT[currHyperEdge].push_back(node);
                 }
@@ -38,6 +38,12 @@ namespace GIS_Data {
         }
 
         InitElems(circuit, false);
+    }
+
+    bool KoenigGraph::CheckPinDir(char type, int net, const std::vector<int>& chains) {
+        return (type != 'M' && chains[1] == net) ||
+            (type == 'M' && chains.size() == 4 && chains[2] == net) ||
+            (type == 'M' && chains.size() == 3 && chains[2] == net);
     }
 
     void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {

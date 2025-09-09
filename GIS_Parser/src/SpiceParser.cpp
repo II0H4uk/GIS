@@ -150,6 +150,11 @@ Circuits::Utils::TopologyComponent Circuits::Utils::SpiceParser::parseComponent(
         //TO DO add a check of all available element types, in case the type is not specified in the presence of chains
         parsedComponent.typeComponent = parsedComponent.chain.back();
         parsedComponent.chain.pop_back();
+
+        if (parsedComponent.id[0] == 'R') {
+            parsedComponent.parametersComponent["R"] = std::stod(parsedComponent.chain.back());
+            parsedComponent.chain.pop_back();
+        }
     } else {
         parsedComponent.typeComponent = "unknown";
     }
