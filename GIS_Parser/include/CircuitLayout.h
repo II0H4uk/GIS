@@ -7,11 +7,10 @@
 namespace GIS_Parser {
     class CircuitLayout {
     private:
-        inline static int netsCount = 0;
-        inline static std::vector<int> globNets;
-        inline static std::unordered_map<std::string, int> circuitsId;
-        inline static std::vector<Circuits::Utils::Subcircuit> circuits;
-        inline static Circuits::Utils::Subcircuit mainCirc;
+        static int netsCount;
+        static std::unordered_map<std::string, int> circuitsId;
+        static std::vector<Circuits::Utils::Subcircuit> circuits;
+        static Circuits::Utils::Subcircuit mainCirc;
 
         static void Init(const std::vector<Circuits::Utils::Subcircuit>& circuits);
         static int FindMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits);
