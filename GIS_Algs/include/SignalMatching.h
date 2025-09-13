@@ -19,5 +19,6 @@ namespace GIS_Algs {
         static std::vector<std::pair<std::vector<int>, std::vector<int>>> MatchElems(const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1, const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2, int quantScale = 1000);
     public:
         static std::vector<std::pair<std::vector<int>, std::vector<int>>> Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations = 64, int quantScale = 1000);
+        static std::pair<std::vector<std::pair<int, int>>, int> MatchFromClusters(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& clusters);
     };
 }

@@ -5,7 +5,7 @@
 
 namespace GIS_Algs {
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations, int quantScale) {
 
         std::vector<int> inputs1 = GetInputNets(g1);
@@ -26,7 +26,7 @@ namespace GIS_Algs {
         return elemMap;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<int> SignalMatching::GetInputNets(const GIS_Data::KoenigGraph& g) {
 
         if (g.GetInputChains().size() != 0)
@@ -40,7 +40,7 @@ namespace GIS_Algs {
         return inputs;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     void SignalMatching::MatchInputs(
         const GIS_Data::KoenigGraph& g1, const std::vector<int>& in1,
         const GIS_Data::KoenigGraph& g2, std::vector<int>& in2
@@ -76,7 +76,7 @@ namespace GIS_Algs {
         }
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::MatchElems(
         const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1,
         const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2,
@@ -116,6 +116,41 @@ namespace GIS_Algs {
             }
         }
         return clusters;
+    }
+
+    std::pair<std::vector<std::pair<int, int>>, int> SignalMatching::MatchFromClusters(
+    const std::vector<std::pair<std::vector<int>, std::vector<int>>>& clusters
+    ) {
+        std::vector<std::pair<int, int>> mapping;
+        int reliableMatches = 0;
+
+        // РЎРЅР°С‡Р°Р»Р° РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РѕРґРЅРѕР·РЅР°С‡РЅС‹Рµ РєР»Р°СЃС‚РµСЂС‹
+        for (const auto& cluster : clusters) {
+            const auto& elems1 = cluster.first;
+            const auto& elems2 = cluster.second;
+
+            if (elems1.size() == 1 && elems2.size() == 1) {
+                // РћРґРЅРѕР·РЅР°С‡РЅРѕРµ СЃРѕРїРѕСЃС‚Р°РІР»РµРЅРёРµ
+                mapping.emplace_back(elems1[0], elems2[0]);
+                reliableMatches++;
+            }
+        }
+
+        // Р—Р°С‚РµРј РѕР±СЂР°Р±Р°С‚С‹РІР°РµРј РѕСЃС‚Р°Р»СЊРЅС‹Рµ РєР»Р°СЃС‚РµСЂС‹
+        for (const auto& cluster : clusters) {
+            const auto& elems1 = cluster.first;
+            const auto& elems2 = cluster.second;
+
+            if (!(elems1.size() == 1 && elems2.size() == 1)) {
+                // РќРµРѕРґРЅРѕР·РЅР°С‡РЅРѕРµ СЃРѕРїРѕСЃС‚Р°РІР»РµРЅРёРµ - Р±РµСЂРµРј РїРµСЂРІС‹Рµ СЌР»РµРјРµРЅС‚С‹
+                int count = std::min(elems1.size(), elems2.size());
+                for (int i = 0; i < count; ++i) {
+                    mapping.emplace_back(elems1[i], elems2[i]);
+                }
+            }
+        }
+
+        return {mapping, reliableMatches};
     }
 
     std::vector<int> SignalMatching::HungarianAlg(const std::vector<std::vector<double>>& cost) {
@@ -162,7 +197,7 @@ namespace GIS_Algs {
                 j0 = j1;
             } while (p[j0] != 0);
 
-            // восстановление пути
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
             do {
                 int j1 = way[j0];
                 p[j0] = p[j1];
@@ -178,7 +213,7 @@ namespace GIS_Algs {
         return assignment;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<std::vector<double>> SignalMatching::GenerateSignals(int inputsCount, int iterations) {
         std::mt19937 rng;
         std::uniform_real_distribution<> signals(0.0, 1.0);
@@ -189,7 +224,7 @@ namespace GIS_Algs {
         return inputSignals;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<int> SignalMatching::GetTopoOrder(const GIS_Data::KoenigGraph& g, const std::vector<int>& inputs) {
 
         std::queue<int> q;
@@ -214,7 +249,7 @@ namespace GIS_Algs {
         return order;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<std::vector<double>> SignalMatching::RunStochastic(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputNetsG, int iterations, std::vector<std::vector<double>>& inputBits) {
         std::vector<std::vector<double>> values(g.GetNodeCount() + g.GetHyperEdgeCount());
         for (int i = 0; i < values.size(); ++i)
@@ -229,7 +264,7 @@ namespace GIS_Algs {
         return values;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<int> SignalMatching::GetInputSign(const GIS_Data::KoenigGraph& g, const std::unordered_set<char>& allTypes, int inputNet, int maxDepth) {
 
         std::vector<int> elemsSign;
@@ -238,7 +273,7 @@ namespace GIS_Algs {
         std::vector<int> elemDepth(maxDepth + 1, 0);
         std::vector<int> netDepth(maxDepth + 1, 0);
         std::unordered_map<char, int> types; types.reserve(allTypes.size());
-        for (char type : allTypes) {    // Возможно на другом компиляторе из-за хеширования порядок будет разным и все сломается =(
+        for (char type : allTypes) {    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ =(
             types.emplace(type, 0);
         }
 
@@ -278,7 +313,7 @@ namespace GIS_Algs {
         return elemsSign;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     double SignalMatching::L2(const std::vector<int>& a, const std::vector<int>& b) {
         double s = 0.0;
         for (int i = 0; i < a.size(); ++i)
@@ -286,7 +321,7 @@ namespace GIS_Algs {
         return std::sqrt(s);
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::vector<double> SignalMatching::SimulateOnce(
         const GIS_Data::KoenigGraph& g,
         const std::vector<int>& topoOrder,
@@ -331,7 +366,7 @@ namespace GIS_Algs {
         return value;
     }
 
-    // Отрефакторено
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     std::string SignalMatching::QuantKey(const std::vector<double>& sig, int scale) {
         std::string key;
         key.reserve(sig.size() * std::log10(scale) + sig.size() - 1);

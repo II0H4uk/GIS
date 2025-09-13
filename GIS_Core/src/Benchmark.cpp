@@ -18,7 +18,7 @@ namespace GIS_Core {
         std::vector<char> visited(n, 0);
         std::queue<int> q;
 
-        // Добавляем стартовые вершины
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         for (int s : startVertices) {
             if (!visited[s]) {
                 visited[s] = 1;
@@ -29,7 +29,7 @@ namespace GIS_Core {
         int levels = 0;
         while (!q.empty()) {
             int sz = (int)q.size();
-            // Обрабатываем один уровень
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
             for (int i = 0; i < sz; ++i) {
                 int u = q.front(); q.pop();
                 for (int v : adjList[u]) {
@@ -60,7 +60,12 @@ namespace GIS_Core {
 
         int levels = CountLevels(kGraph1.GetAdjList(), kGraph1.GetInputChains());
 
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 64, 1000);
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> clusters = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 64, 1000);
+
+        auto [mapping, reliableCount] = GIS_Algs::SignalMatching::MatchFromClusters(clusters);
+        //РїСЂРѕРІРµСЂРєР° Р·РґРµСЃСЊ
+
+
 
         /*for (int i = 0; i < result.size(); ++i) {
             if (result[i].first >= kGraph1.GetNodeCount())
@@ -69,19 +74,19 @@ namespace GIS_Core {
         }*/
 
         int count = 0;
-        for (int i = 0; i < result.size(); ++i) if (result[i].first == result[i].second) count++;
+        for (int i = 0; i < clusters.size(); ++i) if (clusters[i].first == clusters[i].second) count++;
 
         std::cout << "Node count:" << kGraph1.GetNodeCount();
         std::cout << "\nChain count:" << kGraph1.GetHyperEdgeCount();
         std::cout << "\nSame numers match count:" << count;
-        std::cout << "\nResult size:" << result.size() << "\n";
+        std::cout << "\nResult size:" << clusters.size() << "\n";
     }
 
     void Benchmark::MaxMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
 
         GIS_Data::BipartGraph bGraph = GIS_Data::BipartGraph(kGraph1, kGraph2);
 
-        //отображение двудольного графа
+        //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         /*for (int i = 0; i < bGraph.GetAdjList().size(); ++i) {
             std::cout << i << ": ";
             for (int j = 0; j < bGraph.GetAdjList()[i].size(); ++j) {
