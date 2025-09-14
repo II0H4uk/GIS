@@ -8,10 +8,10 @@
 #include "ValidateMatch.h"
 #include <EnhancedMatching.h>
 #include <SignalMatching.h>
+#include <CheckMatching.h>
 #include <queue>
 
 namespace GIS_Core {
-
     int CountLevels(const std::vector<std::vector<int>>& adjList,
         const std::vector<int>& startVertices) {
         int n = (int)adjList.size();
@@ -45,7 +45,9 @@ namespace GIS_Core {
         return levels;
     }
 
-    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {/*
+    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
+        int b = 0;
+        /*
         int a = 0;
         int b = 0;
         int c = 0;
@@ -62,8 +64,20 @@ namespace GIS_Core {
 
         std::vector<std::pair<std::vector<int>, std::vector<int>>> clusters = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 64, 1000);
 
+  
         auto [mapping, reliableCount] = GIS_Algs::SignalMatching::MatchFromClusters(clusters);
         //проверка здесь
+
+        // Проверяем достоверность
+        auto reliable = GIS_Algs::CheckMatching::ValidateMappings(mapping, reliableCount, kGraph1, kGraph2);
+
+        // Анализируем результаты
+        reliableCount = 0;
+        for (bool isReliable : reliable) {
+            if (isReliable) reliableCount++;
+        }
+
+        std::cout << "Достоверных назначений: " << reliableCount << " из " << mapping.size() << std::endl;
 
 
 
