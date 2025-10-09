@@ -11,25 +11,46 @@ namespace GIS_Algs {
         std::vector<int> inputs1 = GetInputNets(g1);
         std::vector<int> inputs2 = GetInputNets(g2);
 
-        MatchInputs(g1, inputs1, g2, inputs2);
+        std::vector<int> vddId;
+        if (FindId(g1.GetNetName(), "vdd!", inputs1.size()) != -1)
+            vddId.push_back(FindId(g1.GetNetName(), "vdd!", inputs1.size()));
+        if (FindId(g1.GetNetName(), "VDD_PAD!", inputs1.size()) != -1)
+            vddId.push_back(FindId(g1.GetNetName(), "VDD_PAD!", inputs1.size()));
+        std::vector<int> gndId;
+        if (FindId(g1.GetNetName(), "gnd!", inputs1.size()) != -1)
+            gndId.push_back(FindId(g1.GetNetName(), "gnd!", inputs1.size()));
+        if (FindId(g1.GetNetName(), "GND_PAD!", inputs1.size()) != -1)
+            gndId.push_back(FindId(g1.GetNetName(), "GND_PAD!", inputs1.size()));
 
-        std::vector<std::vector<double>> inputSignals = GenerateSignals(inputs1.size(), iterations);
+        //MatchInputs(g1, inputs1, g2, inputs2);
+
+        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), iterations, vddId, gndId);
 
         std::vector<int> topo1 = GetTopoOrder(g1, inputs1);
         std::vector<int> topo2 = GetTopoOrder(g2, inputs2);
 
-        std::vector<std::vector<double>> S1 = RunStochastic(g1, topo1, inputs1, iterations, inputSignals);
-        std::vector<std::vector<double>> S2 = RunStochastic(g2, topo2, inputs2, iterations, inputSignals);
+        std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, iterations, inputSignals);
+        std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, iterations, inputSignals);
 
         std::vector<std::pair<std::vector<int>, std::vector<int>>> elemMap = MatchElems(g1, S1, g2, S2, quantScale);
 
         return elemMap;
     }
 
+    int SignalMatching::FindId(const std::vector<std::string>& netNames, const std::string& name, int n) {
+        auto it = std::find(netNames.begin(), netNames.begin() + n, name);
+
+        if (it != netNames.begin() + n) {
+            return std::distance(netNames.begin(), it);  // Возвращаем индекс
+        }
+
+        return -1;
+    }
+
     // Отрефакторено
     std::vector<int> SignalMatching::GetInputNets(const GIS_Data::KoenigGraph& g) {
 
-        if (g.GetInputChains().size() != 0)
+        if (g.GetInputChains().size() != 0) //временное решение, так-то должно быть закомиченным
             return g.GetInputChains();
 
         std::vector<int> inputs;
@@ -78,8 +99,8 @@ namespace GIS_Algs {
 
     // Отрефакторено
     std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::MatchElems(
-        const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<double>>& S1,
-        const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<double>>& S2,
+        const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<int>>& S1,
+        const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<int>>& S2,
         int quantScale
     ) {
         std::vector<std::pair<int, int>> mapping;
@@ -179,13 +200,21 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<std::vector<double>> SignalMatching::GenerateSignals(int inputsCount, int iterations) {
+    std::vector<std::vector<int>> SignalMatching::GenerateSignals(int inputsCount, int iterations, const std::vector<int>& vdd, const std::vector<int>& gnd) {
         std::mt19937 rng;
-        std::uniform_real_distribution<> signals(0.0, 1.0);
-        std::vector<std::vector<double>> inputSignals(iterations, std::vector<double>(inputsCount, 0));
+        std::uniform_int_distribution<> signals(0, 1);
+
+        std::vector<std::vector<int>> inputSignals(iterations, std::vector<int>(inputsCount, 0));
         for (int it = 0; it < iterations; ++it)
             for (int i = 0; i < inputSignals[it].size(); ++i)
                 inputSignals[it][i] = signals(rng);
+
+        for (int i = 0; i < iterations; ++i) {
+            for (int j = 0; j < vdd.size(); ++j)
+                inputSignals[i][vdd[j]] = 1;
+            for (int j = 0; j < gnd.size(); ++j)
+                inputSignals[i][gnd[j]] = 0;
+        }
         return inputSignals;
     }
 
@@ -215,13 +244,13 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<std::vector<double>> SignalMatching::RunStochastic(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputNetsG, int iterations, std::vector<std::vector<double>>& inputBits) {
-        std::vector<std::vector<double>> values(g.GetNodeCount() + g.GetHyperEdgeCount());
+    std::vector<std::vector<int>> SignalMatching::RunStochastic(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputNetsG, int iterations, std::vector<std::vector<int>>& inputBits) {
+        std::vector<std::vector<int>> values(g.GetNodeCount() + g.GetHyperEdgeCount());
         for (int i = 0; i < values.size(); ++i)
             values[i].reserve(iterations);
 
         for (int i = 0; i < iterations; ++i) {
-            std::vector<double> buf = SimulateOnce(g, topoOrder, inputNetsG, inputBits[i]);
+            std::vector<int> buf = SimulateOnce(g, topoOrder, inputNetsG, inputBits[i]);
 
             for (int j = 0; j < values.size(); ++j)
                 values[j].push_back(buf[j]);
@@ -287,13 +316,13 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<double> SignalMatching::SimulateOnce(
+    std::vector<int> SignalMatching::SimulateOnce(
         const GIS_Data::KoenigGraph& g,
         const std::vector<int>& topoOrder,
         const std::vector<int>& inputNets,
-        const std::vector<double>& inputBits
+        const std::vector<int>& inputBits
     ) {
-        std::vector<double> value(g.GetNodeCount() + g.GetHyperEdgeCount(), 0.0);
+        std::vector<int> value(g.GetNodeCount() + g.GetHyperEdgeCount(), 0.0);
 
         for (int i = 0; i < inputNets.size(); ++i)
             value[inputNets[i]] = inputBits[i];
@@ -302,22 +331,31 @@ namespace GIS_Algs {
             char elType = e < g.GetNodeCount() ? g.GetElements()[e].GetType() : 'N';
             switch (elType) {
             case 'M':
-                if (value[g.GetAdjListT()[e][1]] > 0.6)
+                if ((value[g.GetAdjListT()[e][1]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
+                    (value[g.GetAdjListT()[e][1]] == 0 && g.GetElements()[e].GetChType() == 'p'))
+                    value[e] = value[g.GetAdjListT()[e][0]];
+                break;
+            case 'C':
+                if ((value[g.GetAdjListT()[e][1]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
+                    (value[g.GetAdjListT()[e][1]] == 0 && g.GetElements()[e].GetChType() == 'p'))
                     value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             case 'D':
-                if (value[g.GetAdjListT()[e][0]] > 0.8)
+                if (value[g.GetAdjListT()[e][0]] == 1)
                     value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             case 'R':
-                if (value[g.GetAdjListT()[e][0]] > 0.1)
-                    value[e] = value[g.GetAdjListT()[e][0]];
-                break;
-            case 'N':
                 value[e] = value[g.GetAdjListT()[e][0]];
                 break;
+            case 'N':
+                for (int i = 0; i < g.GetAdjListT()[e].size(); ++i)
+                    if (value[g.GetAdjListT()[e][i]] == 1) {
+                        value[e] = 1;
+                        break;
+                    }
+                break;
             default:
-                if (value[g.GetAdjListT()[e][0]] > 0.5)
+                if (value[g.GetAdjListT()[e][0]] == 1)
                     value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             }
@@ -332,7 +370,7 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::string SignalMatching::QuantKey(const std::vector<double>& sig, int scale) {
+    std::string SignalMatching::QuantKey(const std::vector<int>& sig, int scale) {
         std::string key;
         key.reserve(sig.size() * std::log10(scale) + sig.size() - 1);
 

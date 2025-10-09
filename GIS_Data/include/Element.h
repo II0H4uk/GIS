@@ -7,6 +7,7 @@ namespace GIS_Data {
     class Element {
     private:
         char type;
+        char channelType;
         std::vector<int> nets;
         std::vector<double> size;
         int pinCount;
@@ -15,9 +16,10 @@ namespace GIS_Data {
         int forwardAdjLevel;
         int backwardAdjLevel;
     public:
-        Element(const std::string& type, const std::vector<int>& nets, const std::vector<double>& size, const std::vector<int>& neighDeg, const int forwardAdjLevel, const int backwardAdjLevel);
+        Element(const std::string& type, const std::string& chType, const std::vector<int>& nets, const std::vector<double>& size, const std::vector<int>& neighDeg, const int forwardAdjLevel, const int backwardAdjLevel);
 
         const char GetType() const;
+        const char GetChType() const;
         const std::vector<int>& GetNets() const;
         const std::vector<double>& GetSize() const;
         const int GetPinCount() const;

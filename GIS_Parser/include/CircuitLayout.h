@@ -7,15 +7,11 @@
 namespace GIS_Parser {
     class CircuitLayout {
     private:
-        static int netsCount;
-        static std::unordered_map<std::string, int> circuitsId;
-        static std::vector<Circuits::Utils::Subcircuit> circuits;
-        static Circuits::Utils::Subcircuit mainCirc;
+        static int elCounter;
 
-        static void Init(const std::vector<Circuits::Utils::Subcircuit>& circuits);
-        static int FindMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits);
-        static void CreateSubCircuit(int index, const std::vector<int>& inputNets);
-        static std::vector<int> GetNets(const std::vector<std::string>& chain, std::unordered_map<std::string, int>& nets);
+        static int FindMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits, std::unordered_map<std::string, int>& circuitsId);
+        static void CreateSubCircuit(int index, const std::vector<int>& inputNets, std::unordered_map<std::string, int>& circuitsId, const std::vector<Circuits::Utils::Subcircuit>& circuits, Circuits::Utils::Subcircuit& mainCirc);
+        static std::vector<int> GetNets(const std::vector<std::string>& chain, std::unordered_map<std::string, int>& nets, Circuits::Utils::Subcircuit& mainCirc);
     public:
         static Circuits::Utils::Subcircuit CreateMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits);
     };

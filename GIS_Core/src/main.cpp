@@ -28,6 +28,22 @@ int main(int argc, char* argv[]) {
     auto kGraphE = high_resolution_clock::now();
     auto kGraphT = std::chrono::duration_cast<milliseconds>(kGraphE - kGraphS);
 
+    for (int i = 0; i < koenG1.GetAdjList().size(); ++i) {
+        if (i < circuit1.components.size())
+            std::cout << circuit1.components[i].id << ": ";
+        else
+            std::cout << "N" << i - circuit1.components.size() << ": ";
+
+        for (int j = 0; j < koenG1.GetAdjList()[i].size(); ++j) {
+            if (koenG1.GetAdjList()[i][j] < circuit1.components.size())
+                std::cout << circuit1.components[koenG1.GetAdjList()[i][j]].id << ", ";
+            else
+                std::cout << "N" << koenG1.GetAdjList()[i][j] - circuit1.components.size() << ", ";
+            
+        }
+        std::cout << "\n";
+    }
+
     //GIS_Core::Benchmark::MaxMatching(koenG1, koenG2);
 
     auto algS = high_resolution_clock::now();

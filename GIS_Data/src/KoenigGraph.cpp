@@ -10,10 +10,11 @@ namespace GIS_Data {
         adjList(nodeCount + hyperEdgeCount),
         adjListT(nodeCount + hyperEdgeCount),
         netList(hyperEdgeCount),
-        inputChains(circuit.inputNets) {
+        netName(hyperEdgeCount),
+        inputChains(circuit.pins.size()) {
 
         for (int i = 0; i < inputChains.size(); ++i)
-            inputChains[i] += nodeCount;
+            inputChains[i] = i + nodeCount;
 
         for (int i = 0; i < circuit.components.size(); ++i) {
             elemsType[circuit.components[i].id[0]].push_back(i);
@@ -21,29 +22,48 @@ namespace GIS_Data {
                 netList[circuit.components[i].chainInt[j]].push_back(i);
         }
 
-        for (int i = 0; i < hyperEdgeCount; ++i) {
-            int currHyperEdge = nodeCount + i;
-            elemsType['N'].push_back(i + hyperEdgeCount - 1);
-
-            for (int node : netList[i]) {   //circuit.components[node].chainInt.back() == i
-                if (adjList[node].size() == 0 && CheckPinDir(circuit.components[node].id[0], i, circuit.components[node].chainInt)) {
-                    adjList[node].push_back(currHyperEdge);
-                    adjListT[currHyperEdge].push_back(node);
-                }
-                else {
-                    adjList[currHyperEdge].push_back(node);
-                    adjListT[node].push_back(currHyperEdge);
-                }
+        for (auto net : circuit.netsToInt) {
+            for (int i = 0; i < net.second.size(); ++i) {
+                netName[net.second[i]] = net.first;
             }
+        }
+
+        /*std::unordered_map<std::string, int> a;
+        std::unordered_map<std::string, int> b;
+        for (int i = 0; i < circuit.components.size(); ++i) {
+            if (circuit.components[i].id[0] == 'M') {
+                a[circuit.components[i].typeComponent]++;
+                b[circuit.components[i].channelType]++;
+            }
+        }*/
+
+        for (int i = 0; i < nodeCount; ++i) {
+            for (int j = 0; j < circuit.components[i].chainInt.size(); ++j) {
+                int currNet = circuit.components[i].chainInt[j] + nodeCount;
+                if (circuit.components[i].id[0] == 'M' || circuit.components[i].id[0] == 'C') {
+                    if (j == 0)
+                        AddEdge(i, currNet);
+                    else
+                        AddEdge(currNet, i);
+                    continue;
+                }
+                if (j == 0)
+                    AddEdge(i, currNet);
+                else
+                    AddEdge(currNet, i);
+            }
+        }
+
+        for (int i = 0; i < hyperEdgeCount; ++i) {
+            elemsType['N'].push_back(nodeCount + i);
         }
 
         InitElems(circuit, false);
     }
 
-    bool KoenigGraph::CheckPinDir(char type, int net, const std::vector<int>& chains) {
-        return (type != 'M' && chains[1] == net) ||
-            (type == 'M' && chains.size() == 4 && chains[2] == net) ||
-            (type == 'M' && chains.size() == 3 && chains[2] == net);
+    void KoenigGraph::AddEdge(int start, int end) {
+        adjList[start].push_back(end);
+        adjListT[end].push_back(start);
     }
 
     void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {
@@ -53,7 +73,7 @@ namespace GIS_Data {
         if (isNode) {
             nodeCount += diff;
             for (int i = 0; i < diff; ++i) {
-                elements.push_back(Element("empty", {}, {}, {}, 0, 0));
+                elements.push_back(Element("empty", "", {}, {}, {}, 0, 0));
             }
         }
         else {
@@ -146,9 +166,9 @@ namespace GIS_Data {
         std::vector<Circuits::Utils::TopologyComponent> c = circuit.components;
         for (int i = 0; i < nodeCount; ++i)
             if (topology)
-                elements.push_back(Element(c[i].id, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, neighDeg[i], adjLv[0][i], adjLv[1][i]));
+                elements.push_back(Element(c[i].id, c[i].channelType, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, neighDeg[i], adjLv[0][i], adjLv[1][i]));
             else
-                elements.push_back(Element(c[i].id, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, { }, -1, -1));
+                elements.push_back(Element(c[i].id, c[i].channelType, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, { }, -1, -1));
 
     }
 
@@ -204,6 +224,10 @@ namespace GIS_Data {
 
     const std::vector<std::vector<int>>& KoenigGraph::GetNetList() const {
         return netList;
+    }
+
+    const std::vector<std::string>& KoenigGraph::GetNetName() const {
+        return netName;
     }
 
     const std::vector<Element>& KoenigGraph::GetElements() const {

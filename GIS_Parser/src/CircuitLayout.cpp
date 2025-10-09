@@ -3,31 +3,30 @@
 #include <unordered_map>
 
 namespace GIS_Parser {
-    
-    int CircuitLayout::netsCount = 0;
-    std::unordered_map<std::string, int> CircuitLayout::circuitsId;
-    std::vector<Circuits::Utils::Subcircuit> CircuitLayout::circuits;
-    Circuits::Utils::Subcircuit CircuitLayout::mainCirc;
+
+    int CircuitLayout::elCounter = 0;
 
     Circuits::Utils::Subcircuit CircuitLayout::CreateMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
-        Init(circuits);
+        std::unordered_map<std::string, int> circuitsId;
+        Circuits::Utils::Subcircuit mainCirc;
 
-        int mainCircInd = FindMainCircuit(circuits);
+        for (int i = 0; i < circuits.size(); ++i)
+            circuitsId[circuits[i].name] = i;
+
+        int mainCircInd = FindMainCircuit(circuits, circuitsId);
 
         mainCirc.name = circuits[mainCircInd].name;
         mainCirc.pins = circuits[mainCircInd].pins;
 
         std::unordered_map<std::string, int> nets;
-        mainCirc.inputNets = GetNets(mainCirc.pins, nets);
+        std::vector<int> inputNets = GetNets(mainCirc.pins, nets, mainCirc);
 
-        CreateSubCircuit(mainCircInd, mainCirc.inputNets);
-
-        mainCirc.netsCount = netsCount;
+        CreateSubCircuit(mainCircInd, inputNets, circuitsId, circuits, mainCirc);
 
         return mainCirc;
     }
 
-    void CircuitLayout::CreateSubCircuit(int index, const std::vector<int>& inputNets) {
+    void CircuitLayout::CreateSubCircuit(int index, const std::vector<int>& inputNets, std::unordered_map<std::string, int>& circuitsId, const std::vector<Circuits::Utils::Subcircuit>& circuits, Circuits::Utils::Subcircuit& mainCirc) {
         Circuits::Utils::Subcircuit currCirc = circuits[index];
         std::unordered_map<std::string, int> nets;
 
@@ -35,32 +34,35 @@ namespace GIS_Parser {
             nets[currCirc.pins[i]] = inputNets[i];
 
         for (int i = 0; i < currCirc.components.size(); ++i) {
-            std::vector<int> intVals = GetNets(currCirc.components[i].chain, nets);
+            std::vector<int> intVals = GetNets(currCirc.components[i].chain, nets, mainCirc);
 
             if (!currCirc.components[i].id.starts_with("X")) {
                 mainCirc.components.push_back(currCirc.components[i]);
+                mainCirc.components.back().id = mainCirc.components.back().id[0] + std::to_string(elCounter++);
 
                 mainCirc.components.back().chainInt = intVals;
                 continue;
             }
 
-            CreateSubCircuit(circuitsId[currCirc.components[i].typeComponent], intVals);
+            CreateSubCircuit(circuitsId[currCirc.components[i].typeComponent], intVals, circuitsId, circuits, mainCirc);
         }
     }
 
-    std::vector<int> CircuitLayout::GetNets(const std::vector<std::string>& chain, std::unordered_map<std::string, int>& nets) {
+    std::vector<int> CircuitLayout::GetNets(const std::vector<std::string>& chain, std::unordered_map<std::string, int>& nets, Circuits::Utils::Subcircuit& mainCirc) {
         std::vector<int> vals;
         vals.reserve(chain.size());
 
         for (int i = 0; i < chain.size(); ++i) {
-            if (nets.find(chain[i]) == nets.end())
-                nets[chain[i]] = netsCount++;
+            if (nets.find(chain[i]) == nets.end()) {
+                nets[chain[i]] = mainCirc.netsCount++;
+                mainCirc.netsToInt[chain[i]].push_back(nets[chain[i]]);
+            }
             vals.push_back(nets[chain[i]]);
         }
         return vals;
     }
 
-    int CircuitLayout::FindMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
+    int CircuitLayout::FindMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits, std::unordered_map<std::string, int>& circuitsId) {
         std::vector<bool> used(circuits.size());
         for (int i = 0; i < circuits.size(); ++i)
             if (circuits[i].components.size() == 0)
@@ -78,15 +80,5 @@ namespace GIS_Parser {
             if (!used[i])
                 return i;
         return -1;
-    }
-
-    void CircuitLayout::Init(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
-        netsCount = 0;
-        circuitsId.clear();
-        CircuitLayout::circuits = circuits;
-        mainCirc = Circuits::Utils::Subcircuit();
-
-        for (int i = 0; i < circuits.size(); ++i)
-            circuitsId[circuits[i].name] = i;
     }
 }

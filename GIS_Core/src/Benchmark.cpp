@@ -9,6 +9,7 @@
 #include <EnhancedMatching.h>
 #include <SignalMatching.h>
 #include <queue>
+#include <set>
 
 namespace GIS_Core {
 
@@ -45,10 +46,11 @@ namespace GIS_Core {
         return levels;
     }
 
-    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {/*
+    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
         int a = 0;
         int b = 0;
         int c = 0;
+        int d = 0;
         for (int i = 0; i < kGraph1.GetNodeCount(); ++i) {
             if (kGraph1.GetAdjListT()[i].size() == 1)
                 a++;
@@ -56,11 +58,20 @@ namespace GIS_Core {
                 b++;
             if (kGraph1.GetAdjListT()[i].size() == 3)
                 c++;
-        }*/
+            if (kGraph1.GetAdjList()[i].size() == 1)
+                d++;
+        }
+
+        std::map<std::pair<int, int>, int> netInputPinsCount;
+        int f = 0;
+        for (int i = 0; i < kGraph1.GetHyperEdgeCount(); ++i) {
+            std::pair test = { kGraph1.GetAdjListT()[i + kGraph1.GetNodeCount()].size(), kGraph1.GetAdjList()[i + kGraph1.GetNodeCount()].size() };
+            netInputPinsCount[test]++;
+        }
 
         int levels = CountLevels(kGraph1.GetAdjList(), kGraph1.GetInputChains());
 
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 64, 1000);
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 32, 100);
 
         /*for (int i = 0; i < result.size(); ++i) {
             if (result[i].first >= kGraph1.GetNodeCount())

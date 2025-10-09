@@ -17,6 +17,7 @@ namespace GIS_Data {
         std::vector<std::vector<int>> netList;
         std::vector<int> inputChains;
         std::unordered_map<char, std::vector<int>> elemsType;
+        std::vector<std::string> netName;
         std::vector<Element> elements;
 
         std::vector<std::vector<int>> CalcNeighDeg();
@@ -25,13 +26,14 @@ namespace GIS_Data {
         std::vector<int> FindEnd();
         std::vector<int> Levels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startNodes);
         void InitElems(const Circuits::Utils::Subcircuit& circuit, bool topology);
-        bool CheckPinDir(char type, int net, const std::vector<int>& chains);
+        void AddEdge(int start, int end);
     public:
         KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
 
         const std::vector<std::vector<int>>& GetAdjList() const;
         const std::vector<std::vector<int>>& GetAdjListT() const;
         const std::vector<std::vector<int>>& GetNetList() const;
+        const std::vector<std::string>& GetNetName() const;
         const std::vector<Element>& GetElements() const;
         const std::vector<int>& GetInputChains() const;
         const int GetNodeCount() const;

@@ -3,8 +3,9 @@
 
 namespace GIS_Data {
 
-    GIS_Data::Element::Element(const std::string& type, const std::vector<int>& nets, const std::vector<double>& size, const std::vector<int>& neighDeg, const int forwardAdjLevel, const int backwardAdjLevel) :
+    GIS_Data::Element::Element(const std::string& type, const std::string& chType, const std::vector<int>& nets, const std::vector<double>& size, const std::vector<int>& neighDeg, const int forwardAdjLevel, const int backwardAdjLevel) :
         type(type[0]),
+        channelType(chType[0]),
         pinCount(nets.size()),
         nets(nets),
         size(size),
@@ -14,6 +15,10 @@ namespace GIS_Data {
 
     const char Element::GetType() const {
         return type;
+    }
+
+    const char Element::GetChType() const {
+        return channelType;
     }
 
     const int Element::GetPinCount() const {

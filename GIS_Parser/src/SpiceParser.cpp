@@ -18,6 +18,7 @@ Circuits::Utils::Subcircuit Circuits::Utils::SpiceParser::ParseSPICE(const std::
 
         // Delete comments and empty rows.
         line.erase(0, line.find_first_not_of(" \t\r\n"));
+
         if (line.empty() || line[0] == '*') continue;
         if (line.substr(0, 7) == ".SUBCKT")
             subcircuits.push_back(Circuits::Utils::SpiceParser::ExtractSubcircuit(file, line));
@@ -151,6 +152,16 @@ Circuits::Utils::TopologyComponent Circuits::Utils::SpiceParser::parseComponent(
         parsedComponent.typeComponent = parsedComponent.chain.back();
         parsedComponent.chain.pop_back();
 
+        if (parsedComponent.id[0] == 'M') {
+            if (parsedComponent.typeComponent.length() >= 4 && parsedComponent.typeComponent.substr(1, 3) == "mos") {
+                parsedComponent.channelType = parsedComponent.typeComponent[0];
+            }
+            if (parsedComponent.typeComponent.length() >= 7 && parsedComponent.typeComponent.substr(0, 5) == "cpoly") {
+                parsedComponent.channelType = parsedComponent.typeComponent[6];
+                parsedComponent.id[0] = 'C';
+            }
+        }
+        
         if (parsedComponent.id[0] == 'R') {
             parsedComponent.parametersComponent["R"] = std::stod(parsedComponent.chain.back());
             parsedComponent.chain.pop_back();
