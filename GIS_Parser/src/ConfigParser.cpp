@@ -8,11 +8,9 @@ namespace GIS_Parser {
         if (!file.is_open())
             throw std::runtime_error("Bad config file: " + filePath);
 
-        std::string line;
+        std::unordered_map<std::string, std::string> config;
 
-        std::string input1;
-        std::string input2;
-        std::string output;
+        std::string line;
 
         while (std::getline(file, line)) {
             line.erase(line.find_last_not_of(" \t\r\n") + 1);
@@ -24,20 +22,12 @@ namespace GIS_Parser {
             if (pos == std::string::npos)
                 continue;
 
-            std::string key = line.substr(0, pos);
-            std::string val = line.substr(pos + 1);
-
-            if (key == "Input1")
-                input1 = val;
-            else if (key == "Input2")
-                input2 = val;
-            else if (key == "Output")
-                output = val;
+            config[line.substr(0, pos)] = line.substr(pos + 1);
         }
 
         file.close();
 
-        return GIS_Data::Config(input1,input2, output);
+        return GIS_Data::Config(config);
     }
 }
 

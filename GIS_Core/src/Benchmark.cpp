@@ -8,83 +8,18 @@
 #include "ValidateMatch.h"
 #include <EnhancedMatching.h>
 #include <SignalMatching.h>
+#include <Utils.h>
 #include <queue>
 #include <set>
 
 namespace GIS_Core {
 
-    int CountLevels(const std::vector<std::vector<int>>& adjList,
-        const std::vector<int>& startVertices) {
-        int n = (int)adjList.size();
-        std::vector<char> visited(n, 0);
-        std::queue<int> q;
+    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, const GIS_Data::Config& config) {
 
-        // Добавляем стартовые вершины
-        for (int s : startVertices) {
-            if (!visited[s]) {
-                visited[s] = 1;
-                q.push(s);
-            }
-        }
-
-        int levels = 0;
-        while (!q.empty()) {
-            int sz = (int)q.size();
-            // Обрабатываем один уровень
-            for (int i = 0; i < sz; ++i) {
-                int u = q.front(); q.pop();
-                for (int v : adjList[u]) {
-                    if (!visited[v]) {
-                        visited[v] = 1;
-                        q.push(v);
-                    }
-                }
-            }
-            ++levels;
-        }
-
-        return levels;
-    }
-
-    void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
-        int a = 0;
-        int b = 0;
-        int c = 0;
-        int d = 0;
-        for (int i = 0; i < kGraph1.GetNodeCount(); ++i) {
-            if (kGraph1.GetAdjListT()[i].size() == 1)
-                a++;
-            if (kGraph1.GetAdjListT()[i].size() == 2)
-                b++;
-            if (kGraph1.GetAdjListT()[i].size() == 3)
-                c++;
-            if (kGraph1.GetAdjList()[i].size() == 1)
-                d++;
-        }
-
-        std::map<std::pair<int, int>, int> netInputPinsCount;
-        int f = 0;
-        for (int i = 0; i < kGraph1.GetHyperEdgeCount(); ++i) {
-            std::pair test = { kGraph1.GetAdjListT()[i + kGraph1.GetNodeCount()].size(), kGraph1.GetAdjList()[i + kGraph1.GetNodeCount()].size() };
-            netInputPinsCount[test]++;
-        }
-
-        int levels = CountLevels(kGraph1.GetAdjList(), kGraph1.GetInputChains());
-
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, 32, 100);
-
-        /*for (int i = 0; i < result.size(); ++i) {
-            if (result[i].first >= kGraph1.GetNodeCount())
-                break;
-            std::cout << result[i].first << " -> " << result[i].second << "\n";
-        }*/
-
-        int count = 0;
-        for (int i = 0; i < result.size(); ++i) if (result[i].first == result[i].second) count++;
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, config.GetIterations(), config.GetQuantScale());
 
         std::cout << "Node count:" << kGraph1.GetNodeCount();
         std::cout << "\nChain count:" << kGraph1.GetHyperEdgeCount();
-        std::cout << "\nSame numers match count:" << count;
         std::cout << "\nResult size:" << result.size() << "\n";
     }
 

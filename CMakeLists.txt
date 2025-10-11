@@ -24,6 +24,7 @@ add_subdirectory(GIS_Algs)
 add_subdirectory(GIS_Generator)
 add_subdirectory(GIS_Parser)
 add_subdirectory(GIS_Stats)
+add_subdirectory(GIS_Utils)
 add_subdirectory(GIS_Core)
 
 # Add subdirectory responsible for testing.

@@ -7,9 +7,11 @@ target_sources(GIS_Algs
 		src/EnhancedMatching.cpp
 		src/SignalMatching.cpp
 		src/pch.cpp
+		src/AlgStrat.cpp
 		include/MaxMatching.h
 		include/EnhancedMatching.h
 		include/SignalMatching.h
+		include/AlgStrat.h
 )
 
 # add headers

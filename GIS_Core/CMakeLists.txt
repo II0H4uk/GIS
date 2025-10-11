@@ -25,6 +25,7 @@ target_link_libraries(GIS_Core
 		GIS_Generator
 		GIS_Parser
 		GIS_Stats
+		GIS_Utils
 )
 
 # add pch

@@ -1,0 +1,2276 @@
+************************************************************************
+* auCdl Netlist:
+* 
+* Library Name:  Z11_RAM8Mb_8_16_32_OO_161219
+* Top Cell Name: RingPad
+* View Name:     schematic
+* Netlisted on:  May  5 21:53:08 2020
+************************************************************************
+
+*.EQUATION
+*.SCALE METER
+*.MEGA
+.PARAM
+
+*.GLOBAL vdd!
++        gnd!
++        GND_PAD!
++        VDD_PAD!
+
+*.PIN vdd!
+*+    gnd!
+*+    GND_PAD!
+*+    VDD_PAD!
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    RingPad_NOR
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT RingPad_NOR In1 In2 Out
+*.PININFO In1:I In2:I Out:O
+MM8 Out In1 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM6 Out In2 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM5 net11 In1 vdd! vdd! pmos_a W=2.4u L=240n W_CONT=600n NFING=1
+MM7 Out In2 net11 net11 pmos_a W=2.4u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    RingPad_EOR
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT RingPad_EOR in1 in2 out
+*.PININFO in1:I in2:I out:O
+MM1 net9 in2 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM2 net12 in1 net9 net9 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM7 net15 in2 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=2
+MM8 net21 net12 net15 net15 nmos_a W=1.2u L=240n W_CONT=600n NFING=2
+MM9 net15 in1 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=2
+MM11 out net21 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM6 net12 in1 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM0 net12 in2 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM3 net32 in1 vdd! vdd! pmos_a W=2.4u L=240n W_CONT=600n NFING=2
+MM4 net21 in2 net32 net32 pmos_a W=2.4u L=240n W_CONT=600n NFING=2
+MM5 net21 net12 vdd! vdd! pmos_a W=2.4u L=240n W_CONT=600n NFING=1
+MM10 out net21 vdd! vdd! pmos_a W=2.4u L=240n W_CONT=600n NFING=4
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PAD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PAD In PAD gnd1 gnd2 vdd1 vdd2
+*.PININFO In:O PAD:B gnd1:B gnd2:B vdd1:B vdd2:B
+RI90 In PAD 301.1714 $[rnpoly] $W=4u $L=10u M=1
+DI3<1> PAD vdd1 dn 0 200u m=1
+DI3<2> PAD vdd1 dn 0 200u m=1
+DI3<3> PAD vdd1 dn 0 200u m=1
+DI3<4> PAD vdd1 dn 0 200u m=1
+DI3<5> PAD vdd1 dn 0 200u m=1
+DI3<6> PAD vdd1 dn 0 200u m=1
+DI3<7> PAD vdd1 dn 0 200u m=1
+DI3<8> PAD vdd1 dn 0 200u m=1
+DI3<9> PAD vdd1 dn 0 200u m=1
+DI3<10> PAD vdd1 dn 0 200u m=1
+DI3<11> PAD vdd1 dn 0 200u m=1
+DI3<12> PAD vdd1 dn 0 200u m=1
+DI3<13> PAD vdd1 dn 0 200u m=1
+DI3<14> PAD vdd1 dn 0 200u m=1
+DI3<15> PAD vdd1 dn 0 200u m=1
+DI3<16> PAD vdd1 dn 0 200u m=1
+DI3<17> PAD vdd1 dn 0 200u m=1
+DI3<18> PAD vdd1 dn 0 200u m=1
+DI3<19> PAD vdd1 dn 0 200u m=1
+DI3<20> PAD vdd1 dn 0 200u m=1
+DI3<21> PAD vdd1 dn 0 200u m=1
+DI3<22> PAD vdd1 dn 0 200u m=1
+DI3<23> PAD vdd1 dn 0 200u m=1
+DI3<24> PAD vdd1 dn 0 200u m=1
+DI3<25> PAD vdd1 dn 0 200u m=1
+DI3<26> PAD vdd1 dn 0 200u m=1
+DI2<1> gnd2 In dn 0 5u m=1
+DI2<2> gnd2 In dn 0 5u m=1
+DI5<1> gnd1 PAD dn 0 100u m=1
+DI5<2> gnd1 PAD dn 0 100u m=1
+DI5<3> gnd1 PAD dn 0 100u m=1
+DI5<4> gnd1 PAD dn 0 100u m=1
+DI5<5> gnd1 PAD dn 0 100u m=1
+DI5<6> gnd1 PAD dn 0 100u m=1
+DI5<7> gnd1 PAD dn 0 100u m=1
+DI5<8> gnd1 PAD dn 0 100u m=1
+DI5<9> gnd1 PAD dn 0 100u m=1
+DI5<10> gnd1 PAD dn 0 100u m=1
+DI5<11> gnd1 PAD dn 0 100u m=1
+DI5<12> gnd1 PAD dn 0 100u m=1
+DI6<1> PAD vdd1 dn 0 100u m=1
+DI6<2> PAD vdd1 dn 0 100u m=1
+DI6<3> PAD vdd1 dn 0 100u m=1
+DI6<4> PAD vdd1 dn 0 100u m=1
+DI6<5> PAD vdd1 dn 0 100u m=1
+DI6<6> PAD vdd1 dn 0 100u m=1
+DI6<7> PAD vdd1 dn 0 100u m=1
+DI6<8> PAD vdd1 dn 0 100u m=1
+DI6<9> PAD vdd1 dn 0 100u m=1
+DI6<10> PAD vdd1 dn 0 100u m=1
+DI6<11> PAD vdd1 dn 0 100u m=1
+DI6<12> PAD vdd1 dn 0 100u m=1
+DI4<1> gnd1 PAD dn 0 200u m=1
+DI4<2> gnd1 PAD dn 0 200u m=1
+DI4<3> gnd1 PAD dn 0 200u m=1
+DI4<4> gnd1 PAD dn 0 200u m=1
+DI4<5> gnd1 PAD dn 0 200u m=1
+DI4<6> gnd1 PAD dn 0 200u m=1
+DI4<7> gnd1 PAD dn 0 200u m=1
+DI4<8> gnd1 PAD dn 0 200u m=1
+DI4<9> gnd1 PAD dn 0 200u m=1
+DI4<10> gnd1 PAD dn 0 200u m=1
+DI4<11> gnd1 PAD dn 0 200u m=1
+DI4<12> gnd1 PAD dn 0 200u m=1
+DI4<13> gnd1 PAD dn 0 200u m=1
+DI4<14> gnd1 PAD dn 0 200u m=1
+DI4<15> gnd1 PAD dn 0 200u m=1
+DI4<16> gnd1 PAD dn 0 200u m=1
+DI4<17> gnd1 PAD dn 0 200u m=1
+DI4<18> gnd1 PAD dn 0 200u m=1
+DI4<19> gnd1 PAD dn 0 200u m=1
+DI4<20> gnd1 PAD dn 0 200u m=1
+DI4<21> gnd1 PAD dn 0 200u m=1
+DI4<22> gnd1 PAD dn 0 200u m=1
+DI4<23> gnd1 PAD dn 0 200u m=1
+DI4<24> gnd1 PAD dn 0 200u m=1
+DI4<25> gnd1 PAD dn 0 200u m=1
+DI4<26> gnd1 PAD dn 0 200u m=1
+DI1<1> In vdd2 dn 0 5u m=1
+DI1<2> In vdd2 dn 0 5u m=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_Adress_Select
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_Adress_Select A Adr nATD nClk nSelect1 nSelect2
+*.PININFO A:I nClk:I nSelect1:I nSelect2:I Adr:O nATD:O
+XI98 net310 A gnd! gnd! vdd! vdd! / PAD
+MI53 gnd! vdd! gnd! cpoly_p W=174u L=2u
+MI46 vdd! gnd! vdd! cpoly_n W=216u L=2u
+MM8 net258 net310 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM13 net255 net258 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM41 net252 nClk gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM12 net274 net246 net255 net255 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM39 net246 net252 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM22 net243 net258 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM20 net237 net243 net231 net231 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM25 net237 net258 net234 net234 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM26 net234 net233 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM19 net231 net274 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM16 net233 net274 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM28 net274 net252 net222 net222 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM37 net222 net233 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM30 net219 net274 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=2
+MM32 Adr net219 gnd! gnd! nmos_a W=7.2u L=240n W_CONT=3.1u NFING=8
+MM15 net0137 net0134 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM4 net0134 nSelect2 gnd! gnd! nmos_a W=500n L=240n W_CONT=600n NFING=1
+MM42 nATD net0191 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=1
+MM35 net237 net0134 net0191 net0191 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM34 net0191 net0137 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM5 net0134 nSelect1 gnd! gnd! nmos_a W=500n L=240n W_CONT=600n NFING=1
+MM38 net246 net252 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM7 net258 net310 net0156 net0156 pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM40 net252 nClk vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM10 net293 net258 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM11 net274 net252 net293 net293 pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM21 net243 net258 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM17 net237 net243 net287 net287 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM24 net237 net258 net284 net284 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM18 net287 net233 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM14 net233 net274 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM23 net284 net274 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM27 net274 net246 net272 net272 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM29 net219 net274 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=2
+MM36 net272 net233 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM31 Adr net219 vdd! vdd! pmos_a W=11u L=240n W_CONT=1.6u NFING=8
+MM1 net0156 net243 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM0 net0156 net0156 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=2
+MM33 net0191 net0137 net237 net237 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM3 net0134 nSelect2 net0187 net0187 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM43 nATD net0191 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=1
+MM2 net0187 nSelect1 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM9 net0137 net0134 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_CS
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_CS CS nCS nE
+*.PININFO CS:I nE:I nCS:O
+XI98 net4 CS gnd! gnd! vdd! vdd! / PAD
+MI53 gnd! vdd! gnd! cpoly_p W=216u L=2u
+MI46 vdd! gnd! vdd! cpoly_n W=336u L=2u
+MM4 net051 net056 gnd! gnd! nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM0 net078 net4 net051 net051 nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM17 net044 net069 gnd! gnd! nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM18 net056 nE gnd! gnd! nmos_a W=500n L=240n W_CONT=600n NFING=1
+MM8 net040 net044 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM10 nCS net040 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=8
+MM12 net069 net078 gnd! gnd! nmos_a W=500n L=240n W_CONT=600n NFING=1
+MM5 net078 net056 vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM1 net27 net27 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM2 net078 net4 net27 net27 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM3 net27 net069 vdd! vdd! pmos_a W=480n L=400n W_CONT=600n NFING=1
+MM7 net040 net044 vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=2
+MM9 nCS net040 vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=8
+MM14 net044 net069 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM19 net056 nE vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM13 net069 net078 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    GND_Core_PAD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT GND_Core_PAD GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+MI7 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+MI8 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+DI10 GND_PAD gnd! dn 0 410u m=18
+DI9 gnd! vdd! dn 0 410u m=19
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    VDD_Core
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT VDD_Core
+*.PININFO
+MI2 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+MI7 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+DI1 gnd! vdd! dn 0 410u m=37
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    GND_Core
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT GND_Core
+*.PININFO
+MI8 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+MI7 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+DI9 gnd! vdd! dn 0 410u m=37
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    NOT
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT NOT In Out
+*.PININFO In:I Out:O
+MM1 Out In gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM0 Out In vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_CE
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_CE CE CEN CS nATD1 nATD2 nATD3 nATD4 nClk
+*.PININFO CEN:I CS:I nATD1:I nATD2:I nATD3:I nATD4:I CE:O nClk:O
+XI38 Shmit nShmit / NOT
+XI92 CS nCS / NOT
+XI98 net72 CEN gnd! gnd! vdd! vdd! / PAD
+MI46 vdd! gnd! vdd! cpoly_n W=318u L=2u
+MI53 gnd! vdd! gnd! cpoly_p W=216u L=2u
+MM35 net069 nATD1 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM6 net070 nATD2 net069 net069 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM28 net0143 net062 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=1
+MM30 nand3 CE_Shmit net0140 net0140 nmos_a W=3.6u L=240n W_CONT=1.6u NFING=1
+MM29 net0140 CE net0143 net0143 nmos_a W=3.6u L=240n W_CONT=1.6u NFING=1
+MM26 Clk nand3 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=4
+MM21 CE_Shmit nShmit gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM22 net013 nATD4 net0119 net0119 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM23 CE_Shmit nCS gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM14 CE nCE gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=8
+MM0 Shmit net72 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM32 nClk Clk gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=14
+MM16 net0119 nATD3 net070 net070 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM17 net062 net013 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM33 nCE CE_Shmit gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM5 nand3 net062 vdd! vdd! pmos_a W=2.2u L=240n W_CONT=600n NFING=1
+MM25 Clk nand3 vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=4
+MM24 net0162 nCS vdd! vdd! pmos_a W=2.88u L=240n W_CONT=600n NFING=1
+MM4 nand3 CE vdd! vdd! pmos_a W=2.2u L=240n W_CONT=600n NFING=1
+MM15 CE_Shmit nShmit net0162 net0162 pmos_a W=2.88u L=240n W_CONT=600n NFING=1
+MM27 nand3 CE_Shmit vdd! vdd! pmos_a W=2.2u L=240n W_CONT=600n NFING=1
+MM20 net013 nATD4 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM19 net013 nATD3 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM7 net013 nATD2 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM1 net50 net72 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM2 Shmit net72 net50 net50 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM3 net50 nShmit vdd! vdd! pmos_a W=480n L=400n W_CONT=600n NFING=1
+MM31 nClk Clk vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=14
+MM13 CE nCE vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=8
+MM12 net062 net013 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM34 nCE CE_Shmit vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM8 net013 nATD1 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_Adress
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_Adress A Adr nATD nClk
+*.PININFO A:I nClk:I Adr:O nATD:O
+XI98 net310 A gnd! gnd! vdd! vdd! / PAD
+MI53 gnd! vdd! gnd! cpoly_p W=174u L=2u
+MI46 vdd! gnd! vdd! cpoly_n W=216u L=2u
+MM8 net258 net310 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM13 net255 net258 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM41 net252 nClk gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM12 net274 net246 net255 net255 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM39 net246 net252 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM22 net243 net258 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM20 net237 net243 net231 net231 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM25 net237 net258 net234 net234 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM26 net234 net233 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM19 net231 net274 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM16 net233 net274 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM28 net274 net252 net222 net222 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM37 net222 net233 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM30 net219 net274 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=2
+MM32 Adr net219 gnd! gnd! nmos_a W=7.2u L=240n W_CONT=3.1u NFING=8
+MM35 nATD net237 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=1
+MM38 net246 net252 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM7 net258 net310 net0156 net0156 pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM40 net252 nClk vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM10 net293 net258 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM11 net274 net252 net293 net293 pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM21 net243 net258 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM17 net237 net243 net287 net287 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM24 net237 net258 net284 net284 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM18 net287 net233 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM14 net233 net274 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM23 net284 net274 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM27 net274 net246 net272 net272 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM29 net219 net274 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=2
+MM36 net272 net233 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM31 Adr net219 vdd! vdd! pmos_a W=11u L=240n W_CONT=1.6u NFING=8
+MM1 net0156 net243 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM0 net0156 net0156 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=2
+MM34 nATD net237 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Cell1
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Cell1 Data nData nW High
+*.PININFO Data:B High:B nData:B nW:B
+MM4 High net26 gnd! gnd! nmos_a W=480n L=380n W_CONT=580n NFING=1
+MM0 net26 High gnd! gnd! nmos_a W=480n L=380n W_CONT=580n NFING=1
+MM5 nData nW net26 vdd! pmos_h W=660n L=240n M=1
+MM3 High nW Data vdd! pmos_h W=660n L=240n M=1
+MM6 High net26 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM2 net26 High gnd! gnd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Fill_Bit_512x16
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Fill_Bit_512x16
+*.PININFO
+XI8<1> net5<0> net6<0> vdd! net7<0> / Cell1
+XI8<2> net5<1> net6<1> vdd! net7<1> / Cell1
+XI8<3> net5<2> net6<2> vdd! net7<2> / Cell1
+XI8<4> net5<3> net6<3> vdd! net7<3> / Cell1
+XI8<5> net5<4> net6<4> vdd! net7<4> / Cell1
+XI8<6> net5<5> net6<5> vdd! net7<5> / Cell1
+XI8<7> net5<6> net6<6> vdd! net7<6> / Cell1
+XI8<8> net5<7> net6<7> vdd! net7<7> / Cell1
+XI8<9> net5<8> net6<8> vdd! net7<8> / Cell1
+XI8<10> net5<9> net6<9> vdd! net7<9> / Cell1
+XI8<11> net5<10> net6<10> vdd! net7<10> / Cell1
+XI8<12> net5<11> net6<11> vdd! net7<11> / Cell1
+XI8<13> net5<12> net6<12> vdd! net7<12> / Cell1
+XI8<14> net5<13> net6<13> vdd! net7<13> / Cell1
+XI8<15> net5<14> net6<14> vdd! net7<14> / Cell1
+XI8<16> net5<15> net6<15> vdd! net7<15> / Cell1
+MI108 gnd! vdd! gnd! cpoly_p W=360u L=2u
+MI104 vdd! gnd! vdd! cpoly_n W=360u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Fill_Block_8Kx8
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Fill_Block_8Kx8
+*.PININFO
+XI0<1>  / Fill_Bit_512x16
+XI0<2>  / Fill_Bit_512x16
+XI0<3>  / Fill_Bit_512x16
+XI0<4>  / Fill_Bit_512x16
+XI0<5>  / Fill_Bit_512x16
+XI0<6>  / Fill_Bit_512x16
+XI0<7>  / Fill_Bit_512x16
+XI0<8>  / Fill_Bit_512x16
+MI2 gnd! vdd! gnd! cpoly_p W=180u L=2u
+MI1 vdd! gnd! vdd! cpoly_n W=180u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Fill_Dec_X512
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Fill_Dec_X512
+*.PININFO
+MI6 gnd! vdd! gnd! cpoly_p W=281.6u L=2u
+MI2 gnd! vdd! gnd! cpoly_p W=192u L=2u
+MI5 vdd! gnd! vdd! cpoly_n W=307.2u L=2u
+MI1 vdd! gnd! vdd! cpoly_n W=192u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_OE
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_OE CE OEN WEN nOE nOE_Master
+*.PININFO CE:I OEN:I WEN:I nOE:I nOE_Master:O
+XI98 net4 OEN gnd! gnd! vdd! vdd! / PAD
+MI53 gnd! vdd! gnd! cpoly_p W=216u L=2u
+MI46 vdd! gnd! vdd! cpoly_n W=372u L=2u
+MM0 net46 net4 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM4 net044 net46 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM5 net46 net047 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM8 net040 net044 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM10 nOE_Master net040 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=8
+MM18 net059 net047 gnd! gnd! nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM17 net062 nOE net059 net059 nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM16 net047 WEN net068 net068 nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM15 net068 CE net071 net071 nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM14 net071 net062 gnd! gnd! nmos_a W=1u L=240n W_CONT=600n NFING=1
+MM1 net27 net047 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM2 net46 net4 net27 net27 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM3 net27 net044 vdd! vdd! pmos_a W=480n L=400n W_CONT=600n NFING=1
+MM6 net044 net46 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM7 net040 net044 vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=2
+MM9 nOE_Master net040 vdd! vdd! pmos_a W=4.5u L=240n W_CONT=600n NFING=8
+MM20 net062 net047 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM19 net062 nOE vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM13 net047 net062 vdd! vdd! pmos_a W=700n L=240n W_CONT=600n NFING=1
+MM12 net047 WEN vdd! vdd! pmos_a W=700n L=240n W_CONT=600n NFING=1
+MM11 net047 CE vdd! vdd! pmos_a W=700n L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIN_WE
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIN_WE NWR WEN nATD nClk nWE
+*.PININFO NWR:I nClk:I WEN:O nATD:O nWE:O
+XI98 net4 NWR gnd! gnd! vdd! vdd! / PAD
+MI53 gnd! vdd! gnd! cpoly_p W=216u L=2u
+MI46 vdd! gnd! vdd! cpoly_n W=264u L=2u
+MM15 net37 net0112 net0127 net0127 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM8 net0142 net4 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM13 net0125 net0142 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM41 net0112 nClk gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM12 net060 net0169 net0125 net0125 nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM39 net0169 net0112 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM22 net0119 net0142 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM20 net0116 net0119 net0107 net0107 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM25 net0116 net0142 net0113 net0113 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM26 net0113 net0168 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM19 net0107 net060 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM16 net0168 net060 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM28 net060 net0112 net0148 net0148 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM37 net0148 net0168 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM6 net0130 net0168 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM32 nWE net0199 gnd! gnd! nmos_a W=4.8u L=240n W_CONT=2.1u NFING=4
+MM9 net0127 net0142 net0130 net0130 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM45 net0199 net37 gnd! gnd! nmos_a W=4.8u L=240n W_CONT=2.1u NFING=1
+MM46 WEN net097 gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=2
+MM4 nATD net0116 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM2 net097 net0119 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM38 net0169 net0112 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM7 net0142 net4 vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM40 net0112 nClk vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM10 net070 net0142 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM11 net060 net0112 net070 net070 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM5 nATD net0116 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM21 net0119 net0142 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM17 net0116 net0119 net058 net058 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM24 net0116 net0142 net064 net064 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM18 net058 net0168 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM3 net097 net0119 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM14 net0168 net060 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM23 net064 net060 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM27 net060 net0169 net0105 net0105 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM36 net0105 net0168 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM0 net0199 net37 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=2
+MM31 nWE net0199 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=8
+MM29 net37 net0112 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM33 net37 net0168 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM1 WEN net097 vdd! vdd! pmos_a W=5.76u L=240n W_CONT=1.1u NFING=2
+MM30 net37 net0142 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    GND_PAD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT GND_PAD GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+DI5 gnd! GND_PAD dn 0 410u m=9
+DI1 GND_PAD VDD_PAD dn 0 410u m=19
+DI7 GND_PAD gnd! dn 0 410u m=9
+MI0 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+MI2 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    VDD_PAD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT VDD_PAD GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+MI2 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+MI0 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+DI5 VDD_PAD vdd! dn 0 410u m=10
+DI1 GND_PAD VDD_PAD dn 0 410u m=19
+DI7 vdd! VDD_PAD dn 0 410u m=9
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PADIO
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PADIO DI DIO DO GND_PAD VDD_PAD nOE nWE
+*.PININFO DO:I nOE:I nWE:I DI:O DIO:B GND_PAD:B VDD_PAD:B
+XI98 net0204 DIO GND_PAD gnd! VDD_PAD vdd! / PAD
+MI235 gnd! vdd! gnd! cpoly_p W=8.62u L=2u
+MI225 gnd! vdd! gnd! cpoly_p W=126u L=2u
+MI164 gnd! net0145 gnd! cpoly_p W=18u L=2u
+MM3<1> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<2> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<3> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<4> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<5> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<6> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<7> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<8> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<9> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<10> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<11> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<12> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<13> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<14> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<15> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<16> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<17> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<18> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<19> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<20> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<21> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<22> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<23> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM3<24> DIO nmos1 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<1> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<2> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<3> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<4> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<5> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<6> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<7> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<8> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<9> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<10> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<11> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<12> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<13> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<14> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<15> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<16> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<17> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<18> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<19> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<20> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<21> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<22> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<23> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM4<24> DIO nmos2 GND_PAD GND_PAD nmos_io_a W=4.8u L=280n W_CONT=2.1u NFING=1
+MM5<1> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<2> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<3> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<4> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<5> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<6> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<7> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<8> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<9> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<10> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<11> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<12> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<13> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<14> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<15> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<16> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<17> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<18> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<19> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<20> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<21> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<22> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<23> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM5<24> DIO pmos1 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<1> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<2> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<3> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<4> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<5> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<6> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<7> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<8> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<9> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<10> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<11> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<12> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<13> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<14> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<15> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM8<16> DIO pmos2 VDD_PAD VDD_PAD pmos_io_a W=9u L=280n W_CONT=1.1u NFING=1
+MM68 DI net144 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM57 pmos2 nor net0130 net0130 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM61 net0130 net091 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM74<1> nDO DO gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM74<2> nDO DO gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM65 nmos2 nand gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=3
+MM70 net163 nWE gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM16 net159 OE gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM92 nor net150 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM91 nor nDO gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM21 net150 OE gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM82 net144 net163 net141 net141 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM81 net141 net0204 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM80 net138 DI_delay gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM79 net144 net122 net138 net138 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM88 pmos1 nor gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=4
+MM94 nmos1 nand gnd! gnd! nmos_a W=3.6u L=240n W_CONT=1.6u NFING=3
+MM14 nand nDO net159 net159 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM93 OE nOE gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM33 net0148 DI_delay gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM32 DI_delay net0145 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM31 net0145 DI net0148 net0148 nmos_a W=480n L=480n W_CONT=600n NFING=1
+MM30 net0148 DI gnd! gnd! nmos_a W=480n L=480n W_CONT=600n NFING=1
+MM86 net122 net163 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM69 DI net144 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM85<1> nDO DO vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM85<2> nDO DO vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM59 pmos2 nor vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=5
+MM64 nmos2 nand net0139 net0139 pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM15 nand OE vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM13 nand nDO vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0 pmos1 nor vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=8
+MM78 net144 net122 net182 net182 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM77 net144 net163 net179 net179 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM76 net182 net0204 vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM75 net179 DI_delay vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM6 nor nDO net212 net212 pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM11 nmos1 nand vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=4
+MM7 net212 net150 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM22 net150 OE vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM67 net0139 net091 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM40 net0273 DI_delay vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM39 DI_delay net0145 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM38 net0145 DI net0273 net0273 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM37 net0273 DI vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM73 net122 net163 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM71 net163 nWE vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM10 OE nOE vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+RI221 net091 DIO 291.1234 $[rnpoly] $W=2u $L=5u M=1
+MI230 vdd! gnd! vdd! cpoly_n W=9.16u L=2u
+MI224 vdd! gnd! vdd! cpoly_n W=114u L=2u
+DI220 net091 vdd! dn 0 4u m=1
+DI219q gnd! net091 dn 0 4u m=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PAD_Clamp_200
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PAD_Clamp_200 GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+RI72 GND_PAD c 19.00048K $[rppoly] $W=3u $L=176.68u M=1
+MM2<0> b c GND_PAD GND_PAD nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM2<1> b c GND_PAD GND_PAD nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM1<0> a b GND_PAD GND_PAD nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM1<1> a b GND_PAD GND_PAD nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MI3<1> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<2> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<3> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<4> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<5> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI5<1> VDD_PAD GND_PAD VDD_PAD cpoly_n W=480u L=2u
+MI5<2> VDD_PAD GND_PAD VDD_PAD cpoly_n W=480u L=2u
+MI5<3> VDD_PAD GND_PAD VDD_PAD cpoly_n W=480u L=2u
+MI0 vdd! gnd! vdd! cpoly_n W=714.48u L=2u
+MM10<0> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<1> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<2> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<3> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<4> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<5> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<6> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<7> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<8> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<9> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<10> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<11> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<12> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<13> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<14> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<15> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<16> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<17> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<18> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<19> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<20> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<21> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<22> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<23> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<24> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<25> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<26> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<27> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<28> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<29> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<30> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<31> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<32> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<33> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<34> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<35> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<36> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<37> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<38> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<39> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<40> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<41> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<42> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<43> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<44> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<45> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<46> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<47> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<48> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<49> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<50> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<51> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<52> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<53> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<54> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<55> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<56> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<57> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<58> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<59> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<60> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<61> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<62> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<63> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<64> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<65> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<66> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<67> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<68> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<69> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<70> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<71> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<72> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<73> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<74> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<75> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<76> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<77> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<78> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<79> VDD_PAD a GND_PAD GND_PAD nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MI1 gnd! vdd! gnd! cpoly_p W=672.36u L=2u
+MI4<1> GND_PAD VDD_PAD GND_PAD cpoly_p W=480u L=2u
+MI4<2> GND_PAD VDD_PAD GND_PAD cpoly_p W=480u L=2u
+MI4<3> GND_PAD VDD_PAD GND_PAD cpoly_p W=480u L=2u
+MI59<0> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<1> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<2> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<3> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<4> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<5> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<6> c VDD_PAD c cpoly_p W=40u L=2u
+MI59<7> c VDD_PAD c cpoly_p W=40u L=2u
+MI2<1> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<2> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<3> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<4> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<5> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MM3<0> b c VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<1> b c VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<2> b c VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<3> b c VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<0> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<1> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<2> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<3> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<4> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<5> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<6> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<7> a b VDD_PAD VDD_PAD pmos_a W=4u L=240n W_CONT=600n NFING=2
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Select_Bit
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Select_Bit A18 A19 Bit16 Bit32 DI_Bank DI_In DI_Out DO_Bank DO_In 
++ DO_Out High In8 In16 In18 In19 Low nA18 nA19
+*.PININFO A18:I A19:I Bit16:I Bit32:I DI_In:I DI_Out:I DO_Bank:I DO_In:I In8:I 
+*.PININFO In16:I In18:I In19:I DI_Bank:O DO_Out:O High:O Low:O nA18:O nA19:O
+MM32 net35 In16 net102 net102 pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM37 net102 In8 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM18<1> DI_Bank net142 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM18<2> DI_Bank net142 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM34 net152 net41 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM3 nA19 A19 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM19 net142 net134 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM53 net78 net81 vdd! vdd! pmos_a W=600n L=240n W_CONT=600n NFING=1
+MM56 net81 Bit32 net150 net150 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM9<1> DO_Out net144 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM9<2> DO_Out net144 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM46 net110 Bit32 net158 net158 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM48 Select_write net113 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM33 net35 Bit16 net102 net102 pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM45 net158 In18 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM29 net124 Select_Read vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM24 net123 Select_write vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM42 net151 net78 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM40 net41 In19 net151 net151 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM57 net150 Bit16 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM31 net113 Bit32 net35 net35 pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM35 Select_Read net110 net152 net152 pmos_a W=2u L=240n W_CONT=600n NFING=1
+MM52 net78 In18 vdd! vdd! pmos_a W=600n L=240n W_CONT=600n NFING=1
+MM17 net144 net140 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=1
+MM1 nA18 A18 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM5 High net61 vdd! vdd! pmos_a W=600n L=240n W_CONT=600n NFING=1
+MM22 Low High gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM44 net110 Bit32 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM23 net123 Select_write gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM30 net113 Bit32 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM51 net149 net81 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM55 net81 Bit16 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM54 net81 Bit32 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM6 net61 net61 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM41 Select_Read net41 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM0 nA18 A18 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM2 nA19 A19 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM15<1> DI_Bank net142 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM15<2> DI_Bank net142 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM4<1> DO_Out net144 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM4<2> DO_Out net144 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM28 net124 Select_Read gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM12 net144 net140 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM36 Select_Read net110 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM50 net78 In18 net149 net149 nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM14 net142 net134 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM38 net41 In19 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM43 net110 In18 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM47 Select_write net113 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM26 net113 Bit16 net157 net157 nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM39 net41 net78 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM25 net157 In16 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM27 net113 In8 gnd! gnd! nmos_a W=600n L=240n W_CONT=600n NFING=1
+MM10 DO_Bank net124 net140 vdd! pmos_h W=1.5u L=240n M=1
+MM11 DO_In Select_Read net140 vdd! pmos_h W=1.5u L=240n M=1
+MM13 DI_Out Select_write net134 vdd! pmos_h W=1.5u L=240n M=1
+MM20 DI_In net123 net134 vdd! pmos_h W=1.5u L=240n M=1
+MM8 DO_Bank Select_Read net140 gnd! nmos_h W=720n L=240n M=1
+MM7 DO_In net124 net140 gnd! nmos_h W=720n L=240n M=1
+MM16 DI_Out net123 net134 gnd! nmos_h W=720n L=240n M=1
+MM21 DI_In Select_write net134 gnd! nmos_h W=720n L=240n M=1
+MI35 gnd! vdd! gnd! cpoly_p W=60u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    VDD_Core_PAD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT VDD_Core_PAD GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+MI7 vdd! gnd! vdd! cpoly_n W=357.24u L=2u
+MI6 gnd! vdd! gnd! cpoly_p W=336.18u L=2u
+DI5 gnd! vdd! dn 0 410u m=19
+DI10 vdd! VDD_PAD dn 0 410u m=18
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Cell_Usub
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Cell_Usub High Low nmos pmos
+*.PININFO High:B Low:B nmos:B pmos:B
+MN2 nmos Low Low Low nmos_a W=480n L=380n W_CONT=580n NFING=1
+MN1 nmos Low Low Low nmos_a W=480n L=380n W_CONT=580n NFING=1
+MP4 pmos High High High pmos_h W=660n L=240n M=1
+MP1 pmos High High High pmos_h W=660n L=240n M=1
+MP3 pmos High High High pmos_a W=1u L=240n W_CONT=600n NFING=1
+MP2 pmos High High High pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Usub_7V_ESD
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Usub_7V_ESD Minus3 Minus3_VD Minus6 Minus6_VD Usub UsubVD
+*.PININFO Minus3:B Minus3_VD:B Minus6:B Minus6_VD:B Usub:B UsubVD:B
+MM40<1> gnd! Minus3 Minus3_VD Minus3_VD nmos_io_a W=74u L=280n W_CONT=26.6u 
++ NFING=1
+MM40<2> gnd! Minus3 Minus3_VD Minus3_VD nmos_io_a W=74u L=280n W_CONT=26.6u 
++ NFING=1
+MM40<3> gnd! Minus3 Minus3_VD Minus3_VD nmos_io_a W=74u L=280n W_CONT=26.6u 
++ NFING=1
+MM40<4> gnd! Minus3 Minus3_VD Minus3_VD nmos_io_a W=74u L=280n W_CONT=26.6u 
++ NFING=1
+MM33<1> Minus3_VD Minus6 Minus6_VD Minus6_VD nmos_io_a W=74.2u L=280n 
++ W_CONT=26.6u NFING=1
+MM33<2> Minus3_VD Minus6 Minus6_VD Minus6_VD nmos_io_a W=74.2u L=280n 
++ W_CONT=26.6u NFING=1
+MM67<1> Minus6_VD UsubVD Usub Usub nmos_io_a W=74.2u L=280n W_CONT=26.6u 
++ NFING=1
+MM67<2> Minus6_VD UsubVD Usub Usub nmos_io_a W=74.2u L=280n W_CONT=26.6u 
++ NFING=1
+DI125<1> Minus3_VD Minus3 dn 0 500n m=1
+DI125<2> Minus3_VD Minus3 dn 0 500n m=1
+DI125<3> Minus3_VD Minus3 dn 0 500n m=1
+DI155<1> Minus6_VD Minus6 dn 0 500n m=1
+DI155<2> Minus6_VD Minus6 dn 0 500n m=1
+DI156 Usub UsubVD dn 0 500n m=1
+MM48<1> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<2> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<3> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<4> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<5> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<6> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<7> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM48<8> gnd! Minus3 gnd! gnd! nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+MM41<1> Minus3 Minus6 Minus3 Minus3 nmos_a W=94u L=2u W_CONT=5.1u NFING=1
+MM41<2> Minus3 Minus6 Minus3 Minus3 nmos_a W=94u L=2u W_CONT=5.1u NFING=1
+MM41<3> Minus3 Minus6 Minus3 Minus3 nmos_a W=94u L=2u W_CONT=5.1u NFING=1
+MM32 UsubVD Minus6 UsubVD UsubVD nmos_a W=96u L=2u W_CONT=5.1u NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    Usub_7V
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT Usub_7V Usub nTest
+*.PININFO nTest:I Usub:B
+XI226<1> net455 net319 net459 net315 / Cell_Usub
+XI226<2> net455 net319 net459 net315 / Cell_Usub
+XI226<3> net455 net319 net459 net315 / Cell_Usub
+XI226<4> net455 net319 net459 net315 / Cell_Usub
+XI226<5> net455 net319 net459 net315 / Cell_Usub
+XI226<6> net455 net319 net459 net315 / Cell_Usub
+XI226<7> net455 net319 net459 net315 / Cell_Usub
+XI226<8> net455 net319 net459 net315 / Cell_Usub
+XI226<9> net455 net319 net459 net315 / Cell_Usub
+XI226<10> net455 net319 net459 net315 / Cell_Usub
+XI226<11> net455 net319 net459 net315 / Cell_Usub
+XI226<12> net455 net319 net459 net315 / Cell_Usub
+XI226<13> net455 net319 net459 net315 / Cell_Usub
+XI226<14> net455 net319 net459 net315 / Cell_Usub
+XI226<15> net455 net319 net459 net315 / Cell_Usub
+XI226<16> net455 net319 net459 net315 / Cell_Usub
+XI226<17> net455 net319 net459 net315 / Cell_Usub
+XI226<18> net455 net319 net459 net315 / Cell_Usub
+XI226<19> net455 net319 net459 net315 / Cell_Usub
+XI226<20> net455 net319 net459 net315 / Cell_Usub
+XI226<21> net455 net319 net459 net315 / Cell_Usub
+XI226<22> net455 net319 net459 net315 / Cell_Usub
+XI226<23> net455 net319 net459 net315 / Cell_Usub
+XI226<24> net455 net319 net459 net315 / Cell_Usub
+XI226<25> net455 net319 net459 net315 / Cell_Usub
+XI226<26> net455 net319 net459 net315 / Cell_Usub
+XI226<27> net455 net319 net459 net315 / Cell_Usub
+XI226<28> net455 net319 net459 net315 / Cell_Usub
+XI226<29> net455 net319 net459 net315 / Cell_Usub
+XI226<30> net455 net319 net459 net315 / Cell_Usub
+XI226<31> net455 net319 net459 net315 / Cell_Usub
+XI226<32> net455 net319 net459 net315 / Cell_Usub
+XI226<33> net455 net319 net459 net315 / Cell_Usub
+XI226<34> net455 net319 net459 net315 / Cell_Usub
+XI226<35> net455 net319 net459 net315 / Cell_Usub
+XI226<36> net455 net319 net459 net315 / Cell_Usub
+XI226<37> net455 net319 net459 net315 / Cell_Usub
+XI226<38> net455 net319 net459 net315 / Cell_Usub
+XI226<39> net455 net319 net459 net315 / Cell_Usub
+XI226<40> net455 net319 net459 net315 / Cell_Usub
+XI226<41> net455 net319 net459 net315 / Cell_Usub
+XI226<42> net455 net319 net459 net315 / Cell_Usub
+XI226<43> net455 net319 net459 net315 / Cell_Usub
+XI226<44> net455 net319 net459 net315 / Cell_Usub
+XI226<45> net455 net319 net459 net315 / Cell_Usub
+XI226<46> net455 net319 net459 net315 / Cell_Usub
+XI226<47> net455 net319 net459 net315 / Cell_Usub
+XI226<48> net455 net319 net459 net315 / Cell_Usub
+XI226<49> net455 net319 net459 net315 / Cell_Usub
+XI226<50> net455 net319 net459 net315 / Cell_Usub
+XI226<51> net455 net319 net459 net315 / Cell_Usub
+XI226<52> net455 net319 net459 net315 / Cell_Usub
+XI226<53> net455 net319 net459 net315 / Cell_Usub
+XI226<54> net455 net319 net459 net315 / Cell_Usub
+XI226<55> net455 net319 net459 net315 / Cell_Usub
+XI226<56> net455 net319 net459 net315 / Cell_Usub
+XI226<57> net455 net319 net459 net315 / Cell_Usub
+XI226<58> net455 net319 net459 net315 / Cell_Usub
+XI226<59> net455 net319 net459 net315 / Cell_Usub
+XI226<60> net455 net319 net459 net315 / Cell_Usub
+XI226<61> net455 net319 net459 net315 / Cell_Usub
+XI226<62> net455 net319 net459 net315 / Cell_Usub
+XI226<63> net455 net319 net459 net315 / Cell_Usub
+XI226<64> net455 net319 net459 net315 / Cell_Usub
+XI226<65> net455 net319 net459 net315 / Cell_Usub
+XI226<66> net455 net319 net459 net315 / Cell_Usub
+XI226<67> net455 net319 net459 net315 / Cell_Usub
+XI226<68> net455 net319 net459 net315 / Cell_Usub
+XI226<69> net455 net319 net459 net315 / Cell_Usub
+XI226<70> net455 net319 net459 net315 / Cell_Usub
+XI226<71> net455 net319 net459 net315 / Cell_Usub
+XI226<72> net455 net319 net459 net315 / Cell_Usub
+XI226<73> net455 net319 net459 net315 / Cell_Usub
+XI226<74> net455 net319 net459 net315 / Cell_Usub
+XI226<75> net455 net319 net459 net315 / Cell_Usub
+XI226<76> net455 net319 net459 net315 / Cell_Usub
+XI226<77> net455 net319 net459 net315 / Cell_Usub
+XI226<78> net455 net319 net459 net315 / Cell_Usub
+XI226<79> net455 net319 net459 net315 / Cell_Usub
+XI226<80> net455 net319 net459 net315 / Cell_Usub
+XI226<81> net455 net319 net459 net315 / Cell_Usub
+XI226<82> net455 net319 net459 net315 / Cell_Usub
+XI226<83> net455 net319 net459 net315 / Cell_Usub
+XI226<84> net455 net319 net459 net315 / Cell_Usub
+XI226<85> net455 net319 net459 net315 / Cell_Usub
+XI226<86> net455 net319 net459 net315 / Cell_Usub
+XI226<87> net455 net319 net459 net315 / Cell_Usub
+XI226<88> net455 net319 net459 net315 / Cell_Usub
+XI226<89> net455 net319 net459 net315 / Cell_Usub
+XI226<90> net455 net319 net459 net315 / Cell_Usub
+XI226<91> net455 net319 net459 net315 / Cell_Usub
+XI226<92> net455 net319 net459 net315 / Cell_Usub
+XI226<93> net455 net319 net459 net315 / Cell_Usub
+XI226<94> net455 net319 net459 net315 / Cell_Usub
+XI226<95> net455 net319 net459 net315 / Cell_Usub
+XI226<96> net455 net319 net459 net315 / Cell_Usub
+XI226<97> net455 net319 net459 net315 / Cell_Usub
+XI226<98> net455 net319 net459 net315 / Cell_Usub
+XI226<99> net455 net319 net459 net315 / Cell_Usub
+XI226<100> net455 net319 net459 net315 / Cell_Usub
+XI226<101> net455 net319 net459 net315 / Cell_Usub
+XI226<102> net455 net319 net459 net315 / Cell_Usub
+XI226<103> net455 net319 net459 net315 / Cell_Usub
+XI226<104> net455 net319 net459 net315 / Cell_Usub
+XI226<105> net455 net319 net459 net315 / Cell_Usub
+XI226<106> net455 net319 net459 net315 / Cell_Usub
+XI226<107> net455 net319 net459 net315 / Cell_Usub
+XI226<108> net455 net319 net459 net315 / Cell_Usub
+XI226<109> net455 net319 net459 net315 / Cell_Usub
+XI226<110> net455 net319 net459 net315 / Cell_Usub
+XI226<111> net455 net319 net459 net315 / Cell_Usub
+XI226<112> net455 net319 net459 net315 / Cell_Usub
+XI226<113> net455 net319 net459 net315 / Cell_Usub
+XI226<114> net455 net319 net459 net315 / Cell_Usub
+XI226<115> net455 net319 net459 net315 / Cell_Usub
+XI226<116> net455 net319 net459 net315 / Cell_Usub
+XI226<117> net455 net319 net459 net315 / Cell_Usub
+XI226<118> net455 net319 net459 net315 / Cell_Usub
+XI226<119> net455 net319 net459 net315 / Cell_Usub
+XI226<120> net455 net319 net459 net315 / Cell_Usub
+XI226<121> net455 net319 net459 net315 / Cell_Usub
+XI226<122> net455 net319 net459 net315 / Cell_Usub
+XI226<123> net455 net319 net459 net315 / Cell_Usub
+XI226<124> net455 net319 net459 net315 / Cell_Usub
+XI226<125> net455 net319 net459 net315 / Cell_Usub
+XI226<126> net455 net319 net459 net315 / Cell_Usub
+XI226<127> net455 net319 net459 net315 / Cell_Usub
+XI226<128> net455 net319 net459 net315 / Cell_Usub
+XI226<129> net455 net319 net459 net315 / Cell_Usub
+XI226<130> net455 net319 net459 net315 / Cell_Usub
+XI226<131> net455 net319 net459 net315 / Cell_Usub
+XI226<132> net455 net319 net459 net315 / Cell_Usub
+XI226<133> net455 net319 net459 net315 / Cell_Usub
+XI226<134> net455 net319 net459 net315 / Cell_Usub
+XI226<135> net455 net319 net459 net315 / Cell_Usub
+XI226<136> net455 net319 net459 net315 / Cell_Usub
+XI226<137> net455 net319 net459 net315 / Cell_Usub
+XI226<138> net455 net319 net459 net315 / Cell_Usub
+XI226<139> net455 net319 net459 net315 / Cell_Usub
+XI226<140> net455 net319 net459 net315 / Cell_Usub
+XI226<141> net455 net319 net459 net315 / Cell_Usub
+XI226<142> net455 net319 net459 net315 / Cell_Usub
+XI226<143> net455 net319 net459 net315 / Cell_Usub
+XI226<144> net455 net319 net459 net315 / Cell_Usub
+XI226<145> net455 net319 net459 net315 / Cell_Usub
+XI226<146> net455 net319 net459 net315 / Cell_Usub
+XI226<147> net455 net319 net459 net315 / Cell_Usub
+XI226<148> net455 net319 net459 net315 / Cell_Usub
+XI226<149> net455 net319 net459 net315 / Cell_Usub
+XI226<150> net455 net319 net459 net315 / Cell_Usub
+XI226<151> net455 net319 net459 net315 / Cell_Usub
+XI226<152> net455 net319 net459 net315 / Cell_Usub
+XI226<153> net455 net319 net459 net315 / Cell_Usub
+XI226<154> net455 net319 net459 net315 / Cell_Usub
+XI226<155> net455 net319 net459 net315 / Cell_Usub
+XI226<156> net455 net319 net459 net315 / Cell_Usub
+XI226<157> net455 net319 net459 net315 / Cell_Usub
+XI226<158> net455 net319 net459 net315 / Cell_Usub
+XI226<159> net455 net319 net459 net315 / Cell_Usub
+XI226<160> net455 net319 net459 net315 / Cell_Usub
+XI226<161> net455 net319 net459 net315 / Cell_Usub
+XI226<162> net455 net319 net459 net315 / Cell_Usub
+XI226<163> net455 net319 net459 net315 / Cell_Usub
+XI226<164> net455 net319 net459 net315 / Cell_Usub
+XI226<165> net455 net319 net459 net315 / Cell_Usub
+XI226<166> net455 net319 net459 net315 / Cell_Usub
+XI226<167> net455 net319 net459 net315 / Cell_Usub
+XI226<168> net455 net319 net459 net315 / Cell_Usub
+XI226<169> net455 net319 net459 net315 / Cell_Usub
+XI226<170> net455 net319 net459 net315 / Cell_Usub
+XI226<171> net455 net319 net459 net315 / Cell_Usub
+XI226<172> net455 net319 net459 net315 / Cell_Usub
+XI226<173> net455 net319 net459 net315 / Cell_Usub
+XI226<174> net455 net319 net459 net315 / Cell_Usub
+XI226<175> net455 net319 net459 net315 / Cell_Usub
+XI226<176> net455 net319 net459 net315 / Cell_Usub
+XI226<177> net455 net319 net459 net315 / Cell_Usub
+XI226<178> net455 net319 net459 net315 / Cell_Usub
+XI226<179> net455 net319 net459 net315 / Cell_Usub
+XI226<180> net455 net319 net459 net315 / Cell_Usub
+XI226<181> net455 net319 net459 net315 / Cell_Usub
+XI226<182> net455 net319 net459 net315 / Cell_Usub
+XI226<183> net455 net319 net459 net315 / Cell_Usub
+XI226<184> net455 net319 net459 net315 / Cell_Usub
+XI226<185> net455 net319 net459 net315 / Cell_Usub
+XI226<186> net455 net319 net459 net315 / Cell_Usub
+XI226<187> net455 net319 net459 net315 / Cell_Usub
+XI226<188> net455 net319 net459 net315 / Cell_Usub
+XI226<189> net455 net319 net459 net315 / Cell_Usub
+XI226<190> net455 net319 net459 net315 / Cell_Usub
+XI226<191> net455 net319 net459 net315 / Cell_Usub
+XI226<192> net455 net319 net459 net315 / Cell_Usub
+XI226<193> net455 net319 net459 net315 / Cell_Usub
+XI226<194> net455 net319 net459 net315 / Cell_Usub
+XI226<195> net455 net319 net459 net315 / Cell_Usub
+XI226<196> net455 net319 net459 net315 / Cell_Usub
+XI226<197> net455 net319 net459 net315 / Cell_Usub
+XI226<198> net455 net319 net459 net315 / Cell_Usub
+XI226<199> net455 net319 net459 net315 / Cell_Usub
+XI226<200> net455 net319 net459 net315 / Cell_Usub
+XI226<201> net455 net319 net459 net315 / Cell_Usub
+XI226<202> net455 net319 net459 net315 / Cell_Usub
+XI226<203> net455 net319 net459 net315 / Cell_Usub
+XI226<204> net455 net319 net459 net315 / Cell_Usub
+XI226<205> net455 net319 net459 net315 / Cell_Usub
+XI226<206> net455 net319 net459 net315 / Cell_Usub
+XI226<207> net455 net319 net459 net315 / Cell_Usub
+XI226<208> net455 net319 net459 net315 / Cell_Usub
+XI226<209> net455 net319 net459 net315 / Cell_Usub
+XI226<210> net455 net319 net459 net315 / Cell_Usub
+XI226<211> net455 net319 net459 net315 / Cell_Usub
+XI226<212> net455 net319 net459 net315 / Cell_Usub
+XI226<213> net455 net319 net459 net315 / Cell_Usub
+XI226<214> net455 net319 net459 net315 / Cell_Usub
+XI226<215> net455 net319 net459 net315 / Cell_Usub
+XI226<216> net455 net319 net459 net315 / Cell_Usub
+XI226<217> net455 net319 net459 net315 / Cell_Usub
+XI226<218> net455 net319 net459 net315 / Cell_Usub
+XI226<219> net455 net319 net459 net315 / Cell_Usub
+XI226<220> net455 net319 net459 net315 / Cell_Usub
+XI226<221> net455 net319 net459 net315 / Cell_Usub
+XI226<222> net455 net319 net459 net315 / Cell_Usub
+XI226<223> net455 net319 net459 net315 / Cell_Usub
+XI226<224> net455 net319 net459 net315 / Cell_Usub
+XI226<225> net455 net319 net459 net315 / Cell_Usub
+XI226<226> net455 net319 net459 net315 / Cell_Usub
+XI226<227> net455 net319 net459 net315 / Cell_Usub
+XI226<228> net455 net319 net459 net315 / Cell_Usub
+XI226<229> net455 net319 net459 net315 / Cell_Usub
+XI226<230> net455 net319 net459 net315 / Cell_Usub
+XI226<231> net455 net319 net459 net315 / Cell_Usub
+XI226<232> net455 net319 net459 net315 / Cell_Usub
+XI226<233> net455 net319 net459 net315 / Cell_Usub
+XI226<234> net455 net319 net459 net315 / Cell_Usub
+XI226<235> net455 net319 net459 net315 / Cell_Usub
+XI226<236> net455 net319 net459 net315 / Cell_Usub
+XI226<237> net455 net319 net459 net315 / Cell_Usub
+XI226<238> net455 net319 net459 net315 / Cell_Usub
+XI226<239> net455 net319 net459 net315 / Cell_Usub
+XI226<240> net455 net319 net459 net315 / Cell_Usub
+XI226<241> net455 net319 net459 net315 / Cell_Usub
+XI226<242> net455 net319 net459 net315 / Cell_Usub
+XI226<243> net455 net319 net459 net315 / Cell_Usub
+XI226<244> net455 net319 net459 net315 / Cell_Usub
+XI226<245> net455 net319 net459 net315 / Cell_Usub
+XI226<246> net455 net319 net459 net315 / Cell_Usub
+XI226<247> net455 net319 net459 net315 / Cell_Usub
+XI226<248> net455 net319 net459 net315 / Cell_Usub
+XI226<249> net455 net319 net459 net315 / Cell_Usub
+XI226<250> net455 net319 net459 net315 / Cell_Usub
+XI226<251> net455 net319 net459 net315 / Cell_Usub
+XI226<252> net455 net319 net459 net315 / Cell_Usub
+XI226<253> net455 net319 net459 net315 / Cell_Usub
+XI226<254> net455 net319 net459 net315 / Cell_Usub
+XI226<255> net455 net319 net459 net315 / Cell_Usub
+XI226<256> net455 net319 net459 net315 / Cell_Usub
+XI226<257> net455 net319 net459 net315 / Cell_Usub
+XI226<258> net455 net319 net459 net315 / Cell_Usub
+RI154 Minus6 net282 197.6997K $[rppoly] $W=500n $L=293u M=1
+RI250 net249 net281 158.9037K $[rppoly] $W=500n $L=235.5u M=1
+RI246 vdd! N0 454.765K $[rppoly] $W=500n $L=674u M=1
+RI241 gate gnd! 637.6119K $[rppoly] $W=500n $L=945u M=1
+RI214 split_vdc vdd! 108.1654K $[rppoly] $W=500n $L=160.3u M=1
+RI224 net281 Usub 396.7397K $[rppoly] $W=500n $L=588u M=1
+RI235 vdd! a<6> 1.059307M $[rppoly] $W=500n $L=1.57m M=1
+RI236 net249 a<6> 618.72K $[rppoly] $W=500n $L=917u M=1
+RI215 split_vdc gnd! 153.1687K $[rppoly] $W=500n $L=227u M=1
+MN3 N1 Cap_up gnd! gnd! nmos_a W=480n L=480n W_CONT=600n NFING=1
+MN1 N2 N1 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM64 net385 N0 gnd! gnd! nmos_a W=1.2u L=300n W_CONT=600n NFING=1
+MM78 gnd! N0 gnd! gnd! nmos_a W=5.5u L=2u W_CONT=600n NFING=12
+MM73<1> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<2> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<3> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<4> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<5> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<6> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<7> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<8> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM73<9> Minus3 gate Cap Cap nmos_a W=7.2u L=240n W_CONT=3.1u NFING=1
+MM13 net388 N2 net397 net397 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM19 net516 net531 Minus6 Minus6 nmos_a W=4.8u L=240n W_CONT=2.1u NFING=1
+MM58<1> Cap_down v3 Cap_down Cap_down nmos_a W=92.6u L=2u W_CONT=5.1u NFING=46
+MM58<2> Cap_down v3 Cap_down Cap_down nmos_a W=92.6u L=2u W_CONT=5.1u NFING=46
+MM12 net397 net334 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM11 gmos_up net388 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=2
+MM82<1> net306<0> net306<0> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<2> net306<1> net306<1> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<3> net306<2> net306<2> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<4> net306<3> net306<3> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<5> net306<4> net306<4> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<6> net306<5> net306<5> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<7> net306<6> net306<6> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<8> net306<7> net306<7> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM82<9> net306<8> net306<8> UsubVD UsubVD nmos_a W=1.2u L=240n W_CONT=600n 
++ NFING=1
+MM25 net537 net540 UsubVD UsubVD nmos_a W=2.4u L=280n W_CONT=1.1u NFING=1
+MM26 net540 net537 UsubVD UsubVD nmos_a W=2.4u L=280n W_CONT=1.1u NFING=1
+MM79<1> net309<0> net309<0> net457<0> net457<0> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<2> net309<1> net309<1> net457<1> net457<1> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<3> net309<2> net309<2> net457<2> net457<2> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<4> net309<3> net309<3> net457<3> net457<3> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<5> net309<4> net309<4> net457<4> net457<4> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<6> net309<5> net309<5> net457<5> net457<5> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<7> net309<6> net309<6> net457<6> net457<6> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<8> net309<7> net309<7> net457<7> net457<7> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM79<9> net309<8> net309<8> net457<8> net457<8> nmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM55<1> Cap_up v2 Cap_up Cap_up nmos_a W=92.6u L=2u W_CONT=5.1u NFING=46
+MM55<2> Cap_up v2 Cap_up Cap_up nmos_a W=92.6u L=2u W_CONT=5.1u NFING=46
+MM63 UsubVD net282 Usub Usub nmos_a W=4.2u L=280n W_CONT=1.6u NFING=1
+MM22 net531 net516 Minus6 Minus6 nmos_a W=4.8u L=240n W_CONT=2.1u NFING=1
+MM69 net282 UsubVD Usub Usub nmos_a W=4.2u L=280n W_CONT=1.6u NFING=1
+MM72<1> UsubVD Cap UsubVD UsubVD nmos_a W=100u L=2u W_CONT=5.1u NFING=46
+MM72<2> UsubVD Cap UsubVD UsubVD nmos_a W=100u L=2u W_CONT=5.1u NFING=46
+MM86 a<6> net315 gnd! gnd! nmos_a W=480n L=300n W_CONT=600n NFING=26
+MM88 net319 net455 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM61 net531 net537 net531 net531 nmos_a W=15u L=2u W_CONT=1.1u NFING=46
+MM85 net315 net315 gnd! gnd! nmos_a W=480n L=300n W_CONT=600n NFING=4
+MM91 gnd! vdd! gnd! gnd! nmos_a W=7u L=2u W_CONT=600n NFING=42
+MM6 gmos_down net334 gnd! gnd! nmos_a W=1.2u L=240n W_CONT=600n NFING=2
+MM5 net331 net388 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM4 net334 net337 net331 net331 nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM1 net337 net336 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM8 Cap_down gmos_down gnd! gnd! nmos_a W=4.8u L=240n W_CONT=2.1u NFING=5
+MM56 v2 net516 v2 v2 nmos_a W=70u L=2u W_CONT=3.6u NFING=46
+MM46 net290 N0 gnd! gnd! nmos_a W=1.2u L=300n W_CONT=600n NFING=4
+MM45 net444 split_vdc net290 net290 nmos_a W=1.2u L=300n W_CONT=600n NFING=4
+MM92 vdd! gnd! vdd! vdd! nmos_a W=6.5u L=2u W_CONT=600n NFING=40
+MM44 net366 a<6> net290 net290 nmos_a W=1.2u L=300n W_CONT=600n NFING=4
+MM62 Cap_up gmos_up gnd! gnd! nmos_a W=4.8u L=240n W_CONT=2.1u NFING=5
+MM50 v2 v3 Minus3 Minus3 nmos_a W=4.8u L=240n W_CONT=2.1u NFING=2
+MM49 N0 N0 gnd! gnd! nmos_a W=1.2u L=300n W_CONT=600n NFING=2
+MM35 net352 N0 Cap_down Cap_down nmos_a W=1.2u L=300n W_CONT=600n NFING=1
+MM34 net336 Cap_down gnd! gnd! nmos_a W=480n L=480n W_CONT=600n NFING=1
+MM51 v3 v2 Minus3 Minus3 nmos_a W=4.8u L=240n W_CONT=2.1u NFING=2
+MM60 v3 net531 v3 v3 nmos_a W=70u L=2u W_CONT=3.6u NFING=46
+MM57 net516 net540 net516 net516 nmos_a W=15u L=2u W_CONT=1.1u NFING=46
+MM89 net453 net453 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM66 net336 net366 net370 net370 nmos_a W=480n L=480n W_CONT=600n NFING=1
+MM65 net370 N0 gnd! gnd! nmos_a W=1.2u L=300n W_CONT=600n NFING=1
+MN2 N3 N0 Cap_up Cap_up nmos_a W=1.2u L=300n W_CONT=600n NFING=1
+MM10 N1 net366 net385 net385 nmos_a W=480n L=480n W_CONT=600n NFING=1
+MM28 net0264 nTest gnd! gnd! nmos_a W=480n L=280n W_CONT=600n NFING=1
+MM27 net459 net0264 net319 net319 nmos_a W=480n L=280n W_CONT=600n NFING=1
+DI150 net440 net442 dn 0 20u m=1
+DI180<1> vdd! vdd! dn 0 409u m=1
+DI180<2> vdd! vdd! dn 0 409u m=1
+DI180<3> vdd! vdd! dn 0 409u m=1
+DI180<4> vdd! vdd! dn 0 409u m=1
+DI180<5> vdd! vdd! dn 0 409u m=1
+DI180<6> vdd! vdd! dn 0 409u m=1
+DI180<7> vdd! vdd! dn 0 409u m=1
+DI180<8> vdd! vdd! dn 0 409u m=1
+DI180<9> vdd! vdd! dn 0 409u m=1
+DI180<10> vdd! vdd! dn 0 409u m=1
+DI180<11> vdd! vdd! dn 0 409u m=1
+DI180<12> vdd! vdd! dn 0 409u m=1
+DI180<13> vdd! vdd! dn 0 409u m=1
+DI180<14> vdd! vdd! dn 0 409u m=1
+DI180<15> vdd! vdd! dn 0 409u m=1
+DI180<16> vdd! vdd! dn 0 409u m=1
+DI180<17> vdd! vdd! dn 0 409u m=1
+DI180<18> vdd! vdd! dn 0 409u m=1
+DI180<19> vdd! vdd! dn 0 409u m=1
+DI180<20> vdd! vdd! dn 0 409u m=1
+DI180<21> vdd! vdd! dn 0 409u m=1
+DI180<22> vdd! vdd! dn 0 409u m=1
+DI180<23> vdd! vdd! dn 0 409u m=1
+DI180<24> vdd! vdd! dn 0 409u m=1
+DI180<25> vdd! vdd! dn 0 409u m=1
+DI180<26> vdd! vdd! dn 0 409u m=1
+DI153 net437 Usub dn 0 20u m=1
+DI181<1> gnd! vdd! dn 0 409u m=1
+DI181<2> gnd! vdd! dn 0 409u m=1
+DI181<3> gnd! vdd! dn 0 409u m=1
+DI181<4> gnd! vdd! dn 0 409u m=1
+DI181<5> gnd! vdd! dn 0 409u m=1
+DI181<6> gnd! vdd! dn 0 409u m=1
+DI181<7> gnd! vdd! dn 0 409u m=1
+DI181<8> gnd! vdd! dn 0 409u m=1
+DI181<9> gnd! vdd! dn 0 409u m=1
+DI181<10> gnd! vdd! dn 0 409u m=1
+DI181<11> gnd! vdd! dn 0 409u m=1
+DI181<12> gnd! vdd! dn 0 409u m=1
+DI181<13> gnd! vdd! dn 0 409u m=1
+DI181<14> gnd! vdd! dn 0 409u m=1
+DI181<15> gnd! vdd! dn 0 409u m=1
+DI181<16> gnd! vdd! dn 0 409u m=1
+DI181<17> gnd! vdd! dn 0 409u m=1
+DI181<18> gnd! vdd! dn 0 409u m=1
+DI181<19> gnd! vdd! dn 0 409u m=1
+DI181<20> gnd! vdd! dn 0 409u m=1
+DI181<21> gnd! vdd! dn 0 409u m=1
+DI181<22> gnd! vdd! dn 0 409u m=1
+DI181<23> gnd! vdd! dn 0 409u m=1
+DI181<24> gnd! vdd! dn 0 409u m=1
+DI181<25> gnd! vdd! dn 0 409u m=1
+DI181<26> gnd! vdd! dn 0 409u m=1
+DI151 net435 net437 dn 0 20u m=1
+DI152 net442 net435 dn 0 20u m=1
+DI149 UsubVD net440 dn 0 20u m=1
+MM9<1> Cap_down gmos_down vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM9<2> Cap_down gmos_down vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM9<3> Cap_down gmos_down vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM9<4> Cap_down gmos_down vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM9<5> Cap_down gmos_down vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM43 net366 net444 vdd! vdd! pmos_a W=1.2u L=300n W_CONT=600n NFING=4
+MM42 net444 net444 vdd! vdd! pmos_a W=1.2u L=300n W_CONT=600n NFING=4
+MM15<1> Cap_up gmos_up vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM15<2> Cap_up gmos_up vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM15<3> Cap_up gmos_up vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM15<4> Cap_up gmos_up vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM15<5> Cap_up gmos_up vdd! vdd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM20 net531 net516 Minus3 Minus3 pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM70<1> net309<0> net309<0> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<2> net309<1> net309<1> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<3> net309<2> net309<2> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<4> net309<3> net309<3> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<5> net309<4> net309<4> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<6> net309<5> net309<5> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<7> net309<6> net309<6> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<8> net309<7> net309<7> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM70<9> net309<8> net309<8> gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM77 net455 net453 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM7 gmos_down net334 vdd! vdd! pmos_a W=2.6u L=240n W_CONT=600n NFING=2
+MM52 vdd! net352 vdd! vdd! pmos_a W=1u L=2u W_CONT=600n NFING=1
+MM3 net334 net388 vdd! vdd! pmos_a W=500n L=240n W_CONT=600n NFING=1
+MM2 net334 net337 vdd! vdd! pmos_a W=500n L=240n W_CONT=600n NFING=1
+MM14 net516 net531 Minus3 Minus3 pmos_a W=9.6u L=240n W_CONT=1.1u NFING=1
+MM0 net544 gmos_down vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM24 net540 net537 Minus6 Minus6 pmos_a W=4.8u L=240n W_CONT=600n NFING=1
+MM23 net537 net540 Minus6 Minus6 pmos_a W=4.8u L=240n W_CONT=600n NFING=1
+MM59 net337 net336 net544 net544 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM48 vdd! N3 vdd! vdd! pmos_a W=1u L=2u W_CONT=600n NFING=1
+MM71<1> net306<0> net306<0> net457<0> net457<0> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<2> net306<1> net306<1> net457<1> net457<1> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<3> net306<2> net306<2> net457<2> net457<2> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<4> net306<3> net306<3> net457<3> net457<3> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<5> net306<4> net306<4> net457<4> net457<4> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<6> net306<5> net306<5> net457<5> net457<5> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<7> net306<6> net306<6> net457<6> net457<6> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<8> net306<7> net306<7> net457<7> net457<7> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM71<9> net306<8> net306<8> net457<8> net457<8> pmos_a W=1.2u L=240n 
++ W_CONT=600n NFING=1
+MM76 a<6> net459 vdd! vdd! pmos_a W=480n L=300n W_CONT=600n NFING=26
+MM75 net459 net459 vdd! vdd! pmos_a W=480n L=300n W_CONT=600n NFING=4
+MM53 v2 v3 gnd! gnd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=2
+MM54 v3 v2 gnd! gnd! pmos_a W=9.6u L=240n W_CONT=1.1u NFING=2
+MP1 N2 N1 net472 net472 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM38 net496 net352 vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MP3 N3 gmos_up vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MP5 N1 N2 N4 N4 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MP4 N4 N3 vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM36 net336 net366 net496 net496 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM37 net336 net337 net496 net496 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MP2 net472 gmos_up vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM18 net388 N2 vdd! vdd! pmos_a W=500n L=240n W_CONT=600n NFING=1
+MM17 net388 net334 vdd! vdd! pmos_a W=500n L=240n W_CONT=600n NFING=1
+MM16 gmos_up net388 vdd! vdd! pmos_a W=2.6u L=240n W_CONT=600n NFING=2
+MM21<1> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<2> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<3> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<4> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<5> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<6> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<7> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<8> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM21<9> Cap gate gate gate pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM39 net352 gmos_down vdd! vdd! pmos_a W=480n L=240n W_CONT=600n NFING=1
+MP6 N1 net366 N4 N4 pmos_a W=480n L=240n W_CONT=600n NFING=1
+MM29 net0264 nTest vdd! vdd! pmos_a W=480n L=280n W_CONT=600n NFING=1
+MI184 vdd! gnd! vdd! cpoly_n W=3.40752m L=2u
+MI189 gnd! vdd! gnd! cpoly_p W=49.4u L=2u
+MI193 gnd! vdd! gnd! cpoly_p W=1.2046m L=2u
+XI157<1> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<2> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<3> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<4> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<5> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<6> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<7> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<8> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<9> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<10> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<11> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<12> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<13> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<14> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<15> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<16> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<17> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<18> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<19> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<20> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<21> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<22> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<23> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<24> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<25> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<26> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<27> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<28> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<29> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<30> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<31> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<32> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<33> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<34> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<35> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<36> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<37> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<38> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+XI157<39> Minus3 net241 Minus6 net240 Usub UsubVD / Usub_7V_ESD
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PAD_Fill_200
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PAD_Fill_200 GND_PAD VDD_PAD
+*.PININFO GND_PAD:B VDD_PAD:B
+MI0 vdd! gnd! vdd! cpoly_n W=714.48u L=2u
+MI3<1> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<2> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<3> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<4> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<5> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<6> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI3<7> VDD_PAD GND_PAD VDD_PAD cpoly_n W=984u L=2u
+MI1 gnd! vdd! gnd! cpoly_p W=672.36u L=2u
+MI2<1> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<2> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<3> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<4> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<5> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<6> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+MI2<7> GND_PAD VDD_PAD GND_PAD cpoly_p W=984u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    RingPad_Buffer
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT RingPad_Buffer In Out
+*.PININFO In:I Out:O
+MM2<1> Out net13 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM2<2> Out net13 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM2<3> Out net13 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM2<4> Out net13 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM0 net13 In gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM3<1> Out net13 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<2> Out net13 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<3> Out net13 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<4> Out net13 vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM1 net13 In vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    nOE_16
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT nOE_16 Bit_16 Bit_32 Out nOE
+*.PININFO Bit_16:I Bit_32:I nOE:I Out:O
+MM42 Out net26 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM41 net26 nOE gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM38 net26 net22 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM37 net22 Bit_16 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM34 net22 Bit_32 gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM43 Out net26 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM40 net26 net22 net27 net27 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM39 net27 nOE vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM36 net22 Bit_32 net28 net28 pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM35 net28 Bit_16 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    nOE_32
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT nOE_32 Bit_32 Out nOE
+*.PININFO Bit_32:I nOE:I Out:O
+MM28 net15 net12 gnd! gnd! nmos_a W=800n L=240n W_CONT=600n NFING=1
+MM25 Out Bit_32 net15 net15 nmos_a W=800n L=240n W_CONT=600n NFING=1
+MM22 net12 nOE gnd! gnd! nmos_a W=480n L=240n W_CONT=600n NFING=1
+MM29 Out Bit_32 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM24 Out net12 vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+MM23 net12 nOE vdd! vdd! pmos_a W=1u L=240n W_CONT=600n NFING=1
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PAD_Fill_160
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PAD_Fill_160
+*.PININFO
+MI3<1> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI3<2> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI3<3> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI3<4> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI3<5> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI0 vdd! gnd! vdd! cpoly_n W=567.92u L=2u
+MI1 gnd! vdd! gnd! cpoly_p W=534.44u L=2u
+MI2<1> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<2> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<3> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<4> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<5> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<6> gnd! vdd! gnd! cpoly_p W=984u L=2u
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    PAD_Clamp_160
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT PAD_Clamp_160
+*.PININFO
+RI72 c gnd! 19.00048K $[rppoly] $W=3u $L=176.68u M=1
+MM2<0> b c gnd! gnd! nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM2<1> b c gnd! gnd! nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM1<0> a b gnd! gnd! nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MM1<1> a b gnd! gnd! nmos_a W=4u L=240n W_CONT=2.1u NFING=2
+MI3<1> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI3<2> vdd! gnd! vdd! cpoly_n W=984u L=2u
+MI0 vdd! gnd! vdd! cpoly_n W=567.92u L=2u
+MI5<1> vdd! gnd! vdd! cpoly_n W=480u L=2u
+MI5<2> vdd! gnd! vdd! cpoly_n W=480u L=2u
+MI5<3> vdd! gnd! vdd! cpoly_n W=480u L=2u
+MM10<0> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<1> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<2> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<3> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<4> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<5> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<6> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<7> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<8> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<9> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<10> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<11> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<12> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<13> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<14> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<15> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<16> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<17> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<18> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<19> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<20> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<21> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<22> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<23> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<24> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<25> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<26> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<27> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<28> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<29> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<30> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<31> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<32> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<33> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<34> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<35> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<36> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<37> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<38> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<39> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<40> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<41> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<42> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<43> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<44> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<45> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<46> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<47> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<48> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<49> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<50> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<51> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<52> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<53> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<54> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<55> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<56> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<57> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<58> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<59> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<60> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<61> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<62> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<63> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<64> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<65> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<66> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<67> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<68> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<69> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<70> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<71> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<72> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<73> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<74> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<75> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<76> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<77> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<78> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MM10<79> vdd! a gnd! gnd! nmos_io_a W=10u L=280n W_CONT=4.1u NFING=1
+MI2<1> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<2> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI2<3> gnd! vdd! gnd! cpoly_p W=984u L=2u
+MI1 gnd! vdd! gnd! cpoly_p W=534.44u L=2u
+MI59<0> c vdd! c cpoly_p W=40u L=2u
+MI59<1> c vdd! c cpoly_p W=40u L=2u
+MI59<2> c vdd! c cpoly_p W=40u L=2u
+MI59<3> c vdd! c cpoly_p W=40u L=2u
+MI59<4> c vdd! c cpoly_p W=40u L=2u
+MI59<5> c vdd! c cpoly_p W=40u L=2u
+MI59<6> c vdd! c cpoly_p W=40u L=2u
+MI59<7> c vdd! c cpoly_p W=40u L=2u
+MI4<1> gnd! vdd! gnd! cpoly_p W=480u L=2u
+MI4<2> gnd! vdd! gnd! cpoly_p W=480u L=2u
+MI4<3> gnd! vdd! gnd! cpoly_p W=480u L=2u
+MM3<0> b c vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<1> b c vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<2> b c vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM3<3> b c vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<0> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<1> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<2> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<3> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<4> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<5> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<6> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+MM0<7> a b vdd! vdd! pmos_a W=4u L=240n W_CONT=600n NFING=2
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    RingPad_AND3
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT RingPad_AND3 In1 In2 In3 Out
+*.PININFO In1:I In2:I In3:I Out:O
+MM2 net031 In1 net015 net015 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM1 net015 In2 net018 net018 nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM0 net018 In3 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=2
+MM22 Out net031 gnd! gnd! nmos_a W=4.8u L=240n W_CONT=2.1u NFING=2
+MM3 net031 In1 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=2
+MM4 net031 In2 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=2
+MM23 Out net031 vdd! vdd! pmos_a W=5.8u L=240n W_CONT=1.1u NFING=3
+MM5 net031 In3 vdd! vdd! pmos_a W=2u L=240n W_CONT=600n NFING=2
+.ENDS
+
+************************************************************************
+* Library Name: Z11_RAM8Mb_8_16_32_OO_161219
+* Cell Name:    RingPad
+* View Name:    schematic
+************************************************************************
+
+.SUBCKT RingPad A0 A1 A2 A3 A4 A5 A6 A7 A8 A9 A10 A11 A12 A13 A14 A15 A16 A17 
++ A18 A19 A20 A21 Adr<0> Adr<1> Adr<2> Adr<3> Adr<4> Adr<5> Adr<6> Adr<7> 
++ Adr<8> Adr<9> Adr<10> Adr<11> Adr<12> Adr<13> Adr<14> Adr<15> Adr<16> 
++ Adr<17> Adr<18> Adr<19> Bit16 Bit32 Bit_16 Bit_32 CEN CS1 CS2 DIO1 DIO2 DIO3 
++ DIO4 DIO5 DIO6 DIO7 DIO8 DIO9 DIO10 DIO11 DIO12 DIO13 DIO14 DIO15 DIO16 
++ DIO17 DIO18 DIO19 DIO20 DIO21 DIO22 DIO23 DIO24 DIO25 DIO26 DIO27 DIO28 
++ DIO29 DIO30 DIO31 DIO32 DI_Bank<1> DI_Bank<2> DI_Bank<3> DI_Bank<4> 
++ DI_Bank<5> DI_Bank<6> DI_Bank<7> DI_Bank<8> DI_Bank<9> DI_Bank<10> 
++ DI_Bank<11> DI_Bank<12> DI_Bank<13> DI_Bank<14> DI_Bank<15> DI_Bank<16> 
++ DI_Bank<17> DI_Bank<18> DI_Bank<19> DI_Bank<20> DI_Bank<21> DI_Bank<22> 
++ DI_Bank<23> DI_Bank<24> DI_Bank<25> DI_Bank<26> DI_Bank<27> DI_Bank<28> 
++ DI_Bank<29> DI_Bank<30> DI_Bank<31> DI_Bank<32> DO_Bank<1> DO_Bank<2> 
++ DO_Bank<3> DO_Bank<4> DO_Bank<5> DO_Bank<6> DO_Bank<7> DO_Bank<8> DO_Bank<9> 
++ DO_Bank<10> DO_Bank<11> DO_Bank<12> DO_Bank<13> DO_Bank<14> DO_Bank<15> 
++ DO_Bank<16> DO_Bank<17> DO_Bank<18> DO_Bank<19> DO_Bank<20> DO_Bank<21> 
++ DO_Bank<22> DO_Bank<23> DO_Bank<24> DO_Bank<25> DO_Bank<26> DO_Bank<27> 
++ DO_Bank<28> DO_Bank<29> DO_Bank<30> DO_Bank<31> DO_Bank<32> GND_PAD! MODE 
++ NWR OEN Test Usub VDD_PAD! nCE nOE_Core nWE
+*.PININFO A0:I A1:I A2:I A3:I A4:I A5:I A6:I A7:I A8:I A9:I A10:I A11:I A12:I 
+*.PININFO A13:I A14:I A15:I A16:I A17:I A18:I A19:I A20:I A21:I Bit16:I 
+*.PININFO Bit32:I CEN:I CS1:I CS2:I DO_Bank<1>:I DO_Bank<2>:I DO_Bank<3>:I 
+*.PININFO DO_Bank<4>:I DO_Bank<5>:I DO_Bank<6>:I DO_Bank<7>:I DO_Bank<8>:I 
+*.PININFO DO_Bank<9>:I DO_Bank<10>:I DO_Bank<11>:I DO_Bank<12>:I DO_Bank<13>:I 
+*.PININFO DO_Bank<14>:I DO_Bank<15>:I DO_Bank<16>:I DO_Bank<17>:I 
+*.PININFO DO_Bank<18>:I DO_Bank<19>:I DO_Bank<20>:I DO_Bank<21>:I 
+*.PININFO DO_Bank<22>:I DO_Bank<23>:I DO_Bank<24>:I DO_Bank<25>:I 
+*.PININFO DO_Bank<26>:I DO_Bank<27>:I DO_Bank<28>:I DO_Bank<29>:I 
+*.PININFO DO_Bank<30>:I DO_Bank<31>:I DO_Bank<32>:I MODE:I NWR:I OEN:I Test:I 
+*.PININFO nOE_Core:I Adr<0>:O Adr<1>:O Adr<2>:O Adr<3>:O Adr<4>:O Adr<5>:O 
+*.PININFO Adr<6>:O Adr<7>:O Adr<8>:O Adr<9>:O Adr<10>:O Adr<11>:O Adr<12>:O 
+*.PININFO Adr<13>:O Adr<14>:O Adr<15>:O Adr<16>:O Adr<17>:O Adr<18>:O 
+*.PININFO Adr<19>:O Bit_16:O Bit_32:O DI_Bank<1>:O DI_Bank<2>:O DI_Bank<3>:O 
+*.PININFO DI_Bank<4>:O DI_Bank<5>:O DI_Bank<6>:O DI_Bank<7>:O DI_Bank<8>:O 
+*.PININFO DI_Bank<9>:O DI_Bank<10>:O DI_Bank<11>:O DI_Bank<12>:O DI_Bank<13>:O 
+*.PININFO DI_Bank<14>:O DI_Bank<15>:O DI_Bank<16>:O DI_Bank<17>:O 
+*.PININFO DI_Bank<18>:O DI_Bank<19>:O DI_Bank<20>:O DI_Bank<21>:O 
+*.PININFO DI_Bank<22>:O DI_Bank<23>:O DI_Bank<24>:O DI_Bank<25>:O 
+*.PININFO DI_Bank<26>:O DI_Bank<27>:O DI_Bank<28>:O DI_Bank<29>:O 
+*.PININFO DI_Bank<30>:O DI_Bank<31>:O DI_Bank<32>:O nCE:O nWE:O DIO1:B DIO2:B 
+*.PININFO DIO3:B DIO4:B DIO5:B DIO6:B DIO7:B DIO8:B DIO9:B DIO10:B DIO11:B 
+*.PININFO DIO12:B DIO13:B DIO14:B DIO15:B DIO16:B DIO17:B DIO18:B DIO19:B 
+*.PININFO DIO20:B DIO21:B DIO22:B DIO23:B DIO24:B DIO25:B DIO26:B DIO27:B 
+*.PININFO DIO28:B DIO29:B DIO30:B DIO31:B DIO32:B GND_PAD!:B Usub:B VDD_PAD!:B
+XI729 net192 net190 net196 / RingPad_NOR
+XI719 net188 net235 net190 / RingPad_EOR
+XI720 net193 net226 net192 / RingPad_EOR
+MM27 net151 net151 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM0 net168 net168 vdd! vdd! pmos_a W=1.2u L=240n W_CONT=600n NFING=1
+MM1 net169 net168 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+MM26 net147 net151 gnd! gnd! nmos_a W=2.4u L=240n W_CONT=1.1u NFING=1
+XI168 A18 A<18> net212 net076 Bit_16 Bit_16 / PADIN_Adress_Select
+XI169 A19 A<19> net213 net076 Bit_16 Bit_32 / PADIN_Adress_Select
+XI181 Test nTest net169 / PADIN_CS
+XI621 A20 net188 nMulti_Chip / PADIN_CS
+XI603 MODE nMulti_Chip net169 / PADIN_CS
+XI625 A21 net193 nMulti_Chip / PADIN_CS
+XI624 CS2 net226 nMulti_Chip / PADIN_CS
+XI620 CS1 net235 nMulti_Chip / PADIN_CS
+XI182 net247 net0180 net169 / PADIN_CS
+XI132<1> GND_PAD! VDD_PAD! / GND_Core_PAD
+XI132<2> GND_PAD! VDD_PAD! / GND_Core_PAD
+XI604<1>  / VDD_Core
+XI604<2>  / VDD_Core
+XI616<1>  / VDD_Core
+XI616<2>  / VDD_Core
+XI646<1>  / VDD_Core
+XI646<2>  / VDD_Core
+XI732  / VDD_Core
+XI731  / VDD_Core
+XI648<1>  / VDD_Core
+XI648<2>  / VDD_Core
+XI602<1>  / GND_Core
+XI602<2>  / GND_Core
+XI733  / GND_Core
+XI730  / GND_Core
+XI650<1>  / GND_Core
+XI650<2>  / GND_Core
+XI615<1>  / GND_Core
+XI615<2>  / GND_Core
+XI654<1>  / GND_Core
+XI654<2>  / GND_Core
+XI626 net202 CEN net196 net197 net199 net200 net201 net076 / PADIN_CE
+XI608 A3 Adr<3> net180 net076 / PADIN_Adress
+XI638 A12 A<12> net204 net076 / PADIN_Adress
+XI612 A5 Adr<5> net181 net076 / PADIN_Adress
+XI635 A14 Adr<14> net218 net076 / PADIN_Adress
+XI614 A6 Adr<6> net183 net076 / PADIN_Adress
+XI623 A11 Adr<11> net191 net076 / PADIN_Adress
+XI607 A2 Adr<2> net217 net076 / PADIN_Adress
+XI637 A13 Adr<13> net206 net076 / PADIN_Adress
+XI611 A4 Adr<4> net222 net076 / PADIN_Adress
+XI643 A17 A<17> net227 net076 / PADIN_Adress
+XI619 A8 Adr<8> net185 net076 / PADIN_Adress
+XI617 A9 Adr<9> net186 net076 / PADIN_Adress
+XI642 A16 Adr<16> net209 net076 / PADIN_Adress
+XI613 A7 Adr<7> net224 net076 / PADIN_Adress
+XI618 A10 Adr<10> net187 net076 / PADIN_Adress
+XI636 A15 Adr<15> net208 net076 / PADIN_Adress
+XI172 A1 Adr<1> net177 net076 / PADIN_Adress
+XI171 A0 Adr<0> net174 net076 / PADIN_Adress
+XI165<1>  / Fill_Block_8Kx8
+XI165<2>  / Fill_Block_8Kx8
+XI165<3>  / Fill_Block_8Kx8
+XI165<4>  / Fill_Block_8Kx8
+XI165<5>  / Fill_Block_8Kx8
+XI165<6>  / Fill_Block_8Kx8
+XI165<7>  / Fill_Block_8Kx8
+XI165<8>  / Fill_Block_8Kx8
+XI165<9>  / Fill_Block_8Kx8
+XI165<10>  / Fill_Block_8Kx8
+XI165<11>  / Fill_Block_8Kx8
+XI165<12>  / Fill_Block_8Kx8
+XI165<13>  / Fill_Block_8Kx8
+XI165<14>  / Fill_Block_8Kx8
+XI165<15>  / Fill_Block_8Kx8
+XI165<16>  / Fill_Block_8Kx8
+XI165<17>  / Fill_Block_8Kx8
+XI165<18>  / Fill_Block_8Kx8
+XI165<19>  / Fill_Block_8Kx8
+XI165<20>  / Fill_Block_8Kx8
+XI165<21>  / Fill_Block_8Kx8
+XI165<22>  / Fill_Block_8Kx8
+XI165<23>  / Fill_Block_8Kx8
+XI165<24>  / Fill_Block_8Kx8
+XI165<25>  / Fill_Block_8Kx8
+XI165<26>  / Fill_Block_8Kx8
+XI165<27>  / Fill_Block_8Kx8
+XI165<28>  / Fill_Block_8Kx8
+XI165<29>  / Fill_Block_8Kx8
+XI165<30>  / Fill_Block_8Kx8
+XI165<31>  / Fill_Block_8Kx8
+XI165<32>  / Fill_Block_8Kx8
+XI165<33>  / Fill_Block_8Kx8
+XI165<34>  / Fill_Block_8Kx8
+XI165<35>  / Fill_Block_8Kx8
+XI165<36>  / Fill_Block_8Kx8
+XI165<37>  / Fill_Block_8Kx8
+XI165<38>  / Fill_Block_8Kx8
+XI165<39>  / Fill_Block_8Kx8
+XI165<40>  / Fill_Block_8Kx8
+XI165<41>  / Fill_Block_8Kx8
+XI165<42>  / Fill_Block_8Kx8
+XI165<43>  / Fill_Block_8Kx8
+XI165<44>  / Fill_Block_8Kx8
+XI165<45>  / Fill_Block_8Kx8
+XI165<46>  / Fill_Block_8Kx8
+XI165<47>  / Fill_Block_8Kx8
+XI165<48>  / Fill_Block_8Kx8
+XI165<49>  / Fill_Block_8Kx8
+XI165<50>  / Fill_Block_8Kx8
+XI165<51>  / Fill_Block_8Kx8
+XI165<52>  / Fill_Block_8Kx8
+XI165<53>  / Fill_Block_8Kx8
+XI165<54>  / Fill_Block_8Kx8
+XI165<55>  / Fill_Block_8Kx8
+XI165<56>  / Fill_Block_8Kx8
+XI165<57>  / Fill_Block_8Kx8
+XI165<58>  / Fill_Block_8Kx8
+XI165<59>  / Fill_Block_8Kx8
+XI165<60>  / Fill_Block_8Kx8
+XI165<61>  / Fill_Block_8Kx8
+XI165<62>  / Fill_Block_8Kx8
+XI165<63>  / Fill_Block_8Kx8
+XI165<64>  / Fill_Block_8Kx8
+XI166<1>  / Fill_Dec_X512
+XI166<2>  / Fill_Dec_X512
+XI166<3>  / Fill_Dec_X512
+XI166<4>  / Fill_Dec_X512
+XI631 net202 OEN net203 nOE_Core net0135 / PADIN_OE
+XI600 Bit16 Bit_16 net246 net147 net245 / PADIN_WE
+XI601 Bit32 Bit_32 net248 net147 net255 / PADIN_WE
+XI632 NWR net203 net201 net076 nWE / PADIN_WE
+XI135 GND_PAD! VDD_PAD! / GND_PAD
+XI149<1> GND_PAD! VDD_PAD! / GND_PAD
+XI149<2> GND_PAD! VDD_PAD! / GND_PAD
+XI126<1> GND_PAD! VDD_PAD! / GND_PAD
+XI126<2> GND_PAD! VDD_PAD! / GND_PAD
+XI133 GND_PAD! VDD_PAD! / VDD_PAD
+XI148<1> GND_PAD! VDD_PAD! / VDD_PAD
+XI148<2> GND_PAD! VDD_PAD! / VDD_PAD
+XI188 GND_PAD! VDD_PAD! / VDD_PAD
+XI189 GND_PAD! VDD_PAD! / VDD_PAD
+XI127<1> GND_PAD! VDD_PAD! / VDD_PAD
+XI127<2> GND_PAD! VDD_PAD! / VDD_PAD
+XI122 DI<5> DIO5 DO<5> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI121 DI<4> DIO4 DO<4> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI120 DI<3> DIO3 DO<3> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI131 DI<20> DIO20 DO<20> GND_PAD! VDD_PAD! nOE<20> net072 / PADIO
+XI130 DI<19> DIO19 DO<19> GND_PAD! VDD_PAD! nOE<19> net072 / PADIO
+XI129 DI<18> DIO18 DO<18> GND_PAD! VDD_PAD! nOE<18> net072 / PADIO
+XI119 DI<2> DIO2 DO<2> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI118 DI<1> DIO1 DO<1> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI150 DI<25> DIO25 DO<25> GND_PAD! VDD_PAD! nOE<25> net072 / PADIO
+XI151 DI<26> DIO26 DO<26> GND_PAD! VDD_PAD! nOE<26> net072 / PADIO
+XI152 DI<27> DIO27 DO<27> GND_PAD! VDD_PAD! nOE<27> net072 / PADIO
+XI153 DI<28> DIO28 DO<28> GND_PAD! VDD_PAD! nOE<28> net072 / PADIO
+XI154 DI<29> DIO29 DO<29> GND_PAD! VDD_PAD! nOE<29> net072 / PADIO
+XI155 DI<30> DIO30 DO<30> GND_PAD! VDD_PAD! nOE<30> net072 / PADIO
+XI156 DI<31> DIO31 DO<31> GND_PAD! VDD_PAD! nOE<31> net072 / PADIO
+XI139 DI<24> DIO24 DO<24> GND_PAD! VDD_PAD! nOE<24> net072 / PADIO
+XI138 DI<23> DIO23 DO<23> GND_PAD! VDD_PAD! nOE<23> net072 / PADIO
+XI137 DI<22> DIO22 DO<22> GND_PAD! VDD_PAD! nOE<22> net072 / PADIO
+XI136 DI<21> DIO21 DO<21> GND_PAD! VDD_PAD! nOE<21> net072 / PADIO
+XI146 DI<15> DIO15 DO<15> GND_PAD! VDD_PAD! nOE<15> net072 / PADIO
+XI147 DI<16> DIO16 DO<16> GND_PAD! VDD_PAD! nOE<16> net072 / PADIO
+XI145 DI<14> DIO14 DO<14> GND_PAD! VDD_PAD! nOE<14> net072 / PADIO
+XI143 DI<12> DIO12 DO<12> GND_PAD! VDD_PAD! nOE<12> net072 / PADIO
+XI144 DI<13> DIO13 DO<13> GND_PAD! VDD_PAD! nOE<13> net072 / PADIO
+XI157 DI<32> DIO32 DO<32> GND_PAD! VDD_PAD! nOE<32> net072 / PADIO
+XI125 DI<8> DIO8 DO<8> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI124 DI<7> DIO7 DO<7> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI128 DI<17> DIO17 DO<17> GND_PAD! VDD_PAD! nOE<17> net072 / PADIO
+XI123 DI<6> DIO6 DO<6> GND_PAD! VDD_PAD! nOE_Master net072 / PADIO
+XI140 DI<9> DIO9 DO<9> GND_PAD! VDD_PAD! nOE<9> net072 / PADIO
+XI142 DI<11> DIO11 DO<11> GND_PAD! VDD_PAD! nOE<11> net072 / PADIO
+XI141 DI<10> DIO10 DO<10> GND_PAD! VDD_PAD! nOE<10> net072 / PADIO
+XI117<1> GND_PAD! VDD_PAD! / PAD_Clamp_200
+XI117<2> GND_PAD! VDD_PAD! / PAD_Clamp_200
+XI117<3> GND_PAD! VDD_PAD! / PAD_Clamp_200
+XI117<4> GND_PAD! VDD_PAD! / PAD_Clamp_200
+XI116<1> A_18 A_19 Bit_16 Bit_32 DI_Bank<1> DI<1> High<1> DO_Bank<1> DO<17> 
++ DO<1> High<1> High<1> High<1> nA18<1> nA19<1> Low<1> nA18<1> nA19<1> / 
++ Select_Bit
+XI116<2> A_18 A_19 Bit_16 Bit_32 DI_Bank<2> DI<2> High<2> DO_Bank<2> DO<18> 
++ DO<2> High<2> High<2> High<2> nA18<2> nA19<2> Low<2> nA18<2> nA19<2> / 
++ Select_Bit
+XI116<3> A_18 A_19 Bit_16 Bit_32 DI_Bank<3> DI<3> High<3> DO_Bank<3> DO<19> 
++ DO<3> High<3> High<3> High<3> nA18<3> nA19<3> Low<3> nA18<3> nA19<3> / 
++ Select_Bit
+XI116<4> A_18 A_19 Bit_16 Bit_32 DI_Bank<4> DI<4> High<4> DO_Bank<4> DO<20> 
++ DO<4> High<4> High<4> High<4> nA18<4> nA19<4> Low<4> nA18<4> nA19<4> / 
++ Select_Bit
+XI116<5> A_18 A_19 Bit_16 Bit_32 DI_Bank<5> DI<5> High<5> DO_Bank<5> DO<21> 
++ DO<5> High<5> High<5> High<5> nA18<5> nA19<5> Low<5> nA18<5> nA19<5> / 
++ Select_Bit
+XI116<6> A_18 A_19 Bit_16 Bit_32 DI_Bank<6> DI<6> High<6> DO_Bank<6> DO<22> 
++ DO<6> High<6> High<6> High<6> nA18<6> nA19<6> Low<6> nA18<6> nA19<6> / 
++ Select_Bit
+XI116<7> A_18 A_19 Bit_16 Bit_32 DI_Bank<7> DI<7> High<7> DO_Bank<7> DO<23> 
++ DO<7> High<7> High<7> High<7> nA18<7> nA19<7> Low<7> nA18<7> nA19<7> / 
++ Select_Bit
+XI116<8> A_18 A_19 Bit_16 Bit_32 DI_Bank<8> DI<8> High<8> DO_Bank<8> DO<24> 
++ DO<8> High<8> High<8> High<8> nA18<8> nA19<8> Low<8> nA18<8> nA19<8> / 
++ Select_Bit
+XI116<9> A_18 A_19 Bit_16 Bit_32 DI_Bank<9> DI<9> DI_Bank<17> DO_Bank<9> 
++ DO<25> DO<9> High<9> Low<9> High<9> nA18<9> A_19 Low<9> nA18<9> nA19<9> / 
++ Select_Bit
+XI116<10> A_18 A_19 Bit_16 Bit_32 DI_Bank<10> DI<10> DI_Bank<18> DO_Bank<10> 
++ DO<26> DO<10> High<10> Low<10> High<10> nA18<10> A_19 Low<10> nA18<10> 
++ nA19<10> / Select_Bit
+XI116<11> A_18 A_19 Bit_16 Bit_32 DI_Bank<11> DI<11> DI_Bank<19> DO_Bank<11> 
++ DO<27> DO<11> High<11> Low<11> High<11> nA18<11> A_19 Low<11> nA18<11> 
++ nA19<11> / Select_Bit
+XI116<12> A_18 A_19 Bit_16 Bit_32 DI_Bank<12> DI<12> DI_Bank<20> DO_Bank<12> 
++ DO<28> DO<12> High<12> Low<12> High<12> nA18<12> A_19 Low<12> nA18<12> 
++ nA19<12> / Select_Bit
+XI116<13> A_18 A_19 Bit_16 Bit_32 DI_Bank<13> DI<13> DI_Bank<21> DO_Bank<13> 
++ DO<29> DO<13> High<13> Low<13> High<13> nA18<13> A_19 Low<13> nA18<13> 
++ nA19<13> / Select_Bit
+XI116<14> A_18 A_19 Bit_16 Bit_32 DI_Bank<14> DI<14> DI_Bank<22> DO_Bank<14> 
++ DO<30> DO<14> High<14> Low<14> High<14> nA18<14> A_19 Low<14> nA18<14> 
++ nA19<14> / Select_Bit
+XI116<15> A_18 A_19 Bit_16 Bit_32 DI_Bank<15> DI<15> DI_Bank<23> DO_Bank<15> 
++ DO<31> DO<15> High<15> Low<15> High<15> nA18<15> A_19 Low<15> nA18<15> 
++ nA19<15> / Select_Bit
+XI116<16> A_18 A_19 Bit_16 Bit_32 DI_Bank<16> DI<16> DI_Bank<24> DO_Bank<16> 
++ DO<32> DO<16> High<16> Low<16> High<16> nA18<16> A_19 Low<16> nA18<16> 
++ nA19<16> / Select_Bit
+XI116<17> A_18 A_19 Bit_16 Bit_32 DI_Bank<17> DI<17> DI_Bank<1> DO_Bank<17> 
++ DO<9> DO<17> High<17> Low<17> Low<17> A_18 nA19<17> Low<17> nA18<17> 
++ nA19<17> / Select_Bit
+XI116<18> A_18 A_19 Bit_16 Bit_32 DI_Bank<18> DI<18> DI_Bank<2> DO_Bank<18> 
++ DO<10> DO<18> High<18> Low<18> Low<18> A_18 nA19<18> Low<18> nA18<18> 
++ nA19<18> / Select_Bit
+XI116<19> A_18 A_19 Bit_16 Bit_32 DI_Bank<19> DI<19> DI_Bank<3> DO_Bank<19> 
++ DO<11> DO<19> High<19> Low<19> Low<19> A_18 nA19<19> Low<19> nA18<19> 
++ nA19<19> / Select_Bit
+XI116<20> A_18 A_19 Bit_16 Bit_32 DI_Bank<20> DI<20> DI_Bank<4> DO_Bank<20> 
++ DO<12> DO<20> High<20> Low<20> Low<20> A_18 nA19<20> Low<20> nA18<20> 
++ nA19<20> / Select_Bit
+XI116<21> A_18 A_19 Bit_16 Bit_32 DI_Bank<21> DI<21> DI_Bank<5> DO_Bank<21> 
++ DO<13> DO<21> High<21> Low<21> Low<21> A_18 nA19<21> Low<21> nA18<21> 
++ nA19<21> / Select_Bit
+XI116<22> A_18 A_19 Bit_16 Bit_32 DI_Bank<22> DI<22> DI_Bank<6> DO_Bank<22> 
++ DO<14> DO<22> High<22> Low<22> Low<22> A_18 nA19<22> Low<22> nA18<22> 
++ nA19<22> / Select_Bit
+XI116<23> A_18 A_19 Bit_16 Bit_32 DI_Bank<23> DI<23> DI_Bank<7> DO_Bank<23> 
++ DO<15> DO<23> High<23> Low<23> Low<23> A_18 nA19<23> Low<23> nA18<23> 
++ nA19<23> / Select_Bit
+XI116<24> A_18 A_19 Bit_16 Bit_32 DI_Bank<24> DI<24> DI_Bank<8> DO_Bank<24> 
++ DO<16> DO<24> High<24> Low<24> Low<24> A_18 nA19<24> Low<24> nA18<24> 
++ nA19<24> / Select_Bit
+XI116<25> A_18 A_19 Bit_16 Bit_32 DI_Bank<25> DI<25> DI_Bank<9> DO_Bank<25> 
++ gnd! DO<25> High<25> Low<25> Low<25> A_18 A_19 Low<25> nA18<25> nA19<25> / 
++ Select_Bit
+XI116<26> A_18 A_19 Bit_16 Bit_32 DI_Bank<26> DI<26> DI_Bank<10> DO_Bank<26> 
++ gnd! DO<26> High<26> Low<26> Low<26> A_18 A_19 Low<26> nA18<26> nA19<26> / 
++ Select_Bit
+XI116<27> A_18 A_19 Bit_16 Bit_32 DI_Bank<27> DI<27> DI_Bank<11> DO_Bank<27> 
++ gnd! DO<27> High<27> Low<27> Low<27> A_18 A_19 Low<27> nA18<27> nA19<27> / 
++ Select_Bit
+XI116<28> A_18 A_19 Bit_16 Bit_32 DI_Bank<28> DI<28> DI_Bank<12> DO_Bank<28> 
++ gnd! DO<28> High<28> Low<28> Low<28> A_18 A_19 Low<28> nA18<28> nA19<28> / 
++ Select_Bit
+XI116<29> A_18 A_19 Bit_16 Bit_32 DI_Bank<29> DI<29> DI_Bank<13> DO_Bank<29> 
++ gnd! DO<29> High<29> Low<29> Low<29> A_18 A_19 Low<29> nA18<29> nA19<29> / 
++ Select_Bit
+XI116<30> A_18 A_19 Bit_16 Bit_32 DI_Bank<30> DI<30> DI_Bank<14> DO_Bank<30> 
++ gnd! DO<30> High<30> Low<30> Low<30> A_18 A_19 Low<30> nA18<30> nA19<30> / 
++ Select_Bit
+XI116<31> A_18 A_19 Bit_16 Bit_32 DI_Bank<31> DI<31> DI_Bank<15> DO_Bank<31> 
++ gnd! DO<31> High<31> Low<31> Low<31> A_18 A_19 Low<31> nA18<31> nA19<31> / 
++ Select_Bit
+XI116<32> A_18 A_19 Bit_16 Bit_32 DI_Bank<32> DI<32> DI_Bank<16> DO_Bank<32> 
++ gnd! DO<32> High<32> Low<32> Low<32> A_18 A_19 Low<32> nA18<32> nA19<32> / 
++ Select_Bit
+XI134<1> GND_PAD! VDD_PAD! / VDD_Core_PAD
+XI134<2> GND_PAD! VDD_PAD! / VDD_Core_PAD
+XI174 Usub nTest / Usub_7V
+XI158<1> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<2> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<3> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<4> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<5> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<6> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<7> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<8> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<9> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<10> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<11> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<12> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<13> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<14> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<15> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<16> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<17> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<18> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<19> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<20> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<21> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<22> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<23> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<24> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<25> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<26> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<27> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<28> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<29> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<30> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<31> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<32> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<33> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<34> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<35> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<36> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<37> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<38> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<39> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<40> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<41> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<42> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI158<43> GND_PAD! VDD_PAD! / PAD_Fill_200
+XI198 A<19> Adr<19> / RingPad_Buffer
+XI197 A<18> Adr<18> / RingPad_Buffer
+XI196 A<17> Adr<17> / RingPad_Buffer
+XI195 A<12> Adr<12> / RingPad_Buffer
+XI194 Adr<19> A_19 / RingPad_Buffer
+XI193 Adr<18> A_18 / RingPad_Buffer
+XI192 net076 nCE / RingPad_Buffer
+XI190 net0135 nOE_Master / RingPad_Buffer
+XI191 nWE net072 / RingPad_Buffer
+XI160<1> Bit_16 Bit_32 nOE<9> nOE_Master / nOE_16
+XI160<2> Bit_16 Bit_32 nOE<10> nOE_Master / nOE_16
+XI160<3> Bit_16 Bit_32 nOE<11> nOE_Master / nOE_16
+XI160<4> Bit_16 Bit_32 nOE<12> nOE_Master / nOE_16
+XI160<5> Bit_16 Bit_32 nOE<13> nOE_Master / nOE_16
+XI160<6> Bit_16 Bit_32 nOE<14> nOE_Master / nOE_16
+XI160<7> Bit_16 Bit_32 nOE<15> nOE_Master / nOE_16
+XI160<8> Bit_16 Bit_32 nOE<16> nOE_Master / nOE_16
+XI161<1> Bit_32 nOE<17> nOE_Master / nOE_32
+XI161<2> Bit_32 nOE<18> nOE_Master / nOE_32
+XI161<3> Bit_32 nOE<19> nOE_Master / nOE_32
+XI161<4> Bit_32 nOE<20> nOE_Master / nOE_32
+XI161<5> Bit_32 nOE<21> nOE_Master / nOE_32
+XI161<6> Bit_32 nOE<22> nOE_Master / nOE_32
+XI161<7> Bit_32 nOE<23> nOE_Master / nOE_32
+XI161<8> Bit_32 nOE<24> nOE_Master / nOE_32
+XI161<9> Bit_32 nOE<25> nOE_Master / nOE_32
+XI161<10> Bit_32 nOE<26> nOE_Master / nOE_32
+XI161<11> Bit_32 nOE<27> nOE_Master / nOE_32
+XI161<12> Bit_32 nOE<28> nOE_Master / nOE_32
+XI161<13> Bit_32 nOE<29> nOE_Master / nOE_32
+XI161<14> Bit_32 nOE<30> nOE_Master / nOE_32
+XI161<15> Bit_32 nOE<31> nOE_Master / nOE_32
+XI161<16> Bit_32 nOE<32> nOE_Master / nOE_32
+XI187<1>  / PAD_Fill_160
+XI187<2>  / PAD_Fill_160
+XI187<3>  / PAD_Fill_160
+XI187<4>  / PAD_Fill_160
+XI187<5>  / PAD_Fill_160
+XI187<6>  / PAD_Fill_160
+XI187<7>  / PAD_Fill_160
+XI187<8>  / PAD_Fill_160
+XI187<9>  / PAD_Fill_160
+XI187<10>  / PAD_Fill_160
+XI187<11>  / PAD_Fill_160
+XI187<12>  / PAD_Fill_160
+XI187<13>  / PAD_Fill_160
+XI187<14>  / PAD_Fill_160
+XI187<15>  / PAD_Fill_160
+XI187<16>  / PAD_Fill_160
+XI187<17>  / PAD_Fill_160
+XI187<18>  / PAD_Fill_160
+XI187<19>  / PAD_Fill_160
+XI187<20>  / PAD_Fill_160
+XI187<21>  / PAD_Fill_160
+XI187<22>  / PAD_Fill_160
+XI187<23>  / PAD_Fill_160
+XI187<24>  / PAD_Fill_160
+XI187<25>  / PAD_Fill_160
+XI187<26>  / PAD_Fill_160
+XI187<27>  / PAD_Fill_160
+XI187<28>  / PAD_Fill_160
+XI187<29>  / PAD_Fill_160
+XI187<30>  / PAD_Fill_160
+XI187<31>  / PAD_Fill_160
+XI187<32>  / PAD_Fill_160
+XI187<33>  / PAD_Fill_160
+XI187<34>  / PAD_Fill_160
+XI187<35>  / PAD_Fill_160
+XI187<36>  / PAD_Fill_160
+XI187<37>  / PAD_Fill_160
+XI187<38>  / PAD_Fill_160
+XI187<39>  / PAD_Fill_160
+XI187<40>  / PAD_Fill_160
+XI187<41>  / PAD_Fill_160
+XI187<42>  / PAD_Fill_160
+XI187<43>  / PAD_Fill_160
+XI187<44>  / PAD_Fill_160
+XI187<45>  / PAD_Fill_160
+XI187<46>  / PAD_Fill_160
+XI186<1>  / PAD_Clamp_160
+XI186<2>  / PAD_Clamp_160
+XI186<3>  / PAD_Clamp_160
+XI186<4>  / PAD_Clamp_160
+XI662 net209 net208 net218 net207 / RingPad_AND3
+XI665 net186 net187 net191 net197 / RingPad_AND3
+XI657 net174 net177 net217 net179 / RingPad_AND3
+XI658 net180 net222 net181 net182 / RingPad_AND3
+XI663 net204 net206 net206 net205 / RingPad_AND3
+XI659 net183 net224 net185 net184 / RingPad_AND3
+XI660 net179 net182 net184 net199 / RingPad_AND3
+XI115 net213 net212 net227 net211 / RingPad_AND3
+XI664 net205 net207 net211 net200 / RingPad_AND3
+.ENDS
+

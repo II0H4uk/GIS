@@ -1,3 +1,0 @@
-fixCount, netCount
-fixedMas (size = fixCount)
-netList(rows = netCount)
