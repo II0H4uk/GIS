@@ -12,6 +12,7 @@ namespace GIS_Data {
         bool AreSimilar(const Element& a, const Element& b);
 
     public:
+        BipartGraph();
         BipartGraph(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2);
         BipartGraph(const std::vector<std::vector<int>>& adjacencyList);
         const std::vector<std::vector<int>>& GetAdjList() const { return adjList; }

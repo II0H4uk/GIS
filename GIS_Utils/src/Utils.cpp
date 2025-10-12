@@ -27,6 +27,21 @@ namespace GIS_Utils {
         return adjList;
     }
 
+    std::string Utils::GetAdjList(const GIS_Data::KoenigGraph& koenG) {
+
+        std::string adjList;
+
+        for (int i = 0; i < koenG.GetAdjList().size(); ++i) {
+            adjList += std::to_string(i) + ": ";
+            for (int j = 0; j < koenG.GetAdjList()[i].size(); ++j) {
+                adjList += std::to_string(koenG.GetAdjList()[i][j]) + ", ";
+            }
+            adjList += "\n";
+        }
+
+        return adjList;
+    }
+
     int Utils::CountLevels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startVertices) {
         int n = (int)adjList.size();
         std::vector<char> visited(n, 0);
@@ -60,14 +75,13 @@ namespace GIS_Utils {
     std::string Utils::ConvertGraphMapToCircuit(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
         const GIS_Data::KoenigGraph& koenG1, const GIS_Data::KoenigGraph& koenG2) {
 
-        std::string circuitMap = "";
+        /*std::string circuitMap = "";
 
         for (int i = 0; i < map.size(); ++i) {
-            if (map[i].first >= koenG1.GetNodeCount())
+            if (map[i].first >= kGraph1.GetNodeCount())
                 break;
             circuitMap += map[i].first + " -> " + map[i].second << "\n";
-        }
-
+        }*/
         return std::string();
     }
 }

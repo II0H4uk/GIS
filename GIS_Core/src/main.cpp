@@ -6,6 +6,7 @@
 #include <BipartGraph.h>
 #include <MaxMatching.h>
 #include <EnhancedMatching.h>
+#include <SignalMatching.h>
 #include <algorithm>
 #include <Utils.h>
 
@@ -31,8 +32,10 @@ int main(int argc, char* argv[]) {
 
     //GIS_Core::Benchmark::MaxMatching(koenG1, koenG2);
 
+    GIS_Core::Benchmark bench;
+    bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>());
     auto algS = high_resolution_clock::now();
-    GIS_Core::Benchmark::SignalMatching(koenG1, koenG2, config);
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> map = bench.Process(koenG1, koenG2, config);
     auto algE = high_resolution_clock::now();
     auto algT = std::chrono::duration_cast<milliseconds>(algE - algS);
 

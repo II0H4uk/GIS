@@ -6,7 +6,7 @@
 namespace GIS_Algs {
 
     // Отрефакторено
-    std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations, int quantScale) {
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> SignalMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, const GIS_Data::Config& config) {
 
         std::vector<int> inputs1 = GetInputNets(g1);
         std::vector<int> inputs2 = GetInputNets(g2);
@@ -24,15 +24,15 @@ namespace GIS_Algs {
 
         //MatchInputs(g1, inputs1, g2, inputs2);
 
-        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), iterations, vddId, gndId);
+        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), config.GetIterations(), vddId, gndId);
 
         std::vector<int> topo1 = GetTopoOrder(g1, inputs1);
         std::vector<int> topo2 = GetTopoOrder(g2, inputs2);
 
-        std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, iterations, inputSignals);
-        std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, iterations, inputSignals);
+        std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, config.GetIterations(), inputSignals);
+        std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, config.GetIterations(), inputSignals);
 
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> elemMap = MatchElems(g1, S1, g2, S2, quantScale);
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> elemMap = MatchElems(g1, S1, g2, S2, config.GetQuantScale());
 
         return elemMap;
     }

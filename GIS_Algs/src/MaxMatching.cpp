@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "MaxMatching.h"
+#include <BipartGraph.h>
 #include <vector>
 #include <utility>
 #include <algorithm>
@@ -7,9 +8,9 @@
 #include <chrono>
 
 namespace GIS_Algs {
-    std::vector<std::pair<int, int>> MaxMatching::Start(const GIS_Data::BipartGraph& bipartGraph, int n) {
+    std::vector<std::pair<int, int>> MaxMatching::AlgStart(int n) const {
 
-        const auto& adjList = bipartGraph.GetAdjList();
+        const auto& adjList = bGraph_.GetAdjList();
 
         std::vector<std::pair<int, int>> bestMatching;
         int bestSize = 0;
@@ -55,5 +56,30 @@ namespace GIS_Algs {
         }
 
         return bestMatching;
+    }
+
+    MaxMatching::MaxMatching() : bGraph_{ GIS_Data::BipartGraph{} }, isInit(false) {}
+
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> MaxMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, const GIS_Data::Config& config) {
+
+        if (!isInit) {
+            SetBGraph(GIS_Data::BipartGraph(g1, g2));
+            isInit = true;
+        }
+
+        std::vector<std::pair<int, int>> bufMap = AlgStart(config.GetIterations());
+
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> map(bufMap.size());
+        
+        for (int i = 0; i < bufMap.size(); ++i) {
+            map.push_back(std::pair<std::vector<int>, std::vector<int>>({bufMap[i].first}, {bufMap[i].second}));
+        }
+
+        return map;
+    }
+
+    void MaxMatching::SetBGraph(const GIS_Data::BipartGraph& bGraph) {
+        bGraph_ = bGraph;
+        isInit = true;
     }
 }

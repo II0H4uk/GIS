@@ -5,16 +5,22 @@
 #include <math.h>
 
 namespace GIS_Algs {
-    std::vector<std::pair<int, int>> EnhancedMatching::Start(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, GIS_Data::BipartGraph& bGraph) {
 
-        std::vector<std::unordered_set<int>> chainMatch = MatchChains(kGraph1, kGraph2);
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> EnhancedMatching::Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, const GIS_Data::Config& config) {
 
-        CorrectBGraph(bGraph, kGraph1, kGraph2, chainMatch);
+        GIS_Data::BipartGraph bGraph(g1, g2);
 
-        return MaxMatching::Start(bGraph, 100);
+        std::vector<std::unordered_set<int>> chainMatch = MatchChains(g1, g2);
+
+        CorrectBGraph(bGraph, g1, g2, chainMatch);
+
+        MaxMatching alg;
+        alg.SetBGraph(bGraph);
+
+        return alg.Start(g1, g2, config);
     }
 
-    void EnhancedMatching::CorrectBGraph(GIS_Data::BipartGraph& bGraph, const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, std::vector<std::unordered_set<int>>& chainMatch) {
+    void EnhancedMatching::CorrectBGraph(GIS_Data::BipartGraph& bGraph, const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, std::vector<std::unordered_set<int>>& chainMatch) const {
         
         std::vector<std::vector<int>> bAdjList = bGraph.GetAdjList();
         
@@ -40,13 +46,13 @@ namespace GIS_Algs {
         }
     }
 
-    bool EnhancedMatching::ContainsAny(const std::unordered_set<int>& set, const std::vector<int>& vec) {
+    bool EnhancedMatching::ContainsAny(const std::unordered_set<int>& set, const std::vector<int>& vec) const {
         return std::any_of(vec.begin(), vec.end(), [&set](int x) {
             return set.count(x) > 0;
         });
     }
 
-    std::vector<std::unordered_set<int>> EnhancedMatching::MatchChains(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
+    std::vector<std::unordered_set<int>> EnhancedMatching::MatchChains(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) const {
 
         std::vector<std::vector<int>> chGraph1 = CreateChainGraph(kGraph1);
         std::vector<std::vector<int>> chGraph2 = CreateChainGraph(kGraph2);
@@ -86,7 +92,7 @@ namespace GIS_Algs {
         return chainMatch;
     }
 
-    std::vector<std::vector<int>> EnhancedMatching::CreateChainGraph(const GIS_Data::KoenigGraph& kGraph) {
+    std::vector<std::vector<int>> EnhancedMatching::CreateChainGraph(const GIS_Data::KoenigGraph& kGraph) const {
         int chCount = kGraph.GetHyperEdgeCount();
         int nCount = kGraph.GetNodeCount();
         std::vector<std::vector<int>> adjList = kGraph.GetAdjList();
@@ -129,7 +135,7 @@ namespace GIS_Algs {
         return chGraph;
     }
 
-    std::vector<int> EnhancedMatching::CalcAdjLv(std::vector<std::vector<int>>& adjList, std::vector<std::vector<int>>& adjListT) {
+    std::vector<int> EnhancedMatching::CalcAdjLv(std::vector<std::vector<int>>& adjList, std::vector<std::vector<int>>& adjListT) const {
 
         std::vector<int> startNodes = FindStart(adjListT);
         int nodeCount = adjList.size();
@@ -160,7 +166,7 @@ namespace GIS_Algs {
         return adjLv;
     }
 
-    std::vector<int> EnhancedMatching::FindStart(std::vector<std::vector<int>>& adjListT) {
+    std::vector<int> EnhancedMatching::FindStart(std::vector<std::vector<int>>& adjListT) const {
 
         std::vector<int> startNodes;
         for (int i = 0; i < adjListT.size(); ++i)
@@ -170,7 +176,7 @@ namespace GIS_Algs {
         return startNodes;
     }
 
-    std::vector<std::vector<int>> EnhancedMatching::TranspAdjList(const std::vector<std::vector<int>>& chGraph) {
+    std::vector<std::vector<int>> EnhancedMatching::TranspAdjList(const std::vector<std::vector<int>>& chGraph) const {
         std::vector<std::vector<int>> revList(chGraph.size());
         for (int i = 0; i < chGraph.size(); ++i) {
             for (int j = 0; j < chGraph[i].size(); ++j) {
@@ -181,7 +187,7 @@ namespace GIS_Algs {
         return revList;
     }
     
-    std::vector<std::vector<double>> EnhancedMatching::CalcWeights(const std::vector<std::vector<int>>& adjList1, const std::vector<int>& adjLv1, const std::vector<std::vector<int>>& adjList2, const std::vector<int>& adjLv2) {
+    std::vector<std::vector<double>> EnhancedMatching::CalcWeights(const std::vector<std::vector<int>>& adjList1, const std::vector<int>& adjLv1, const std::vector<std::vector<int>>& adjList2, const std::vector<int>& adjLv2) const {
         
         int max1 = *std::max_element(adjLv1.begin(), adjLv1.end());
         int max2 = *std::max_element(adjLv2.begin(), adjLv2.end());
@@ -216,7 +222,7 @@ namespace GIS_Algs {
         return weights;
     }
 
-    std::vector<std::pair<int, int>> EnhancedMatching::CalcDeg(const std::vector<std::vector<int>>& adjList, const std::vector<std::vector<int>>& adjListT, int chainCount) {
+    std::vector<std::pair<int, int>> EnhancedMatching::CalcDeg(const std::vector<std::vector<int>>& adjList, const std::vector<std::vector<int>>& adjListT, int chainCount) const {
         std::vector<std::pair<int, int>> deg(chainCount);
         int nodeCount = adjList.size() - chainCount;
 
@@ -227,11 +233,11 @@ namespace GIS_Algs {
         return deg;
     }
 
-    double EnhancedMatching::EuclidDist(const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
+    double EnhancedMatching::EuclidDist(const std::pair<int, int>& p1, const std::pair<int, int>& p2) const {
         return sqrt(pow(p1.first - p2.first, 2) + pow(p1.second - p2.second, 2));
     }
 
-    std::vector<int> EnhancedMatching::MatchLevels(std::vector<std::vector<double>>& weights) {
+    std::vector<int> EnhancedMatching::MatchLevels(std::vector<std::vector<double>>& weights) const {
 
         std::vector<int> selected_columns(weights.size(), -1);
         selected_columns[0] = 0;

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <KoenigGraph.h>
+#include <AlgStrat.h>
 #include <random>
 
 namespace GIS_Algs {
-    class SignalMatching {
+    class SignalMatching : public AlgStrat {
     private:
         static int FindId(const std::vector<std::string>& netNames, const std::string& name, int n);
         static std::vector<int> GetInputNets(const GIS_Data::KoenigGraph& g);
@@ -19,6 +20,6 @@ namespace GIS_Algs {
         static std::vector<std::vector<int>> GenerateSignals(int inputsCount, int iterations, const std::vector<int>& vdd, const std::vector<int>& gnd);
         static std::vector<std::pair<std::vector<int>, std::vector<int>>> MatchElems(const GIS_Data::KoenigGraph& g1, const std::vector<std::vector<int>>& S1, const GIS_Data::KoenigGraph& g2, const std::vector<std::vector<int>>& S2, int quantScale = 1000);
     public:
-        static std::vector<std::pair<std::vector<int>, std::vector<int>>> Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, int iterations = 64, int quantScale = 1000);
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> Start(const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, const GIS_Data::Config& config) override;
     };
 }

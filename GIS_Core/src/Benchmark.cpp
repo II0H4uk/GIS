@@ -16,25 +16,17 @@ namespace GIS_Core {
 
     void Benchmark::SignalMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, const GIS_Data::Config& config) {
 
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> result = GIS_Algs::SignalMatching::Start(kGraph1, kGraph2, config.GetIterations(), config.GetQuantScale());
+        
 
-        std::cout << "Node count:" << kGraph1.GetNodeCount();
+        
+        /*std::cout << "Node count:" << kGraph1.GetNodeCount();
         std::cout << "\nChain count:" << kGraph1.GetHyperEdgeCount();
-        std::cout << "\nResult size:" << result.size() << "\n";
+        std::cout << "\nResult size:" << result.size() << "\n";*/
     }
 
     void Benchmark::MaxMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
 
-        GIS_Data::BipartGraph bGraph = GIS_Data::BipartGraph(kGraph1, kGraph2);
-
-        //отображение двудольного графа
-        /*for (int i = 0; i < bGraph.GetAdjList().size(); ++i) {
-            std::cout << i << ": ";
-            for (int j = 0; j < bGraph.GetAdjList()[i].size(); ++j) {
-                std::cout << bGraph.GetAdjList()[i][j] << ", ";
-            }
-            std::cout << "\n";
-        }*/
+        /*GIS_Data::BipartGraph bGraph = GIS_Data::BipartGraph(kGraph1, kGraph2);
 
         std::vector<std::pair<int, int>> result = GIS_Algs::EnhancedMatching::Start(kGraph1, kGraph2, bGraph);
         std::sort(result.begin(), result.end());
@@ -43,7 +35,7 @@ namespace GIS_Core {
             if (result[i].first >= kGraph1.GetNodeCount())
                 break;
             std::cout << result[i].first << " -> " << result[i].second - kGraph1.GetNodeCount() << "\n";
-        }
+        }*/
 
 
 
@@ -86,6 +78,17 @@ namespace GIS_Core {
             Normalize(g1, g2, g1.GetNodeCount(), g2.GetNodeCount(), g2.GetNodeCount(), g1.GetNodeCount(), true);
         if (g1.GetHyperEdgeCount() != g2.GetHyperEdgeCount())
             Normalize(g1, g2, g1.GetHyperEdgeCount(), g2.GetHyperEdgeCount(), g2.GetNodeCount() + g2.GetHyperEdgeCount(), g1.GetNodeCount() + g1.GetHyperEdgeCount(), false);
+    }
+
+    void Benchmark::SetStrat(std::unique_ptr<GIS_Algs::AlgStrat> alg) {
+        alg_ = std::move(alg);
+    }
+
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> Benchmark::Process(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, const GIS_Data::Config& config) {
+        if (!alg_)
+            throw std::runtime_error("Алгоритм не выбран");
+        
+        return alg_->Start(kGraph1, kGraph2, config);
     }
 
     void Benchmark::Normalize(GIS_Data::KoenigGraph& g1, GIS_Data::KoenigGraph& g2, int g1Nodes, int g2Nodes, int offset1, int offset2, bool isNode) {
