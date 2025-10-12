@@ -7,8 +7,18 @@ namespace GIS_Data {
         inputPath1_(ParseStr(config, "Input1", "")),
         inputPath2_(ParseStr(config, "Input2", "")),
         outputPath_(ParseStr(config, "Output", "")),
-        iterations_(ParseInt(config, "Iterations", 0)),
-        quantScale_(ParseInt(config, "QuantScale", 0)) { }
+        algorithm_(ParseStr(config, "Algorithm", "")),
+
+        maxMatchIterations_(ParseInt(config, "MaxMatchIterations", 0)),
+
+        signalIterations_(ParseInt(config, "SignalIterations", 0)),
+        quantScale_(ParseInt(config, "QuantScale", 0)),
+
+        enableStat_(ParseBool(config, "EnableStat", false)),
+        writeCircParams_(ParseBool(config, "WriteCircuitParams", false)),
+        writeTime_(ParseBool(config, "WriteTime", false)),
+        writeMapping_(ParseBool(config, "WriteMaping", false)),
+        writeOnlyBijection_(ParseBool(config, "WriteOnlyBijection", false)) { }
 
     const std::string Config::FindVal(const std::unordered_map<std::string, std::string>& config, const std::string& key) const {
         auto it = config.find(key);
@@ -58,11 +68,39 @@ namespace GIS_Data {
         return outputPath_;
     }
 
-    const int Config::GetIterations() const {
-        return iterations_;
+    const std::string& Config::GetAlgorithm() const {
+        return algorithm_;
+    }
+
+    const int Config::GetMaxMatchIterations() const {
+        return maxMatchIterations_;
+    }
+
+    const int Config::GetSignalIterations() const {
+        return signalIterations_;
     }
 
     const int Config::GetQuantScale() const {
         return quantScale_;
+    }
+
+    const bool Config::GetEnableStat() const {
+        return enableStat_;
+    }
+
+    const bool Config::GetWriteCircParams() const {
+        return writeCircParams_;
+    }
+
+    const bool Config::GetWriteTime() const {
+        return writeTime_;
+    }
+
+    const bool Config::GetWriteMapping() const {
+        return writeMapping_;
+    }
+
+    const bool Config::GetWriteOnlyBijection() const {
+        return writeOnlyBijection_;
     }
 }

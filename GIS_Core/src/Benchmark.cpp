@@ -26,16 +26,6 @@ namespace GIS_Core {
 
     void Benchmark::MaxMatching(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) {
 
-        /*GIS_Data::BipartGraph bGraph = GIS_Data::BipartGraph(kGraph1, kGraph2);
-
-        std::vector<std::pair<int, int>> result = GIS_Algs::EnhancedMatching::Start(kGraph1, kGraph2, bGraph);
-        std::sort(result.begin(), result.end());
-
-        for (int i = 0; i < result.size(); ++i) {
-            if (result[i].first >= kGraph1.GetNodeCount())
-                break;
-            std::cout << result[i].first << " -> " << result[i].second - kGraph1.GetNodeCount() << "\n";
-        }*/
 
 
 

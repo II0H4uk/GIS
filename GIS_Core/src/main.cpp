@@ -30,9 +30,17 @@ int main(int argc, char* argv[]) {
     auto kGraphE = high_resolution_clock::now();
     auto kGraphT = std::chrono::duration_cast<milliseconds>(kGraphE - kGraphS);
 
-    //GIS_Core::Benchmark::MaxMatching(koenG1, koenG2);
-
     GIS_Core::Benchmark bench;
+    if (config.GetAlgorithm() == "SignalAlg") {
+        bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>());
+    } else if (config.GetAlgorithm() == "EnhancedMatching") {
+        bench.SetStrat(std::make_unique<GIS_Algs::EnhancedMatching>());
+    } else if (config.GetAlgorithm() == "MaxMatching") {
+        bench.SetStrat(std::make_unique<GIS_Algs::MaxMatching>());
+    } else {
+        bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>());
+    }
+
     bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>());
     auto algS = high_resolution_clock::now();
     std::vector<std::pair<std::vector<int>, std::vector<int>>> map = bench.Process(koenG1, koenG2, config);

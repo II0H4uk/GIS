@@ -24,13 +24,13 @@ namespace GIS_Algs {
 
         //MatchInputs(g1, inputs1, g2, inputs2);
 
-        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), config.GetIterations(), vddId, gndId);
+        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), config.GetSignalIterations(), vddId, gndId);
 
         std::vector<int> topo1 = GetTopoOrder(g1, inputs1);
         std::vector<int> topo2 = GetTopoOrder(g2, inputs2);
 
-        std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, config.GetIterations(), inputSignals);
-        std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, config.GetIterations(), inputSignals);
+        std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, config.GetSignalIterations(), inputSignals);
+        std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, config.GetSignalIterations(), inputSignals);
 
         std::vector<std::pair<std::vector<int>, std::vector<int>>> elemMap = MatchElems(g1, S1, g2, S2, config.GetQuantScale());
 
