@@ -18,4 +18,5 @@ target_precompile_headers(GIS_Stats PRIVATE src/pch.h)
 target_link_libraries(GIS_Stats
 	PRIVATE
 		GIS_Parser
+		GIS_Data
 )

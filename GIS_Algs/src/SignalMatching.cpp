@@ -322,7 +322,7 @@ namespace GIS_Algs {
         const std::vector<int>& inputNets,
         const std::vector<int>& inputBits
     ) {
-        std::vector<int> value(g.GetNodeCount() + g.GetHyperEdgeCount(), 0.0);
+        std::vector<int> value(g.GetNodeCount() + g.GetHyperEdgeCount(), -1);
 
         for (int i = 0; i < inputNets.size(); ++i)
             value[inputNets[i]] = inputBits[i];
@@ -331,39 +331,36 @@ namespace GIS_Algs {
             char elType = e < g.GetNodeCount() ? g.GetElements()[e].GetType() : 'N';
             switch (elType) {
             case 'M':
-                if ((value[g.GetAdjListT()[e][1]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
-                    (value[g.GetAdjListT()[e][1]] == 0 && g.GetElements()[e].GetChType() == 'p'))
-                    value[e] = value[g.GetAdjListT()[e][0]];
+                if ((value[g.GetAdjListT()[e][0]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
+                    (value[g.GetAdjListT()[e][0]] == 0 && g.GetElements()[e].GetChType() == 'p'))
+                    value[e] = value[g.GetAdjListT()[e][1]];
                 break;
             case 'C':
-                if ((value[g.GetAdjListT()[e][1]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
-                    (value[g.GetAdjListT()[e][1]] == 0 && g.GetElements()[e].GetChType() == 'p'))
-                    value[e] = value[g.GetAdjListT()[e][0]];
+                if ((value[g.GetAdjListT()[e][0]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
+                    (value[g.GetAdjListT()[e][0]] == 0 && g.GetElements()[e].GetChType() == 'p'))
+                    value[e] = value[g.GetAdjListT()[e][1]];
                 break;
             case 'D':
-                if (value[g.GetAdjListT()[e][0]] == 1)
-                    value[e] = value[g.GetAdjListT()[e][0]];
+                value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             case 'R':
                 value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             case 'N':
-                for (int i = 0; i < g.GetAdjListT()[e].size(); ++i)
+                for (int i = 0; i < g.GetAdjListT()[e].size(); ++i) {
                     if (value[g.GetAdjListT()[e][i]] == 1) {
                         value[e] = 1;
                         break;
                     }
+                    if (value[g.GetAdjListT()[e][i]] == 0) value[e] = 0;
+                }
+
                 break;
             default:
                 if (value[g.GetAdjListT()[e][0]] == 1)
                     value[e] = value[g.GetAdjListT()[e][0]];
                 break;
             }
-
-            /*double sum = 0.0;
-            for (int node : g.GetAdjListT()[e])
-                sum += value[node];
-            value[e] += sum / g.GetAdjListT()[e].size();*/
         }
 
         return value;

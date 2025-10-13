@@ -17,8 +17,18 @@ namespace GIS_Data {
         enableStat_(ParseBool(config, "EnableStat", false)),
         writeCircParams_(ParseBool(config, "WriteCircuitParams", false)),
         writeTime_(ParseBool(config, "WriteTime", false)),
-        writeMapping_(ParseBool(config, "WriteMaping", false)),
-        writeOnlyBijection_(ParseBool(config, "WriteOnlyBijection", false)) { }
+        writeBijection_(ParseBool(config, "WriteBijection", false)),
+        writeUndefinedElements_(ParseBool(config, "WriteUndefinedElements", false)),
+        writeToConsole_(ParseBool(config, "WriteToConsole", false)) {
+
+        int startPos1 = inputPath1_.find("../Graph_Data/") + 14;
+        int endPos1 = inputPath1_.find("/netlist.sp");
+        circName1_ = inputPath1_.substr(startPos1, endPos1 - startPos1);
+
+        int startPos2 = inputPath2_.find("../Graph_Data/") + 14;
+        int endPos2 = inputPath2_.find("/netlist.sp");
+        circName2_ = inputPath2_.substr(startPos2, endPos2 - startPos2);
+    }
 
     const std::string Config::FindVal(const std::unordered_map<std::string, std::string>& config, const std::string& key) const {
         auto it = config.find(key);
@@ -54,6 +64,14 @@ namespace GIS_Data {
 
     const bool Config::ParseBool(const std::unordered_map<std::string, std::string>& config, const std::string& key, bool def) const {
         return (FindVal(config, key) == "true");
+    }
+
+    const std::string& Config::GetCircName1() const {
+        return circName1_;
+    }
+
+    const std::string& Config::GetCircName2() const {
+        return circName2_;
     }
 
     const std::string& Config::GetInput1() const {
@@ -96,11 +114,15 @@ namespace GIS_Data {
         return writeTime_;
     }
 
-    const bool Config::GetWriteMapping() const {
-        return writeMapping_;
+    const bool Config::GetWriteBijection() const {
+        return writeBijection_;
     }
 
-    const bool Config::GetWriteOnlyBijection() const {
-        return writeOnlyBijection_;
+    const bool Config::GetWriteUndefinedElements() const {
+        return writeUndefinedElements_;
+    }
+
+    const bool Config::GetWriteToConsole() const {
+        return writeToConsole_;
     }
 }
