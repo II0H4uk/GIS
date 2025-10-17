@@ -69,7 +69,7 @@ namespace GIS_Algs {
 
         std::vector<std::pair<int, int>> bufMap = AlgStart(config.GetMaxMatchIterations());
 
-        std::vector<std::pair<std::vector<int>, std::vector<int>>> map(bufMap.size());
+        std::vector<std::pair<std::vector<int>, std::vector<int>>> map;
         
         for (int i = 0; i < bufMap.size(); ++i) {
             map.push_back(std::pair<std::vector<int>, std::vector<int>>({bufMap[i].first}, {bufMap[i].second}));

@@ -27,10 +27,10 @@ namespace GIS_Stats {
             statisticsInfo += WriteTime(time);
 
         if (config.GetWriteBijection())
-            statisticsInfo += WriteBijection(map, g1, g2);
+            statisticsInfo += WriteBijection(map, g1, g2, config);
 
         if (config.GetWriteUndefinedElements())
-            statisticsInfo += WriteUndefinedElements(map, g1, g2);
+            statisticsInfo += WriteUndefinedElements(map, g1, g2, config);
 
         if (config.GetWriteToConsole())
             std::cout << statisticsInfo;
@@ -66,12 +66,14 @@ namespace GIS_Stats {
 
     std::string Statistics::WriteBijection(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
         const GIS_Data::KoenigGraph& g1,
-        const GIS_Data::KoenigGraph& g2) {
+        const GIS_Data::KoenigGraph& g2,
+        const GIS_Data::Config& config) {
 
         std::string bijection = "Bijection:\n";
 
         for (int i = 0; i < map.size(); ++i) {
-            if (map[i].first.size() != 1 || map[i].second.size() != 1)
+            if (map[i].first.size() != 1 || map[i].second.size() != 1 ||
+                (config.GetWriteOnlyElements() && map[i].first[0] >= g1.GetNodeCount()))
                 continue;
             
             std::string first;
@@ -96,20 +98,36 @@ namespace GIS_Stats {
 
     std::string Statistics::WriteUndefinedElements(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
         const GIS_Data::KoenigGraph& g1,
-        const GIS_Data::KoenigGraph& g2) {
+        const GIS_Data::KoenigGraph& g2,
+        const GIS_Data::Config& config) {
         
         std::string undefined = "Undefined:\n";
 
-        for (int i = 0; i < map.size(); ++i) {
-            if (map[i].first.size() == 1 || map[i].second.size() == 1)
-                continue;
+        std::string undefG1, undefG2;
 
-            undefined += WriteUndefFromVector(g1, map[i].first);
-            undefined += WriteUndefFromVector(g2, map[i].second);
+        for (int i = 0; i < map.size(); ++i) {
+            if (map[i].first.size() > 0 && map[i].second.size() > 0)
+                continue;
+            if (config.GetWriteOnlyElements()
+                && (map[i].first.size() > 0 && map[i].first[0] >= g1.GetNodeCount()
+                || map[i].second.size() > 0 && map[i].second[0] >= g2.GetNodeCount()))
+                continue;
+            if (map[i].first.size() == 0) {
+                undefG2 += WriteUndefFromVector(g2, map[i].second);
+            }
+
+            if (map[i].second.size() == 0) {
+                undefG1 += WriteUndefFromVector(g1, map[i].first);
+            }
         }
 
-        undefined.resize(undefined.size() - 2);
-        undefined += "\n\n";
+        if (undefG1.size() > 0)
+            undefG1.resize(undefG1.size() - 2);
+        if (undefG2.size() > 0)
+            undefG2.resize(undefG2.size() - 2);
+
+        undefined += "Circuit1:\n" + undefG1 + "\n";
+        undefined += "Circuit2:\n" + undefG2 + "\n\n";
 
         return undefined;
     }

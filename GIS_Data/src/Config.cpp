@@ -18,8 +18,37 @@ namespace GIS_Data {
         writeCircParams_(ParseBool(config, "WriteCircuitParams", false)),
         writeTime_(ParseBool(config, "WriteTime", false)),
         writeBijection_(ParseBool(config, "WriteBijection", false)),
+        writeOnlyElements_(ParseBool(config, "WriteOnlyElements", false)),
         writeUndefinedElements_(ParseBool(config, "WriteUndefinedElements", false)),
         writeToConsole_(ParseBool(config, "WriteToConsole", false)) {
+
+        int startPos1 = inputPath1_.find("../Graph_Data/") + 14;
+        int endPos1 = inputPath1_.find("/netlist.sp");
+        circName1_ = inputPath1_.substr(startPos1, endPos1 - startPos1);
+
+        int startPos2 = inputPath2_.find("../Graph_Data/") + 14;
+        int endPos2 = inputPath2_.find("/netlist.sp");
+        circName2_ = inputPath2_.substr(startPos2, endPos2 - startPos2);
+    }
+
+    Config::Config(const std::string& input1, const std::string& input2) :
+        inputPath1_(input1),
+        inputPath2_(input2),
+        outputPath_(""),
+        algorithm_(""),
+
+        maxMatchIterations_(10),
+
+        signalIterations_(32),
+        quantScale_(1),
+
+        enableStat_(false),
+        writeCircParams_(false),
+        writeTime_(false),
+        writeBijection_(false),
+        writeOnlyElements_(false),
+        writeUndefinedElements_(false),
+        writeToConsole_(false) {
 
         int startPos1 = inputPath1_.find("../Graph_Data/") + 14;
         int endPos1 = inputPath1_.find("/netlist.sp");
@@ -116,6 +145,10 @@ namespace GIS_Data {
 
     const bool Config::GetWriteBijection() const {
         return writeBijection_;
+    }
+
+    const bool Config::GetWriteOnlyElements() const {
+        return writeOnlyElements_;
     }
 
     const bool Config::GetWriteUndefinedElements() const {

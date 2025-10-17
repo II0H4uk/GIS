@@ -29,6 +29,7 @@ namespace GIS_Data {
         bool writeCircParams_;
         bool writeTime_;
         bool writeBijection_;
+        bool writeOnlyElements_;
         bool writeUndefinedElements_;
         bool writeToConsole_;
 
@@ -41,6 +42,7 @@ namespace GIS_Data {
 
     public:
         Config(const std::unordered_map<std::string, std::string>& config);
+        Config(const std::string& input1, const std::string& input2);
 
         const std::string& GetCircName1() const;
         const std::string& GetCircName2() const;
@@ -59,6 +61,7 @@ namespace GIS_Data {
         const bool GetWriteCircParams() const;
         const bool GetWriteTime() const;
         const bool GetWriteBijection() const;
+        const bool GetWriteOnlyElements() const;
         const bool GetWriteUndefinedElements() const;
         const bool GetWriteToConsole() const;
     };

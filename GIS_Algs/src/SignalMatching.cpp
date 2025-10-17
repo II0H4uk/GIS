@@ -108,7 +108,6 @@ namespace GIS_Algs {
 
         std::vector<std::pair<std::vector<int>, std::vector<int>>> clusters;
 
-        std::vector<std::pair<int, int>> a;
         int single = 0;
         for (auto& elems1 : g1.GetElemsType()) {
             auto elems2 = g2.GetElemsType().find(elems1.first);
@@ -123,17 +122,17 @@ namespace GIS_Algs {
 
             for (auto& q1 : typeQuant1) {
                 auto q2 = typeQuant2.find(q1.first);
-                if (q2 == typeQuant2.end()) continue;
+                if (q2 == typeQuant2.end()) {
+                    clusters.push_back({ q1.second, std::vector<int>()});
+                    continue;
+                }
 
                 clusters.push_back({q1.second, q2->second});
-                /*if (q1.second.size() == 1 && q2->second.size() == 1)
-                    single++;
-                else
-                    a.push_back({ q1.second.size(), q2->second.size() });
-
-                int c = std::min(q1.second.size(), q2->second.size());
-                for (int i = 0; i < c; ++i)
-                    mapping.emplace_back(q1.second[i], q2->second[i]);*/
+            }
+            for (auto& q2 : typeQuant2) {
+                auto q1 = typeQuant1.find(q2.first);
+                if (q1 == typeQuant1.end())
+                    clusters.push_back({ std::vector<int>(), q2.second});
             }
         }
         return clusters;

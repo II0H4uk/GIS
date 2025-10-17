@@ -9,6 +9,7 @@ namespace GIS_Parser {
     Circuits::Utils::Subcircuit CircuitLayout::CreateMainCircuit(const std::vector<Circuits::Utils::Subcircuit>& circuits) {
         std::unordered_map<std::string, int> circuitsId;
         Circuits::Utils::Subcircuit mainCirc;
+        elCounter = 0;
 
         for (int i = 0; i < circuits.size(); ++i)
             circuitsId[circuits[i].name] = i;

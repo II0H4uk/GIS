@@ -15,6 +15,9 @@ target_sources(GIS_Tests
 		src/BaseTests.cpp
 		src/MaxMatching.cpp
 		src/pch.cpp
+		src/Parser.cpp
+		src/SignalAlg.cpp
+		src/KoenigGraphTest.cpp
 )
 
 # link to other lib

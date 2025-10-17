@@ -1,62 +1,55 @@
 #include "pch.h"
 #include "BipartGraph.h"
 #include "MaxMatching.h"
+#include "SpiceParser.h"
 
 TEST(MaxMatchTests, SimpleTest) {
-    std::vector<std::vector<int>> adjList = {
-            {0, 1},    // Вершина 0 левой доли соединена с 0 и 1 правой
-            {1, 2},     // Вершина 1 левой доли соединена с 1 и 2 правой
-            {2}         // Вершина 2 левой доли соединена только с 2 правой
-    };
 
-    GIS_Data::BipartGraph graph(adjList);
-    auto matching = GIS_Algs::MaxMatching::Start(graph, 100);
+    GIS_Data::Config config("../../Graph_Data/test1/netlist.sp", "../../Graph_Data/test1/netlist.sp");
 
-    std::cout << "Test 1: Simple graph\n";
-    std::cout << "Matching size: " << matching.size() << "\n";
-    for (const auto& pair : matching) {
-        std::cout << pair.first << " - " << pair.second << "\n";
-    }
+    Circuits::Utils::SpiceParser parser;
+    Circuits::Utils::Subcircuit circuit1 = parser.ParseSPICE(config.GetInput1());
+    Circuits::Utils::Subcircuit circuit2 = parser.ParseSPICE(config.GetInput2());
 
-    assert(matching.size() == 3);
-}
+    GIS_Data::KoenigGraph koenG1(circuit1, 2);
+    GIS_Data::KoenigGraph koenG2(circuit2, 2);
 
-TEST(MaxMatchTests, PartialMatching) {
-    std::vector<std::vector<int>> adjList = {
-            {0},        // 0 - 0
-            {0},        // 1 - 0
-            {1}         // 2 - 1
-    };
+    GIS_Algs::MaxMatching maxMatch;
 
-    GIS_Data::BipartGraph graph(adjList);
-    auto matching = GIS_Algs::MaxMatching::Start(graph, 100);
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> matching = maxMatch.Start(koenG1, koenG2, config);
 
-    std::cout << "\nTest 2: Graph without perfect matching\n";
-    std::cout << "Matching size: " << matching.size() << "\n";
-    for (const auto& pair : matching) {
-        std::cout << pair.first << " - " << pair.second << "\n";
-    }
-
-    assert(matching.size() == 2); // Максимальное возможное
+    assert(matching.size() == 8);
 }
 
 TEST(MaxMatchTests, ComplexTest) {
-    std::vector<std::vector<int>> adjList = {
-            {0, 1, 2},
-            {1, 2, 3},
-            {0, 3},
-            {2, 4},
-            {3, 4}
-    };
 
-    GIS_Data::BipartGraph graph(adjList);
-    auto matching = GIS_Algs::MaxMatching::Start(graph, 1000);
+    std::unordered_map<std::string, std::string> configString;
+    configString["Input1"] = "../../Graph_Data/test2_1/netlist.sp";
+    configString["Input2"] = "../../Graph_Data/test2_2/netlist.sp";
+    configString["Output"] = "../Graph_Data/output.stats";
+    configString["Algorithm"] = "SignalAlg";
+    configString["MaxMatchIterations"] = "10";
+    configString["SignalIterations"] = "32";
+    configString["QuantScale"] = "1";
+    configString["EnableStat"] = "false";
+    configString["WriteCircuitParams"] = "false";
+    configString["WriteTime"] = "false";
+    configString["WriteBijection"] = "false";
+    configString["WriteOnlyElements"] = "false";
+    configString["WriteUndefinedElements"] = "false";
+    configString["WriteToConsole"] = "false";
+    GIS_Data::Config config(configString);
 
-    std::cout << "\nTest 3: Larger graph\n";
-    std::cout << "Matching size: " << matching.size() << "\n";
-    for (const auto& pair : matching) {
-        std::cout << pair.first << " - " << pair.second << "\n";
-    }
+    Circuits::Utils::SpiceParser parser;
+    Circuits::Utils::Subcircuit circuit1 = parser.ParseSPICE(config.GetInput1());
+    Circuits::Utils::Subcircuit circuit2 = parser.ParseSPICE(config.GetInput2());
 
-    assert(matching.size() >= 4); // Должно найти хорошее паросочетание
+    GIS_Data::KoenigGraph koenG1(circuit1, 2);
+    GIS_Data::KoenigGraph koenG2(circuit2, 2);
+
+    GIS_Algs::MaxMatching maxMatch;
+
+    std::vector<std::pair<std::vector<int>, std::vector<int>>> matching = maxMatch.Start(koenG1, koenG2, config);
+
+    assert(matching.size() == 14);
 }

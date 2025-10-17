@@ -15,10 +15,12 @@ namespace GIS_Stats {
         static std::string WriteTime(const std::vector<std::chrono::milliseconds>& time);
         static std::string WriteBijection(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
             const GIS_Data::KoenigGraph& g1,
-            const GIS_Data::KoenigGraph& g2);
+            const GIS_Data::KoenigGraph& g2,
+            const GIS_Data::Config& config);
         static std::string WriteUndefinedElements(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
             const GIS_Data::KoenigGraph& g1,
-            const GIS_Data::KoenigGraph& g2);
+            const GIS_Data::KoenigGraph& g2,
+            const GIS_Data::Config& config);
         static std::string WriteUndefFromVector(const GIS_Data::KoenigGraph& g, const std::vector<int>& vec);
     public:
         static void WriteStat(const std::vector<std::pair<std::vector<int>, std::vector<int>>>& map,
