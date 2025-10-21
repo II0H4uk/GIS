@@ -5,7 +5,7 @@
 
 TEST(Parser, readingTest) {
 
-    GIS_Data::Config config("../../Graph_Data/test5/netlist.sp", "../../Graph_Data/test5/netlist.sp");
+    GIS_Data::Config config("../../Graph_Data/parsingTest1/netlist.sp", "../../Graph_Data/parsingTest1/netlist.sp");
 
     Circuits::Utils::SpiceParser parser;
     Circuits::Utils::Subcircuit circuit = parser.ParseSPICE(config.GetInput1());
@@ -34,7 +34,7 @@ TEST(Parser, readingTest) {
 
 TEST(Parser, recursion—heck) {
 
-    GIS_Data::Config config("../../Graph_Data/test1/netlist.sp", "../../Graph_Data/test5/netlist.sp");
+    GIS_Data::Config config("../../Graph_Data/test1/netlist.sp", "../../Graph_Data/parsingTest1/netlist.sp");
 
     Circuits::Utils::SpiceParser parser;
     Circuits::Utils::Subcircuit circuit = parser.ParseSPICE(config.GetInput1());

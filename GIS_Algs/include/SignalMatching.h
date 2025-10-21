@@ -7,6 +7,7 @@
 namespace GIS_Algs {
     class SignalMatching : public AlgStrat {
     private:
+        static void Process6TSRAM(std::vector<int>& order, std::vector<int>& visDeg, std::vector<bool>& isTrigger, const GIS_Data::KoenigGraph& g, int firstCh);
         static int FindId(const std::vector<std::string>& netNames, const std::string& name, int n);
         static std::vector<int> GetInputNets(const GIS_Data::KoenigGraph& g);
         static std::vector<int> GetTopoOrder(const GIS_Data::KoenigGraph& g, const std::vector<int>& inputs);

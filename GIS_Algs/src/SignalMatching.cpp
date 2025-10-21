@@ -227,19 +227,57 @@ namespace GIS_Algs {
         int skipInput = inputs.size();
         std::vector<int> order; order.reserve(g.GetNodeCount() + g.GetHyperEdgeCount() - inputs.size());
         std::vector<int> visDeg(g.GetNodeCount() + g.GetHyperEdgeCount(), 0);
+        std::vector<bool> isTrigger(visDeg.size(), false);
 
         while (!q.empty()) {
             int node = q.front(); q.pop();
-            if (--skipInput < 0)
+            if (--skipInput < 0 && !isTrigger[node])
                 order.push_back(node);
 
             for (int neigh : g.GetAdjList()[node]) {
-                if (++visDeg[neigh] == g.GetAdjListT()[neigh].size())
+                if (++visDeg[neigh] == g.GetAdjListT()[neigh].size() && !isTrigger[neigh])
                     q.push(neigh);
+                if (g.GetAdjList()[node].size() < 1000 && visDeg[neigh] != g.GetAdjListT()[neigh].size() && !isTrigger[neigh])
+                    Process6TSRAM(order, visDeg, isTrigger, g, neigh);
             }
         }
 
         return order;
+    }
+
+    void SignalMatching::Process6TSRAM(std::vector<int>& order, std::vector<int>& visDeg, std::vector<bool>& isTrigger, const GIS_Data::KoenigGraph& g, int firstCh) {
+
+        if (g.GetAdjListT()[firstCh].size() != 3 || g.GetAdjList()[firstCh].size() != 2)
+            return;
+
+        std::vector<int> transistors(4);
+        transistors[0] = g.GetAdjList()[firstCh][0];
+        transistors[1] = g.GetAdjList()[firstCh][1];
+        if (g.GetAdjList()[transistors[0]][0] != g.GetAdjList()[transistors[1]][0])
+            return;
+        int secondCh = g.GetAdjList()[transistors[0]][0];
+        
+        if (g.GetAdjListT()[secondCh].size() != 3 || g.GetAdjList()[secondCh].size() != 2)
+            return;
+
+        transistors[2] = g.GetAdjList()[secondCh][0];
+        transistors[3] = g.GetAdjList()[secondCh][1];
+
+        if (g.GetAdjList()[transistors[2]][0] != firstCh || g.GetAdjList()[transistors[3]][0] != firstCh)
+            return;
+        for (int i = 0; i < g.GetAdjListT()[secondCh].size(); ++i) {
+            if (g.GetAdjListT()[secondCh][i] == transistors[0] || g.GetAdjListT()[secondCh][i] == transistors[1])
+                continue;
+            order.push_back(g.GetAdjListT()[secondCh][i]);
+        }
+        order.push_back(firstCh);
+        order.push_back(secondCh);
+        for (int transistor : transistors) {
+            isTrigger[transistor] = true;
+            order.push_back(transistor);
+        }
+        isTrigger[firstCh] = true;
+        isTrigger[secondCh] = true;
     }
 
     // Отрефакторено
