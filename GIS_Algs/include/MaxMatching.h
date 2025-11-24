@@ -1,7 +1,10 @@
 #pragma once
 
-#include "BipartGraph.h"
 #include <AlgStrat.h>
+#include <BipartGraph.h>
+#include <Config.h>
+#include <utility>
+#include <vector>
 
 namespace GIS_Algs {
 

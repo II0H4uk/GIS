@@ -22,6 +22,7 @@ namespace GIS_Data {
 
         //[SignalAlg]
         int signalIterations_;
+        std::string signalsType_;
         int quantScale_;
 
         //[Statistics]
@@ -55,6 +56,7 @@ namespace GIS_Data {
         const int GetMaxMatchIterations() const;
 
         const int GetSignalIterations() const;
+        const std::string& GetSignalsType() const;
         const int GetQuantScale() const;
 
         const bool GetEnableStat() const;

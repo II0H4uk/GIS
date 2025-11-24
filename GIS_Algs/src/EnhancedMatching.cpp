@@ -1,8 +1,10 @@
 #include "pch.h"
-#include "EnhancedMatching.h"
-#include <unordered_set>
+#include <EnhancedMatching.h>
 #include <MaxMatching.h>
-#include <math.h>
+#include <queue>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace GIS_Algs {
 
@@ -22,24 +24,29 @@ namespace GIS_Algs {
 
     void EnhancedMatching::CorrectBGraph(GIS_Data::BipartGraph& bGraph, const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2, std::vector<std::unordered_set<int>>& chainMatch) const {
         
-        std::vector<std::vector<int>> bAdjList = bGraph.GetAdjList();
-        
-        std::vector<int> inChainsSec;
-        std::vector<int> outChainsSec;
-
-        std::vector<std::vector<int>> adjList1T1 = TranspAdjList(kGraph1.GetAdjList());
-        std::vector<std::vector<int>> adjList1T2 = TranspAdjList(kGraph2.GetAdjList());
-
         for (int i = 0; i < kGraph1.GetNodeCount(); ++i) {
-            for (int j = 0; j < bAdjList[i].size(); ++j) {
+            for (int j = 0; j < bGraph.GetAdjList()[i].size(); ++j) {
 
-                int currNode = bAdjList[i][j] - kGraph1.GetNodeCount();
+                int currNode = bGraph.GetAdjList()[i][j] - kGraph1.GetNodeCount();
+                bool wasDel = false;
 
-                for (int k = 0; k < adjList1T1[i].size(); ++k) {
-                    if (!(ContainsAny(chainMatch[adjList1T1[i][k] - kGraph1.GetNodeCount()], adjList1T2[currNode]) &&
-                        ContainsAny(chainMatch[kGraph1.GetAdjList()[i][k] - kGraph1.GetNodeCount()], kGraph2.GetAdjList()[currNode]))) {
+                for (int k = 0; k < kGraph1.GetAdjListT()[i].size(); ++k) {
+                    if (!(ContainsAny(chainMatch[kGraph1.GetAdjListT()[i][k] - kGraph1.GetNodeCount()], kGraph2.GetAdjListT()[currNode]))) {
                         bGraph.EraseElem(i, j);
                         j--;
+                        wasDel = true;
+                        break;
+                    }
+                }
+
+                if (wasDel)
+                    break;
+
+                for (int k = 0; k < kGraph1.GetAdjList()[i].size(); ++k) {
+                    if (!(ContainsAny(chainMatch[kGraph1.GetAdjList()[i][k] - kGraph1.GetNodeCount()], kGraph2.GetAdjList()[currNode]))) {
+                        bGraph.EraseElem(i, j);
+                        j--;
+                        break;
                     }
                 }
             }
@@ -47,9 +54,9 @@ namespace GIS_Algs {
     }
 
     bool EnhancedMatching::ContainsAny(const std::unordered_set<int>& set, const std::vector<int>& vec) const {
-        return std::any_of(vec.begin(), vec.end(), [&set](int x) {
-            return set.count(x) > 0;
-        });
+        return std::any_of(vec.begin(), vec.end(), [&set](int value) {
+            return set.find(value) != set.end();
+            });
     }
 
     std::vector<std::unordered_set<int>> EnhancedMatching::MatchChains(const GIS_Data::KoenigGraph& kGraph1, const GIS_Data::KoenigGraph& kGraph2) const {

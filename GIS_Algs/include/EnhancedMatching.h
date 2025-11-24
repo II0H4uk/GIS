@@ -1,9 +1,12 @@
 #pragma once
 
+#include <AlgStrat.h>
 #include <BipartGraph.h>
 #include <Config.h>
-#include <AlgStrat.h>
+#include <KoenigGraph.h>
 #include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace GIS_Algs {
 

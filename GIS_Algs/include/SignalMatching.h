@@ -1,8 +1,12 @@
 #pragma once
 
-#include <KoenigGraph.h>
 #include <AlgStrat.h>
-#include <random>
+#include <Config.h>
+#include <KoenigGraph.h>
+#include <string>
+#include <unordered_set>
+#include <utility>
+#include <vector>
 
 namespace GIS_Algs {
     class SignalMatching : public AlgStrat {

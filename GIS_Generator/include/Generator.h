@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphPair.h"
+#include <GraphPair.h>
 #include <BipartGraph.h>
 #include <random>
 

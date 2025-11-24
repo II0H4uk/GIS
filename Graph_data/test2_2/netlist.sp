@@ -14,8 +14,8 @@ X0 8 9 vdd! gnd! NOTNOT
 ***************************************
 .SUBCKT NOTNOT x1 y1 vdd! gnd!
 ** N=4 EP=0 IP=0 FDC=0
-X0 x1 1 vdd! gnd! NOT
-X1 1 y1 vdd! gnd! NOT
+X0 x1 10 vdd! gnd! NOT
+X1 10 y1 vdd! gnd! NOT
 .ENDS
 ***************************************
 .SUBCKT NOT x1 y1 vdd! gnd!

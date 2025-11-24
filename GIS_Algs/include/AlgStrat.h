@@ -1,7 +1,8 @@
 #pragma once
 
-#include <KoenigGraph.h>
 #include <Config.h>
+#include <KoenigGraph.h>
+#include <utility>
 #include <vector>
 
 namespace GIS_Algs {

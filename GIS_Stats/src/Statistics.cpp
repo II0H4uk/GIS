@@ -17,6 +17,7 @@ namespace GIS_Stats {
             return;
 
         std::string statisticsInfo = "Graph Isomorphism Comparison Statistics\n\n";
+        statisticsInfo += "Used algorithm: " + config.GetAlgorithm() + "\n\n";
 
         if (config.GetWriteCircParams()) {
             statisticsInfo += WriteCircuitParams(g1, config.GetCircName1());
@@ -79,14 +80,15 @@ namespace GIS_Stats {
             std::string first;
             std::string second;
 
-            if (map[i].first[0] >= g1.GetNodeCount()) {
+            if (map[i].first[0] >= g1.GetNodeCount())
                 first = g1.GetNetName()[map[i].first[0] - g1.GetNodeCount()];
-                second = g2.GetNetName()[map[i].second[0] - g2.GetNodeCount()];
-            }
-            else {
+            else
                 first = g1.GetElements()[map[i].first[0]].GetType() + std::to_string(map[i].first[0]);
+
+            if (map[i].second[0] >= g2.GetNodeCount())
+                second = g2.GetNetName()[map[i].second[0] - g2.GetNodeCount()];
+            else
                 second = g2.GetElements()[map[i].second[0]].GetType() + std::to_string(map[i].second[0]);
-            }
 
             bijection += std::format("{} -> {}", first, second) + "\n";
         }

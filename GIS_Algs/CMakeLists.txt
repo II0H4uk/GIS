@@ -8,10 +8,12 @@ target_sources(GIS_Algs
 		src/SignalMatching.cpp
 		src/pch.cpp
 		src/AlgStrat.cpp
+		src/TopologyFilter.cpp
 		include/MaxMatching.h
 		include/EnhancedMatching.h
 		include/SignalMatching.h
 		include/AlgStrat.h
+		include/TopologyFilter.h
 )
 
 # add headers

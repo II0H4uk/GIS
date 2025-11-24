@@ -12,6 +12,7 @@ namespace GIS_Data {
         maxMatchIterations_(ParseInt(config, "MaxMatchIterations", 0)),
 
         signalIterations_(ParseInt(config, "SignalIterations", 0)),
+        signalsType_(ParseStr(config, "SignalsType", "")),
         quantScale_(ParseInt(config, "QuantScale", 0)),
 
         enableStat_(ParseBool(config, "EnableStat", false)),
@@ -125,6 +126,10 @@ namespace GIS_Data {
 
     const int Config::GetSignalIterations() const {
         return signalIterations_;
+    }
+
+    const std::string& Config::GetSignalsType() const {
+        return signalsType_;
     }
 
     const int Config::GetQuantScale() const {

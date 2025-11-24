@@ -7,6 +7,7 @@
 #include <MaxMatching.h>
 #include <EnhancedMatching.h>
 #include <SignalMatching.h>
+#include <TopologyFilter.h>
 #include <Statistics.h>
 #include <algorithm>
 #include <Utils.h>
@@ -38,14 +39,16 @@ int main(int argc, char* argv[]) {
     else if (config.GetAlgorithm() == "EnhancedMatching") { bench.SetStrat(std::make_unique<GIS_Algs::EnhancedMatching>()); }
     else if (config.GetAlgorithm() == "MaxMatching") { bench.SetStrat(std::make_unique<GIS_Algs::MaxMatching>()); }
     else { bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>()); }
-    bench.SetStrat(std::make_unique<GIS_Algs::SignalMatching>());
 
     timerS = std::chrono::high_resolution_clock::now();
     std::vector<std::pair<std::vector<int>, std::vector<int>>> map = bench.Process(koenG1, koenG2, config);
     timerE = std::chrono::high_resolution_clock::now();
     time.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(timerE - timerS));
 
+    map = GIS_Algs::TopologyFilter::Start(koenG1, map);
+
     GIS_Stats::Statistics::WriteStat(map, koenG1, koenG2, circuit1, circuit2, time, config);
 
     return 0;
 }
+ 

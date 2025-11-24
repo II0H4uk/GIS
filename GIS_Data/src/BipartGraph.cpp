@@ -32,8 +32,13 @@ namespace GIS_Data {
     }
 
     void BipartGraph::EraseElem(int i, int j) {
+        int secondNode = adjList[i][j];
         adjList[i].erase(adjList[i].begin() + j);
-        adjList[j].erase(adjList[j].begin() + i);
+
+        auto it = std::find(adjList[secondNode].begin(), adjList[secondNode].end(), i);
+        if (it != adjList[secondNode].end()) {
+            adjList[secondNode].erase(it);
+        }
     }
 
     bool BipartGraph::AreSimilar(const Element& a, const Element& b) {
