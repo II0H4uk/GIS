@@ -29,6 +29,7 @@ namespace GIS_Data {
         void AddEdge(int start, int end);
     public:
         KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
+        KoenigGraph();
 
         const std::vector<std::vector<int>>& GetAdjList() const;
         const std::vector<std::vector<int>>& GetAdjListT() const;

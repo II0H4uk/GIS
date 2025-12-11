@@ -7,7 +7,7 @@
 #include <MaxMatching.h>
 #include <EnhancedMatching.h>
 #include <SignalMatching.h>
-#include <TopologyFilter.h>
+#include <Reduction.h>
 #include <Statistics.h>
 #include <algorithm>
 #include <Utils.h>
@@ -45,7 +45,8 @@ int main(int argc, char* argv[]) {
     timerE = std::chrono::high_resolution_clock::now();
     time.push_back(std::chrono::duration_cast<std::chrono::milliseconds>(timerE - timerS));
 
-    map = GIS_Algs::TopologyFilter::Start(koenG1, map);
+    GIS_Algs::Reduction reducer(koenG1);
+    GIS_Data::KoenigGraph g = reducer.start();
 
     GIS_Stats::Statistics::WriteStat(map, koenG1, koenG2, circuit1, circuit2, time, config);
 

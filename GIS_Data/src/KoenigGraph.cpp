@@ -58,7 +58,18 @@ namespace GIS_Data {
             elemsType['N'].push_back(nodeCount + i);
         }
 
+        std::vector<int> to_remove;
+        for (int idx : inputChains)
+            if (adjListT[idx].size() > 0)
+                to_remove.push_back(idx);
+        for (int idx : to_remove)
+            inputChains.erase(std::find(inputChains.begin(), inputChains.end(), idx));
+
         InitElems(circuit, false);
+    }
+
+    KoenigGraph::KoenigGraph() {
+
     }
 
     void KoenigGraph::AddEdge(int start, int end) {
