@@ -2,6 +2,7 @@
 
 #include <KoenigGraph.h>
 #include <SignalMatching.h>
+#include <thread>
 
 namespace GIS_Algs {
 
@@ -12,19 +13,13 @@ namespace GIS_Algs {
         std::vector<int> inputs2 = GetInputNets(g2);
 
         std::vector<int> vddId;
-        if (FindId(g1.GetNetName(), "vdd!", inputs1.size()) != -1)
-            vddId.push_back(FindId(g1.GetNetName(), "vdd!", inputs1.size()));
-        if (FindId(g1.GetNetName(), "VDD_PAD!", inputs1.size()) != -1)
-            vddId.push_back(FindId(g1.GetNetName(), "VDD_PAD!", inputs1.size()));
         std::vector<int> gndId;
-        if (FindId(g1.GetNetName(), "gnd!", inputs1.size()) != -1)
-            gndId.push_back(FindId(g1.GetNetName(), "gnd!", inputs1.size()));
-        if (FindId(g1.GetNetName(), "GND_PAD!", inputs1.size()) != -1)
-            gndId.push_back(FindId(g1.GetNetName(), "GND_PAD!", inputs1.size()));
+        /*findPowerNets(g1.getNetName(), "vdd", vddId, g1.getNodeCount());
+        findPowerNets(g1.getNetName(), "gnd", gndId, g1.getNodeCount());*/
 
         //MatchInputs(g1, inputs1, g2, inputs2);
 
-        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1.size(), config.GetSignalIterations(), vddId, gndId);
+        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1, config.GetSignalIterations(), vddId, gndId);
 
         std::vector<int> topo1 = GetTopoOrder(g1, inputs1);
         std::vector<int> topo2 = GetTopoOrder(g2, inputs2);
@@ -37,25 +32,28 @@ namespace GIS_Algs {
         return elemMap;
     }
 
-    int SignalMatching::FindId(const std::vector<std::string>& netNames, const std::string& name, int n) {
-        auto it = std::find(netNames.begin(), netNames.begin() + n, name);
+    void SignalMatching::findPowerNets(const std::vector<std::string>& nets_name, const std::string& name, std::vector<int>& power_net, int node_count) {
 
-        if (it != netNames.begin() + n) {
-            return std::distance(netNames.begin(), it);  // Возвращаем индекс
+        for (int i = 0; i < nets_name.size(); ++i) {
+
+            std::string net_lower = nets_name[i];
+            std::transform(net_lower.begin(), net_lower.end(), net_lower.begin(),
+                [](unsigned char c) { return std::tolower(c); });
+
+            if (net_lower.find(name) != std::string::npos)
+                power_net.push_back(i + node_count);
         }
-
-        return -1;
     }
 
     // Отрефакторено
     std::vector<int> SignalMatching::GetInputNets(const GIS_Data::KoenigGraph& g) {
 
-        if (g.GetInputChains().size() != 0) //временное решение, так-то должно быть закомиченным
-            return g.GetInputChains();
+        //if (g.getInputChains().size() != 0) //временное решение, так-то должно быть закомиченным
+        //    return g.getInputChains();
 
         std::vector<int> inputs;
-        for (int i = g.GetNodeCount(); i < g.GetNodeCount() + g.GetHyperEdgeCount(); ++i)
-            if (g.GetAdjListT()[i].size() == 0)
+        for (int i = g.getNodeCount(); i < g.getNodeCount() + g.getHyperEdgeCount(); ++i)
+            if (g.getAdjListT()[i].size() == 0)
                 inputs.push_back(i);
 
         return inputs;
@@ -66,10 +64,10 @@ namespace GIS_Algs {
         const GIS_Data::KoenigGraph& g1, const std::vector<int>& in1,
         const GIS_Data::KoenigGraph& g2, std::vector<int>& in2
     ) {
-        std::unordered_set<char> types;
-        for (auto [type, elems] : g1.GetElemsType())
+        std::unordered_set<std::string> types;
+        for (auto [type, elems] : g1.getBlocksType())
             types.insert(type);
-        for (auto [type, elems] : g2.GetElemsType())
+        for (auto [type, elems] : g2.getBlocksType())
             types.insert(type);
 
         const int n1 = in1.size(), n2 = in2.size();
@@ -104,14 +102,13 @@ namespace GIS_Algs {
         int quantScale
     ) {
         std::vector<std::pair<int, int>> mapping;
-        mapping.reserve(std::min(g1.GetNodeCount(), g2.GetNodeCount()));
+        mapping.reserve(std::min(g1.getNodeCount(), g2.getNodeCount()));
 
         std::vector<std::pair<std::vector<int>, std::vector<int>>> clusters;
 
-        int single = 0;
-        for (auto& elems1 : g1.GetElemsType()) {
-            auto elems2 = g2.GetElemsType().find(elems1.first);
-            if (elems2 == g2.GetElemsType().end()) continue;
+        for (auto& elems1 : g1.getBlocksType()) {
+            auto elems2 = g2.getBlocksType().find(elems1.first);
+            if (elems2 == g2.getBlocksType().end()) continue;
 
             std::unordered_map<std::string, std::vector<int>> typeQuant1, typeQuant2;
             typeQuant1.reserve(elems1.second.size()); typeQuant2.reserve(elems2->second.size());
@@ -199,21 +196,25 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<std::vector<int>> SignalMatching::GenerateSignals(int inputsCount, int iterations, const std::vector<int>& vdd, const std::vector<int>& gnd) {
+    std::vector<std::vector<int>> SignalMatching::GenerateSignals(std::vector<int> inputs, int iterations, const std::vector<int>& vdd, const std::vector<int>& gnd) {
         std::mt19937 rng;
         std::uniform_int_distribution<> signals(0, 1);
 
-        std::vector<std::vector<int>> inputSignals(iterations, std::vector<int>(inputsCount, 0));
+        std::vector<std::vector<int>> inputSignals(iterations, std::vector<int>(inputs.size(), 0));
         for (int it = 0; it < iterations; ++it)
             for (int i = 0; i < inputSignals[it].size(); ++i)
                 inputSignals[it][i] = signals(rng);
 
-        for (int i = 0; i < iterations; ++i) {
-            for (int j = 0; j < vdd.size(); ++j)
-                inputSignals[i][vdd[j]] = 1;
-            for (int j = 0; j < gnd.size(); ++j)
-                inputSignals[i][gnd[j]] = 0;
-        }
+        /*for (int i = 0; i < iterations; ++i) {
+            for (int j = 0; j < vdd.size(); ++j) {
+                int vdd_i = std::find(std::begin(inputs), std::end(inputs), vdd[j]) - std::begin(inputs);
+                inputSignals[i][vdd_i] = 1;
+            }
+            for (int j = 0; j < gnd.size(); ++j) {
+                int gnd_i = std::find(std::begin(inputs), std::end(inputs), gnd[j]) - std::begin(inputs);
+                inputSignals[i][gnd_i] = 0;
+            }
+        }*/
         return inputSignals;
     }
 
@@ -225,8 +226,8 @@ namespace GIS_Algs {
             q.push(input);
 
         int skipInput = inputs.size();
-        std::vector<int> order; order.reserve(g.GetNodeCount() + g.GetHyperEdgeCount() - inputs.size());
-        std::vector<int> visDeg(g.GetNodeCount() + g.GetHyperEdgeCount(), 0);
+        std::vector<int> order; order.reserve(g.getNodeCount() + g.getHyperEdgeCount() - inputs.size());
+        std::vector<int> visDeg(g.getNodeCount() + g.getHyperEdgeCount(), 0);
         std::vector<bool> isTrigger(visDeg.size(), false);
 
         while (!q.empty()) {
@@ -234,10 +235,10 @@ namespace GIS_Algs {
             if (--skipInput < 0 && !isTrigger[node])
                 order.push_back(node);
 
-            for (int neigh : g.GetAdjList()[node]) {
-                if (++visDeg[neigh] == g.GetAdjListT()[neigh].size() && !isTrigger[neigh])
+            for (int neigh : g.getAdjList()[node]) {
+                if (++visDeg[neigh] == g.getAdjListT()[neigh].size() && !isTrigger[neigh])
                     q.push(neigh);
-                if (g.GetAdjList()[node].size() < 1000 && visDeg[neigh] != g.GetAdjListT()[neigh].size() && !isTrigger[neigh])
+                if (g.getAdjList()[node].size() < 1000 && visDeg[neigh] != g.getAdjListT()[neigh].size() && !isTrigger[neigh])
                     Process6TSRAM(order, visDeg, isTrigger, g, neigh);
             }
         }
@@ -247,28 +248,28 @@ namespace GIS_Algs {
 
     void SignalMatching::Process6TSRAM(std::vector<int>& order, std::vector<int>& visDeg, std::vector<bool>& isTrigger, const GIS_Data::KoenigGraph& g, int firstCh) {
 
-        if (g.GetAdjListT()[firstCh].size() != 3 || g.GetAdjList()[firstCh].size() != 2)
+        if (g.getAdjListT()[firstCh].size() != 3 || g.getAdjList()[firstCh].size() != 2)
             return;
 
         std::vector<int> transistors(4);
-        transistors[0] = g.GetAdjList()[firstCh][0];
-        transistors[1] = g.GetAdjList()[firstCh][1];
-        if (g.GetAdjList()[transistors[0]][0] != g.GetAdjList()[transistors[1]][0])
+        transistors[0] = g.getAdjList()[firstCh][0];
+        transistors[1] = g.getAdjList()[firstCh][1];
+        if (g.getAdjList()[transistors[0]][0] != g.getAdjList()[transistors[1]][0])
             return;
-        int secondCh = g.GetAdjList()[transistors[0]][0];
+        int secondCh = g.getAdjList()[transistors[0]][0];
         
-        if (g.GetAdjListT()[secondCh].size() != 3 || g.GetAdjList()[secondCh].size() != 2)
+        if (g.getAdjListT()[secondCh].size() != 3 || g.getAdjList()[secondCh].size() != 2)
             return;
 
-        transistors[2] = g.GetAdjList()[secondCh][0];
-        transistors[3] = g.GetAdjList()[secondCh][1];
+        transistors[2] = g.getAdjList()[secondCh][0];
+        transistors[3] = g.getAdjList()[secondCh][1];
 
-        if (g.GetAdjList()[transistors[2]][0] != firstCh || g.GetAdjList()[transistors[3]][0] != firstCh)
+        if (g.getAdjList()[transistors[2]][0] != firstCh || g.getAdjList()[transistors[3]][0] != firstCh)
             return;
-        for (int i = 0; i < g.GetAdjListT()[secondCh].size(); ++i) {
-            if (g.GetAdjListT()[secondCh][i] == transistors[0] || g.GetAdjListT()[secondCh][i] == transistors[1])
+        for (int i = 0; i < g.getAdjListT()[secondCh].size(); ++i) {
+            if (g.getAdjListT()[secondCh][i] == transistors[0] || g.getAdjListT()[secondCh][i] == transistors[1])
                 continue;
-            order.push_back(g.GetAdjListT()[secondCh][i]);
+            order.push_back(g.getAdjListT()[secondCh][i]);
         }
         order.push_back(firstCh);
         order.push_back(secondCh);
@@ -282,7 +283,7 @@ namespace GIS_Algs {
 
     // Отрефакторено
     std::vector<std::vector<int>> SignalMatching::RunStochastic(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputNetsG, int iterations, std::vector<std::vector<int>>& inputBits) {
-        std::vector<std::vector<int>> values(g.GetNodeCount() + g.GetHyperEdgeCount());
+        std::vector<std::vector<int>> values(g.getNodeCount() + g.getHyperEdgeCount());
         for (int i = 0; i < values.size(); ++i)
             values[i].reserve(iterations);
 
@@ -296,20 +297,20 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<int> SignalMatching::GetInputSign(const GIS_Data::KoenigGraph& g, const std::unordered_set<char>& allTypes, int inputNet, int maxDepth) {
+    std::vector<int> SignalMatching::GetInputSign(const GIS_Data::KoenigGraph& g, const std::unordered_set<std::string>& allTypes, int inputNet, int maxDepth) {
 
         std::vector<int> elemsSign;
-        elemsSign.push_back(g.GetAdjList()[inputNet].size());
+        elemsSign.push_back(g.getAdjList()[inputNet].size());
 
         std::vector<int> elemDepth(maxDepth + 1, 0);
         std::vector<int> netDepth(maxDepth + 1, 0);
-        std::unordered_map<char, int> types; types.reserve(allTypes.size());
-        for (char type : allTypes) {    // Возможно на другом компиляторе из-за хеширования порядок будет разным и все сломается =(
-            types.emplace(type, 0);
+        std::unordered_map<std::string, int> types; types.reserve(allTypes.size());
+        for (std::string type : allTypes) {
+            types[type] = 0;
         }
 
         std::queue<std::pair<int, int>> q;
-        std::vector<bool> vis(g.GetNodeCount() + g.GetHyperEdgeCount(), 0);
+        std::vector<bool> vis(g.getNodeCount() + g.getHyperEdgeCount(), 0);
         q.push({ inputNet, 0 });
         vis[inputNet] = true;
 
@@ -318,16 +319,16 @@ namespace GIS_Algs {
             if (depth > maxDepth)
                 continue;
 
-            if (node < g.GetNodeCount()) {
+            if (node < g.getNodeCount()) {
                 ++elemDepth[depth];
-                types[g.GetElements()[node].GetType()]++;
+                types[g.getBlocks()[node].getType()]++;
             }
             else {
                 ++netDepth[depth];
-                types['N']++;
+                types["N"]++;
             }
 
-            for (int v : g.GetAdjList()[node]) {
+            for (int v : g.getAdjList()[node]) {
                 if (vis[v])
                     continue;
 
@@ -359,44 +360,25 @@ namespace GIS_Algs {
         const std::vector<int>& inputNets,
         const std::vector<int>& inputBits
     ) {
-        std::vector<int> value(g.GetNodeCount() + g.GetHyperEdgeCount(), -1);
+        std::vector<int> value(g.getNodeCount() + g.getHyperEdgeCount(), -1);
 
         for (int i = 0; i < inputNets.size(); ++i)
             value[inputNets[i]] = inputBits[i];
 
         for (int e : topoOrder) {
-            char elType = e < g.GetNodeCount() ? g.GetElements()[e].GetType() : 'N';
-            switch (elType) {
-            case 'M':
-                if ((value[g.GetAdjListT()[e][0]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
-                    (value[g.GetAdjListT()[e][0]] == 0 && g.GetElements()[e].GetChType() == 'p'))
-                    value[e] = value[g.GetAdjListT()[e][1]];
-                break;
-            case 'C':
-                if ((value[g.GetAdjListT()[e][0]] == 1 && g.GetElements()[e].GetChType() == 'n') ||
-                    (value[g.GetAdjListT()[e][0]] == 0 && g.GetElements()[e].GetChType() == 'p'))
-                    value[e] = value[g.GetAdjListT()[e][1]];
-                break;
-            case 'D':
-                value[e] = value[g.GetAdjListT()[e][0]];
-                break;
-            case 'R':
-                value[e] = value[g.GetAdjListT()[e][0]];
-                break;
-            case 'N':
-                for (int i = 0; i < g.GetAdjListT()[e].size(); ++i) {
-                    if (value[g.GetAdjListT()[e][i]] == 1) {
-                        value[e] = 1;
-                        break;
-                    }
-                    if (value[g.GetAdjListT()[e][i]] == 0) value[e] = 0;
-                }
 
-                break;
-            default:
-                if (value[g.GetAdjListT()[e][0]] == 1)
-                    value[e] = value[g.GetAdjListT()[e][0]];
-                break;
+            if (e < g.getNodeCount()) {
+                std::vector<int> prev_vals(g.getAdjListT()[e].size());
+                for (int i = 0; i < g.getAdjListT()[e].size(); ++i)
+                    prev_vals[i] = value[g.getAdjListT()[e][i]];
+                value[e] = g.getBlocks()[e].execute(prev_vals)[0];
+            }
+            else
+            {
+                int max_val = -1;
+                for (int edge : g.getAdjListT()[e])
+                    if (value[edge] > max_val) max_val = value[edge];
+                value[e] = max_val;
             }
         }
 

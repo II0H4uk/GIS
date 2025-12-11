@@ -2,46 +2,41 @@
 
 #include <vector>
 #include "Subcircuit.h"
-#include "Element.h"
+#include "LogicBlock.h"
 #include <unordered_set>
 
 namespace GIS_Data {
 
     class KoenigGraph {
     private:
-        int nodeCount;
-        int hyperEdgeCount;
-        int tagsLevel;
-        std::vector<std::vector<int>> adjList;
-        std::vector<std::vector<int>> adjListT;
-        std::vector<std::vector<int>> netList;
-        std::vector<int> inputChains;
-        std::unordered_map<char, std::vector<int>> elemsType;
-        std::vector<std::string> netName;
-        std::vector<Element> elements;
+        int node_count;
+        int hyper_edge_count;
 
-        std::vector<std::vector<int>> CalcNeighDeg();
-        std::vector<std::vector<int>> CalcAdjLevels();
-        std::vector<int> FindStart();
-        std::vector<int> FindEnd();
-        std::vector<int> Levels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startNodes);
-        void InitElems(const Circuits::Utils::Subcircuit& circuit, bool topology);
-        void AddEdge(int start, int end);
+        std::vector<std::vector<int>> adj_list;
+        std::vector<std::vector<int>> adj_list_t;
+
+        std::vector<int> input_chains;
+        std::vector<std::string> net_name;
+        std::unordered_map<std::string, std::vector<int>> blocks_type;
+        std::vector<LogicBlock> blocks;
+
+        std::vector<int> findStart();
+        std::vector<int> findEnd();
+        void initBlocks(const Circuits::Utils::Subcircuit& circuit);
+        void addEdge(int start, int end);
     public:
-        KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel);
-        KoenigGraph();
+        KoenigGraph(const Circuits::Utils::Subcircuit& circuit);
+        KoenigGraph(const std::vector<GIS_Data::LogicBlock>& blocks, std::vector<int> input_chains);
 
-        const std::vector<std::vector<int>>& GetAdjList() const;
-        const std::vector<std::vector<int>>& GetAdjListT() const;
-        const std::vector<std::vector<int>>& GetNetList() const;
-        const std::vector<std::string>& GetNetName() const;
-        const std::vector<Element>& GetElements() const;
-        const std::vector<int>& GetInputChains() const;
-        const int GetNodeCount() const;
-        const int GetHyperEdgeCount() const;
-        const std::unordered_map<char, std::vector<int>>& GetElemsType() const;
+        const int getNodeCount() const { return node_count; }
+        const int getHyperEdgeCount() const { return hyper_edge_count; }
 
-        void NormalizeGraph(int diff, int offset, bool isNode);
-        const std::vector<std::vector<int>> TranspAdjList() const;
+        const std::vector<std::vector<int>>& getAdjList() const { return adj_list; }
+        const std::vector<std::vector<int>>& getAdjListT() const { return adj_list_t; }
+
+        const std::vector<int>& getInputChains() const { return input_chains; }
+        const std::vector<std::string>& getNetName() const { return net_name; }
+        const std::unordered_map<std::string, std::vector<int>>& getBlocksType() const { return blocks_type; }
+        const std::vector<LogicBlock>& getBlocks() const { return blocks; }
     };
 }

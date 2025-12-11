@@ -4,44 +4,54 @@
 namespace GIS_Algs {
 
     Reduction::Reduction(const GIS_Data::KoenigGraph& g) : g(g) {
-        reduced_elements = std::vector<bool>(g.GetNodeCount(), false);
+        reduced_elements = std::vector<bool>(g.getNodeCount(), false);
 
-        findPowerNets(g.GetNetName(), "vdd", vdd_net);
-        findPowerNets(g.GetNetName(), "gnd", gnd_net);
+        findPowerNets(g.getNetName(), "vdd", vdd_net);
+        findPowerNets(g.getNetName(), "gnd", gnd_net);
     }
 
     // Основной метод редукции
     GIS_Data::KoenigGraph Reduction::start() {
 
-        std::queue<int> q(std::deque<int>(g.GetInputChains().begin(), g.GetInputChains().end()));
+        std::queue<int> q(std::deque<int>(g.getInputChains().begin(), g.getInputChains().end()));
         
         while (!q.empty()) {
 
             int chain = q.front(); q.pop();
 
-            std::unordered_set<int> nextChains;
+            std::unordered_set<int> next_nets;
 
-            for (int elem : g.GetAdjList()[chain]) {
-                if (g.GetElements()[elem].GetType() != 'M') {
-                    nextChains.insert(g.GetAdjList()[elem][0]);
+            for (int elem : g.getAdjList()[chain]) {
+                if (g.getBlocks()[elem].getType() != "M") {
+                    next_nets.insert(g.getAdjList()[elem][0]);
                     continue;
                 }
 
                 if (reduced_elements[elem])
                     continue;
 
-                if (findInvertors(chain, elem, nextChains))
+                if (findInvertors(chain, elem, next_nets))
                     continue;
-                if (findNand(chain, elem, nextChains))
+                if (findNand(chain, elem, next_nets))
                     continue;
-                findNor(chain, elem, nextChains);
+                findNor(chain, elem, next_nets);
             }
 
-            for (int net : nextChains)
+            for (int net : next_nets)
                 q.push(net);
         }
+
+        for (int i = 0; i < reduced_elements.size(); ++i)
+            if (!reduced_elements[i])
+                found_blocks.push_back(GIS_Data::LogicBlock(
+                    g.getBlocks()[i].getType(),
+                    "",
+                    g.getAdjListT()[i],
+                    g.getAdjList()[i],
+                    g.getBlocks()[i].getInnerBlocks(),
+                    g.getBlocks()[i].getFunc()));
         
-        return GenerateGraph();
+        return GIS_Data::KoenigGraph(found_blocks, g.getInputChains());
     }
 
     // Поиск инверторов
@@ -50,13 +60,13 @@ namespace GIS_Algs {
         if (!powerCheck(first_t))
             return false;
 
-        int first_t_drain = g.GetAdjList()[first_t][0];
+        int first_t_drain = g.getAdjList()[first_t][0];
         
-        for (int second_t : g.GetAdjList()[input_net]) {
-            if (g.GetElements()[second_t].GetChType() == g.GetElements()[first_t].GetChType() || !powerCheck(second_t))
+        for (int second_t : g.getAdjList()[input_net]) {
+            if (g.getBlocks()[second_t].getTransistorType() == g.getBlocks()[first_t].getTransistorType() || !powerCheck(second_t))
                 continue;
 
-            int second_t_drain = g.GetAdjList()[second_t][0];
+            int second_t_drain = g.getAdjList()[second_t][0];
 
             if (first_t_drain == second_t_drain) {
                 reduced_elements[first_t] = true;
@@ -64,7 +74,10 @@ namespace GIS_Algs {
 
                 out_nets.insert(second_t_drain);
 
-                foundElems.push_back(LogicElem("invertor", { input_net }, { second_t_drain }, { first_t, second_t }));
+                found_blocks.push_back(GIS_Data::LogicBlock("invertor", "", { input_net }, {second_t_drain}, {first_t, second_t},
+                    [](const std::vector<int>& inputs) -> std::vector<int> {
+                        return { (inputs[0] == 0) ? 1 : 0 };
+                    }));
                 return true;
             }
         }
@@ -88,21 +101,21 @@ namespace GIS_Algs {
         if (type(first_t) == 'n' || !powerCheck(first_t))
             return false;
 
-        int first_t_drain = g.GetAdjList()[first_t][0];
+        int first_t_drain = g.getAdjList()[first_t][0];
 
-        for (int second_t : g.GetAdjList()[input_net]) {
-            int second_t_drain = g.GetAdjList()[second_t][0];
+        for (int second_t : g.getAdjList()[input_net]) {
+            int second_t_drain = g.getAdjList()[second_t][0];
             if (type(second_t) == 'p' || first_t_drain != second_t_drain)
                 continue;
 
-            int second_t_source = g.GetAdjListT()[second_t][1];
-            int third_t = g.GetAdjListT()[second_t_source][0];
+            int second_t_source = g.getAdjListT()[second_t][1];
+            int third_t = g.getAdjListT()[second_t_source][0];
             if (!powerCheck(third_t) || type(third_t) == 'p')
                 continue;
 
-            int third_t_gate = g.GetAdjListT()[third_t][0];
-            for (int fourth_t : g.GetAdjList()[third_t_gate]) {
-                int fourth_t_drain = g.GetAdjList()[fourth_t][0];
+            int third_t_gate = g.getAdjListT()[third_t][0];
+            for (int fourth_t : g.getAdjList()[third_t_gate]) {
+                int fourth_t_drain = g.getAdjList()[fourth_t][0];
                 if (!powerCheck(fourth_t) || type(fourth_t) == 'n' || first_t_drain != fourth_t_drain)
                     continue;
 
@@ -113,7 +126,10 @@ namespace GIS_Algs {
 
                 out_nets.insert(first_t_drain);
 
-                foundElems.push_back(LogicElem("nand", { input_net, third_t_gate }, { first_t_drain }, { first_t, second_t, third_t, fourth_t }));
+                found_blocks.push_back(GIS_Data::LogicBlock("nand", "", { input_net, third_t_gate }, {first_t_drain}, {first_t, second_t, third_t, fourth_t},
+                    [](const std::vector<int>& inputs) -> std::vector<int> {
+                        return { (inputs[0] == 1 && inputs[1] == 1) ? 0 : 1 };
+                    }));
                 return true;
             }
         }
@@ -126,23 +142,23 @@ namespace GIS_Algs {
         if (type(first_t) == 'n' || !powerCheck(first_t))
             return false;
 
-        int first_t_drain = g.GetAdjList()[first_t][0];
+        int first_t_drain = g.getAdjList()[first_t][0];
 
-        for (int second_t : g.GetAdjList()[input_net]) {
-            int second_t_drain = g.GetAdjList()[second_t][0];
+        for (int second_t : g.getAdjList()[input_net]) {
+            int second_t_drain = g.getAdjList()[second_t][0];
             if (type(second_t) == 'p' ||
                 !powerCheck(second_t) ||
-                g.GetAdjList()[second_t_drain].size() != 1)
+                g.getAdjList()[second_t_drain].size() != 1)
                 continue;
 
-            int third_t = g.GetAdjList()[second_t_drain][0];
-            int third_t_drain = g.GetAdjList()[third_t][0];
+            int third_t = g.getAdjList()[second_t_drain][0];
+            int third_t_drain = g.getAdjList()[third_t][0];
             if (third_t_drain != first_t_drain || type(third_t) == 'p')
                 continue;
 
-            int third_t_gate = g.GetAdjListT()[third_t][0];
-            for (int fourth_t : g.GetAdjList()[third_t_gate]) {
-                int fourth_t_drain = g.GetAdjList()[fourth_t][0];
+            int third_t_gate = g.getAdjListT()[third_t][0];
+            for (int fourth_t : g.getAdjList()[third_t_gate]) {
+                int fourth_t_drain = g.getAdjList()[fourth_t][0];
                 if (!powerCheck(fourth_t) || type(fourth_t) == 'n' || first_t_drain != fourth_t_drain)
                     continue;
 
@@ -153,7 +169,10 @@ namespace GIS_Algs {
 
                 out_nets.insert(first_t_drain);
 
-                foundElems.push_back(LogicElem("nand", { input_net, third_t_gate }, { first_t_drain }, { first_t, second_t, third_t, fourth_t }));
+                found_blocks.push_back(GIS_Data::LogicBlock("nand", "", { input_net, third_t_gate }, {first_t_drain}, {first_t, second_t, third_t, fourth_t},
+                    [](const std::vector<int>& inputs) -> std::vector<int> {
+                        return { (inputs[0] == 1 && inputs[1] == 1) ? 0 : 1 };
+                    }));
                 return true;
             }
 
@@ -164,7 +183,7 @@ namespace GIS_Algs {
 
     bool Reduction::powerCheck(int transistor) {
 
-        int source_net = g.GetAdjListT()[transistor][1];
+        int source_net = g.getAdjListT()[transistor][1];
 
         if (type(transistor) == 'n')
             return std::find(gnd_net.begin(), gnd_net.end(), source_net) != gnd_net.end();
@@ -182,7 +201,7 @@ namespace GIS_Algs {
                 [](unsigned char c) { return std::tolower(c); });
 
             if (net_lower.find(name) != std::string::npos)
-                power_net.push_back(i + g.GetNodeCount());
+                power_net.push_back(i + g.getNodeCount());
         }
     }
 
@@ -192,72 +211,6 @@ namespace GIS_Algs {
     }
 
     char Reduction::type(int transistor) {
-        return g.GetElements()[transistor].GetChType();
+        return g.getBlocks()[transistor].getTransistorType();
     }
-
-    GIS_Data::KoenigGraph Reduction::GenerateGraph() {
-        int node_count = foundElems.size();
-        for (bool reduced_el : reduced_elements)
-            if (!reduced_el) node_count++;
-
-        std::unordered_map<int, int> net_map;
-        int net_count = 0;
-
-        for (int i = 0; i < foundElems.size(); ++i) {
-            for (int net : foundElems[i].inputs)
-                if (net_map.find(net) == net_map.end())
-                    net_map[net] = node_count + net_count++;
-            for (int net : foundElems[i].outputs)
-                if (net_map.find(net) == net_map.end())
-                    net_map[net] = node_count + net_count++;
-        }
-
-        for (int i = 0; i < reduced_elements.size(); ++i) {
-            if (reduced_elements[i]) continue;
-
-            for (int net : g.GetAdjList()[i])
-                if (net_map.find(net) == net_map.end())
-                    net_map[net] = node_count + net_count++;
-            for (int net : g.GetAdjListT()[i])
-                if (net_map.find(net) == net_map.end())
-                    net_map[net] = node_count + net_count++;
-        }
-
-        std::vector<std::vector<int>> adj_list(node_count + net_count);
-        std::vector<std::vector<int>> adj_listT(node_count + net_count);
-        int el_count = 0;
-
-        for (int i = 0; i < foundElems.size(); ++i) {
-            int curr_el = el_count++;
-            for (int net : foundElems[i].inputs) {
-                adj_list[net_map[net]].push_back(curr_el);
-                adj_listT[curr_el].push_back(net_map[net]);
-            }
-            for (int net : foundElems[i].outputs) {
-                adj_list[curr_el].push_back(net_map[net]);
-                adj_listT[net_map[net]].push_back(curr_el);
-            }
-        }
-
-        for (int i = 0; i < reduced_elements.size(); ++i) {
-            if (reduced_elements[i]) continue;
-            int curr_el = el_count++;
-            for (int net : g.GetAdjList()[i]) {
-                adj_list[curr_el].push_back(net_map[net]);
-                adj_listT[net_map[net]].push_back(curr_el);
-            }
-            for (int net : g.GetAdjListT()[i]) {
-                adj_list[net_map[net]].push_back(curr_el);
-                adj_listT[curr_el].push_back(net_map[net]);
-            }
-        }
-
-        return GIS_Data::KoenigGraph();
-    }
-
-    Reduction::LogicElem::LogicElem(const std::string& name, const std::vector<int>& inputs, const std::vector<int>& outputs, const std::vector<int>& transistors) :
-        name(name),
-        inputs(inputs),
-        outputs(outputs),
-        transistors(transistors){}
 }

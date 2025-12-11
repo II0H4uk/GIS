@@ -2,7 +2,7 @@
 #include "ValidateMatch.h"
 
 namespace GIS_Core {
-    void ValidateMatch::Start(GIS_Data::GraphPair& pair, std::vector<std::pair<int, int>>& matching) {
+    /*void ValidateMatch::Start(GIS_Data::GraphPair& pair, std::vector<std::pair<int, int>>& matching) {
 		std::vector<std::vector<int>> g1 = pair.GetGraph1().GetAdjList();
 		std::vector<std::vector<int>> g2 = pair.GetGraph2().GetAdjList();
 		auto it = std::begin(matching);
@@ -14,5 +14,5 @@ namespace GIS_Core {
 			}
 			
 		}
-    }
+    }*/
 }

@@ -3,18 +3,14 @@ add_library(GIS_Data)
 
 target_sources(GIS_Data
 	PRIVATE
-		src/BipartGraph.cpp
 		src/Config.cpp
-		src/GraphPair.cpp
 		src/KoenigGraph.cpp
-		src/Element.cpp
+		src/LogicBlock.cpp
 		src/pch.cpp
 
-		include/BipartGraph.h
 		include/Config.h
-		include/GraphPair.h
 		include/KoenigGraph.h
-		include/Element.h
+		include/LogicBlock.h
 		src/pch.h
 		include/Subcircuit.h
 )

@@ -24,5 +24,5 @@ TEST(KoenigGraphTest, adjListCheck) {
     expAdjList[7].push_back(3);
     expAdjList[9].push_back(2);
 
-    ASSERT_EQ(koenG.GetAdjList(), expAdjList);
+    ASSERT_EQ(koenG.getAdjList(), expAdjList);
 }

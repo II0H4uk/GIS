@@ -9,17 +9,17 @@ namespace GIS_Utils {
 
         std::string adjList = "";
 
-        for (int i = 0; i < koenG.GetAdjList().size(); ++i) {
+        for (int i = 0; i < koenG.getAdjList().size(); ++i) {
             if (i < circuit.components.size())
                 adjList += circuit.components[i].id + ": ";
             else
                 adjList += "N" + std::to_string(i - circuit.components.size()) + ": ";
 
-            for (int j = 0; j < koenG.GetAdjList()[i].size(); ++j) {
-                if (koenG.GetAdjList()[i][j] < circuit.components.size())
-                    adjList += circuit.components[koenG.GetAdjList()[i][j]].id + ", ";
+            for (int j = 0; j < koenG.getAdjList()[i].size(); ++j) {
+                if (koenG.getAdjList()[i][j] < circuit.components.size())
+                    adjList += circuit.components[koenG.getAdjList()[i][j]].id + ", ";
                 else
-                    adjList += "N" + std::to_string(koenG.GetAdjList()[i][j] - circuit.components.size()) + ", ";
+                    adjList += "N" + std::to_string(koenG.getAdjList()[i][j] - circuit.components.size()) + ", ";
             }
             adjList += "\n";
         }
@@ -31,10 +31,10 @@ namespace GIS_Utils {
 
         std::string adjList;
 
-        for (int i = 0; i < koenG.GetAdjList().size(); ++i) {
+        for (int i = 0; i < koenG.getAdjList().size(); ++i) {
             adjList += std::to_string(i) + ": ";
-            for (int j = 0; j < koenG.GetAdjList()[i].size(); ++j) {
-                adjList += std::to_string(koenG.GetAdjList()[i][j]) + ", ";
+            for (int j = 0; j < koenG.getAdjList()[i].size(); ++j) {
+                adjList += std::to_string(koenG.getAdjList()[i][j]) + ", ";
             }
             adjList += "\n";
         }

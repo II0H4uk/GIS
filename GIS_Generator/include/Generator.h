@@ -1,26 +1,34 @@
 #pragma once
 
-#include <GraphPair.h>
-#include <BipartGraph.h>
+#include <iostream>
+#include <string>
+#include <vector>
 #include <random>
+#include <sstream>
 
 namespace GIS_Generator {
 
-    class Generator {
+    class SpiceGenerator {
     private:
-        std::random_device rd;
-        std::mt19937 gen;
-        std::vector<int> GetPermutation(const int n);
-        int GenRandNum(int max);
-        void AddEdge(std::vector<std::vector<int>>& adjList, int i, int j);
-        bool CheckEdge(const std::vector<std::vector<int>>& adjList, int i, int j);
-        void AddNoise(std::vector<std::vector<int>>& adjList, std::vector<int>& permutation, double noise);
-        bool HasEdge(const std::vector<std::vector<int>>& adjList, int u, int v);
+        struct Component {
+            std::string name;
+            std::string type; // "NAND", "NOT", "DIODE", "NOTNOT"
+            std::vector<std::string> nodes;
+        };
+
+        static std::string generateComponentLine(const Component& comp, int& instanceNum);
+
+        static std::string generateRandomNetName(int& netCounter);
+
+        static Component generateRandomComponent(int& netCounter);
+
     public:
-        /*Generator() : gen(rd()) {}
-        GIS_Data::GraphPair GenerateGraphPair(const int nodeCount, int numCliques, int maxClSize);
-        std::pair<GIS_Data::Graph, std::vector<int>> GenIsoGraph(const GIS_Data::Graph& graph);
-        GIS_Data::Graph GenGraph(const int nodeCount);
-        GIS_Data::Graph GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize);*/
+        static std::string generateNandSubcircuit(bool withError = false);
+
+        static std::string generateNotSubcircuit();
+
+        static std::string generateNotNotSubcircuit();
+
+        static std::pair<std::string, std::string> generateIsomorphicCircuits(int numComponents, int seed = 42);
     };
 }

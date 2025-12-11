@@ -45,12 +45,12 @@ namespace GIS_Stats {
 
         params += circName + " parameters\n";
         
-        params += "Elements count: " + std::to_string(g.GetNodeCount()) + "\n";
-        params += "Chains count: " + std::to_string(g.GetHyperEdgeCount()) + "\n";
+        params += "Elements count: " + std::to_string(g.getNodeCount()) + "\n";
+        params += "Chains count: " + std::to_string(g.getHyperEdgeCount()) + "\n";
 
         params += "Elements type count:\n";
-        for (auto type : g.GetElemsType())
-            params += "\t" + std::string(1, type.first) + ": " + std::to_string(type.second.size()) + "\n";
+        for (auto type : g.getBlocksType())
+            params += "\t" + type.first + ": " + std::to_string(type.second.size()) + "\n";
 
         params += "\n";
 
@@ -70,27 +70,40 @@ namespace GIS_Stats {
         const GIS_Data::KoenigGraph& g2,
         const GIS_Data::Config& config) {
 
-        std::string bijection = "Bijection:\n";
+        std::string bijection = "Bijection:";
 
         for (int i = 0; i < map.size(); ++i) {
             if (map[i].first.size() != 1 || map[i].second.size() != 1 ||
-                (config.GetWriteOnlyElements() && map[i].first[0] >= g1.GetNodeCount()))
+                (config.GetWriteOnlyElements() && map[i].first[0] >= g1.getNodeCount()))
                 continue;
-            
-            std::string first;
+            std::vector<int> elems1 = g1.getBlocks()[map[i].first[0]].getInnerBlocks();
+            std::vector<int> elems2 = g2.getBlocks()[map[i].second[0]].getInnerBlocks();
+            bijection += "\n{";
+            for (size_t j = 0; j < elems1.size(); ++j) {
+                bijection += std::to_string(elems1[j]);
+                if (j != elems1.size() - 1) bijection += ", ";
+            }
+            bijection += "} -> {";
+            for (size_t j = 0; j < elems2.size(); ++j) {
+                bijection += std::to_string(elems2[j]);
+                if (j != elems2.size() - 1) bijection += ", ";
+            }
+            bijection += "}";
+
+            /*std::string first;        // <--- простое отображение элемент на элемент
             std::string second;
 
-            if (map[i].first[0] >= g1.GetNodeCount())
-                first = g1.GetNetName()[map[i].first[0] - g1.GetNodeCount()];
+            if (map[i].first[0] >= g1.getNodeCount())
+                first = g1.getNetName()[map[i].first[0] - g1.getNodeCount()];
             else
-                first = g1.GetElements()[map[i].first[0]].GetType() + std::to_string(map[i].first[0]);
+                first = g1.getBlocks()[map[i].first[0]].getType() + std::to_string(map[i].first[0]);
 
-            if (map[i].second[0] >= g2.GetNodeCount())
-                second = g2.GetNetName()[map[i].second[0] - g2.GetNodeCount()];
+            if (map[i].second[0] >= g2.getNodeCount())
+                second = g2.getNetName()[map[i].second[0] - g2.getNodeCount()];
             else
-                second = g2.GetElements()[map[i].second[0]].GetType() + std::to_string(map[i].second[0]);
+                second = g2.getBlocks()[map[i].second[0]].getType() + std::to_string(map[i].second[0]);
 
-            bijection += std::format("{} -> {}", first, second) + "\n";
+            bijection += std::format("{} -> {}", first, second) + "\n";*/
         }
 
         bijection += "\n";
@@ -103,17 +116,17 @@ namespace GIS_Stats {
         const GIS_Data::KoenigGraph& g2,
         const GIS_Data::Config& config) {
         
-        std::string undefined = "Undefined:\n";
+        std::string undefined = "\nUndefined:\n";
 
         std::string undefG1, undefG2;
 
         for (int i = 0; i < map.size(); ++i) {
-            if (map[i].first.size() > 0 && map[i].second.size() > 0)
+            if (map[i].first.size() > 0 && map[i].second.size() > 0 ||
+                config.GetWriteOnlyElements() &&
+                (map[i].first.size() > 0 && map[i].first[0] >= g1.getNodeCount() ||
+                map[i].second.size() > 0 && map[i].second[0] >= g2.getNodeCount()))
                 continue;
-            if (config.GetWriteOnlyElements()
-                && (map[i].first.size() > 0 && map[i].first[0] >= g1.GetNodeCount()
-                || map[i].second.size() > 0 && map[i].second[0] >= g2.GetNodeCount()))
-                continue;
+
             if (map[i].first.size() == 0) {
                 undefG2 += WriteUndefFromVector(g2, map[i].second);
             }
@@ -139,10 +152,15 @@ namespace GIS_Stats {
         std::string undefined;
 
         for (int j = 0; j < vec.size(); ++j) {
-            if (vec[j] >= g.GetNodeCount())
-                undefined += g.GetNetName()[vec[j] - g.GetNodeCount()] + ", ";
+
+            std::vector<int> elems1 = g.getBlocks()[vec[j]].getInnerBlocks();
+            for (size_t j = 0; j < elems1.size(); ++j)
+                undefined += std::to_string(elems1[j]) + ", ";
+
+            /*if (vec[j] >= g.getNodeCount())
+                undefined += g.getNetName()[vec[j] - g.getNodeCount()] + ", ";
             else
-                undefined += g.GetElements()[vec[j]].GetType() + std::to_string(vec[j]) + ", ";
+                undefined += g.getBlocks()[vec[j]].getType() + std::to_string(vec[j]) + ", ";*/
         }
 
         return undefined;

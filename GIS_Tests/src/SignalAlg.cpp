@@ -53,8 +53,8 @@ TEST(SignalAlgTests, ComplexTest) {
     for (int i = 0; i < map.size(); ++i) {
         if (map[i].first.size() > 0 && map[i].second.size() > 0)
             continue;
-        if (map[i].first.size() > 0 && map[i].first[0] >= g1.GetNodeCount() ||
-            map[i].second.size() > 0 && map[i].second[0] >= g2.GetNodeCount())
+        if (map[i].first.size() > 0 && map[i].first[0] >= g1.getNodeCount() ||
+            map[i].second.size() > 0 && map[i].second[0] >= g2.getNodeCount())
             continue;
         if (map[i].first.size() == 0) {
             undefined.push_back(map[i].second[0]);

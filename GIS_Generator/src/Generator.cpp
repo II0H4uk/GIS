@@ -1,151 +1,198 @@
 #include "pch.h"
 #include "Generator.h"
-#include <unordered_set>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <random>
+#include <sstream>
+#include <fstream>
+#include <algorithm>
 
 namespace GIS_Generator {
 
-    //GIS_Data::GraphPair Generator::GenerateGraphPair(const int nodeCount, int numCliques, int maxClSize) {
-    //    //GIS_Data::Graph g1 = GenGraph(nodeCount);
-    //    GIS_Data::Graph g1 = GenerateCliqueOverlapGraph(nodeCount, numCliques, maxClSize);
-    //    auto [g2, perm] = GenIsoGraph(g1);
-    //    throw std::logic_error("Not implemented");
-    //    //return GIS_Data::GraphPair(GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), GIS_Data::KoenigGraph(std::vector<std::vector<int>>{}, 0), std::vector<std::pair<int, int>>{});
-    //}
+    std::string SpiceGenerator::generateComponentLine(const Component& comp, int& instanceNum) {
+        std::stringstream ss;
 
-    /*GIS_Data::Graph Generator::GenGraph(const int nodeCount) {
-        std::vector<std::vector<int>> adjList(nodeCount);
-
-        for (int i = 0; i < nodeCount - 1; ++i) {
-            AddEdge(adjList, i, i + 1);
-        }*/
-
-        /*for (int i = 0; i < nodeCount; ++i) {
-            while (deg[i] < 3) {
-                int j = GenRandNum(nodeCount);
-                if (i == j || deg[j] > 4 || CheckEdge(adjList, i, j))
-                    continue;
-
-                AddEdge(adjList, deg, i, j);
-                deg[j]++;
-                deg[i]++;
-            }
-        }*/
-
-        /*for (int k = 0; k < nodeCount * 2; ++k) {
-            int j = GenRandNum(nodeCount);
-            int i = GenRandNum(nodeCount);
-
-            if (i == j || CheckEdge(adjList, i, j))
-                continue;
-
-            AddEdge(adjList, i, j);
+        if (comp.type == "NAND") {
+            ss << "X" << instanceNum++ << " " << comp.nodes[0] << " " << comp.nodes[1]
+                << " " << comp.nodes[2] << " vdd! gnd! NAND";
+        }
+        else if (comp.type == "NOT") {
+            ss << "X" << instanceNum++ << " " << comp.nodes[0]
+                << " " << comp.nodes[1] << " vdd! gnd! NOT";
+        }
+        else if (comp.type == "DIODE") {
+            ss << "D" << instanceNum++ << " " << comp.nodes[0]
+                << " " << comp.nodes[1] << " dn";
+        }
+        else if (comp.type == "NOTNOT") {
+            ss << "X" << instanceNum++ << " " << comp.nodes[0]
+                << " " << comp.nodes[1] << " vdd! gnd! NotNot";
         }
 
-        return GIS_Data::Graph(adjList, nodeCount);
-    }*/
-
-    /*bool Generator::CheckEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
-        return std::find(adjList[u].begin(), adjList[u].end(), v) != adjList[u].end();
+        return ss.str();
     }
 
-    int Generator::GenRandNum(int max) {
-        std::uniform_int_distribution<> dis(0, max - 1);
-        return dis(gen);
+    std::string SpiceGenerator::generateRandomNetName(int& netCounter) {
+        return std::to_string(netCounter++);
     }
 
-    void Generator::AddEdge(std::vector<std::vector<int>>& adjList, int i, int j) {
-        adjList[i].push_back(j);
-        adjList[j].push_back(i);
+    SpiceGenerator::Component SpiceGenerator::generateRandomComponent(int& netCounter) {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> typeDist(0, 2);
+
+        Component comp;
+        int type = typeDist(gen);
+
+        switch (type) {
+        case 0: // NAND
+            comp.type = "NAND";
+            comp.nodes = { generateRandomNetName(netCounter),
+                         generateRandomNetName(netCounter),
+                         generateRandomNetName(netCounter) };
+            break;
+        case 1: // NOT
+            comp.type = "NOT";
+            comp.nodes = { generateRandomNetName(netCounter),
+                         generateRandomNetName(netCounter) };
+            break;
+        case 2: // DIODE
+            comp.type = "DIODE";
+            comp.nodes = { generateRandomNetName(netCounter),
+                         generateRandomNetName(netCounter) };
+            break;
+        }
+
+        return comp;
     }
 
-    std::pair<GIS_Data::Graph, std::vector<int>> Generator::GenIsoGraph(const GIS_Data::Graph& g1) {
-        std::vector<int> permutation = GetPermutation(g1.GetNodeCount());
-
-        std::vector<std::vector<int>> adjList(g1.GetNodeCount());
-
-        for (int i = 0; i < g1.GetNodeCount(); ++i) {
-            for (auto neighbor : g1.GetAdjList()[i]) {
-                adjList[permutation[i]].push_back(permutation[neighbor]);
-            }
-        }
-
-        AddNoise(adjList, permutation, 0.0);
-
-        return { GIS_Data::Graph(adjList, g1.GetNodeCount(), 2), permutation };
+    std::string SpiceGenerator::generateNandSubcircuit(bool withError) {
+        std::stringstream ss;
+        ss << ".SUBCKT NAND x1 x2 y vdd! gnd!\n"
+            << "** N=4 EP=4 IP=32 FDC=8\n"
+            << "M0 y x1 vdd! vdd! pmos_h\n"
+            << "M1 y x2 vdd! vdd! pmos_h\n"
+            << "M2 y x1 1 1 nmos_h\n"
+            << "M3 1 x2 gnd! gnd!" << (withError ? "" : " nmos_h") << "\n"
+            << ".ENDS\n"
+            << "***************************************\n";
+        return ss.str();
     }
 
-    std::vector<int> Generator::GetPermutation(const int n) {
-        std::vector<int> permutation(n);
-        iota(permutation.begin(), permutation.end(), 0);
-        shuffle(permutation.begin(), permutation.end(), gen);
+    std::string SpiceGenerator::generateNotSubcircuit() {
+        return ".SUBCKT NOT x1 y1 vdd! gnd!\n"
+            "** N=4 EP=0 IP=0 FDC=0\n"
+            "M0 y1 x1 vdd! vdd! pmos_h\n"
+            "M1 y1 x1 gnd! gnd! nmos_h\n"
+            ".ENDS\n"
+            "***************************************\n";
+    }
 
-        return permutation;
-    }*/
+    std::string SpiceGenerator::generateNotNotSubcircuit() {
+        return ".SUBCKT NotNot x1 y1 vdd! gnd!\n"
+            "** N=4 EP=4 IP=32 FDC=8\n"
+            "X0 x1 1 vdd! gnd! NOT\n"
+            "X1 1 y1 vdd! gnd! NOT\n"
+            ".ENDS\n"
+            "***************************************\n";
+    }
 
-    /*void Generator::AddNoise(std::vector<std::vector<int>>& adjList, std::vector<int>& permutation, double noise) {
-        int baseSize = adjList.size();
-        int noiseNodes = baseSize * noise;
-        int edgeCount = 0;
-        for (int i = 0; i < baseSize; ++i) {
-            edgeCount += adjList[i].size();
-        }
-        int noiseEdges = edgeCount * noise / 2;
+    std::pair<std::string, std::string> SpiceGenerator::generateIsomorphicCircuits(
+        int numComponents,
+        int seed
+    ) {
+        std::mt19937 gen(seed);
+        std::uniform_int_distribution<> compDist(0, numComponents - 1);
 
-        for (int i = 0; i < noiseNodes; ++i) {
-            int j = GenRandNum(adjList.size());
-            if (j == baseSize + i) {
-                i--;
-                continue;
-            }
-            permutation.push_back(-1);
+        // Генерируем исходную схему
+        std::vector<Component> components;
+        int netCounter = 1;
 
-            adjList.push_back(std::vector<int>());
-            adjList[baseSize + i].push_back(j);
-            adjList[j].push_back(baseSize + i);
-            noiseEdges--;
-        }
-
-        for (int i = 0; i < noiseEdges; ++i) {
-            int j = GenRandNum(adjList.size());
-            if (j == baseSize + i) {
-                i--;
-                continue;
-            }
-            adjList[baseSize + i].push_back(j);
-            adjList[j].push_back(baseSize + i);
-        }
-    }*/
-
-    /*GIS_Data::Graph Generator::GenerateCliqueOverlapGraph(const int nodeCount, int numCliques, int maxClSize) {
-        std::vector<std::vector<int>> adjList(nodeCount);
-        //int numCliques = nodeCount / 10;
-
-        for (int c = 0; c < numCliques; ++c) {
-            int cliqueSize = GenRandNum(maxClSize) + 3;
-
-            std::unordered_set<int> cliqueNodes;
-            while (cliqueNodes.size() < cliqueSize) {
-                int v = GenRandNum(nodeCount);
-                cliqueNodes.insert(v);
-            }
-
-            std::vector<int> nodes(cliqueNodes.begin(), cliqueNodes.end());
-
-            for (int i = 0; i < nodes.size(); ++i) {
-                for (int j = i + 1; j < nodes.size(); ++j) {
-                    int u = nodes[i];
-                    int v = nodes[j];
-                    if (!HasEdge(adjList, u, v)) {
-                        AddEdge(adjList, u, v);
-                    }
-                }
-            }
+        // Генерируем случайные компоненты
+        for (int i = 0; i < numComponents; i++) {
+            components.push_back(generateRandomComponent(netCounter));
         }
 
-        return GIS_Data::Graph(adjList, nodeCount, 2);
-    }*/
+        // Создаем выходной узел
+        std::string outputNet = generateRandomNetName(netCounter);
 
-    /*bool Generator::HasEdge(const std::vector<std::vector<int>>& adjList, int u, int v) {
-        return std::find(adjList[u].begin(), adjList[u].end(), v) != adjList[u].end();
-    }*/
+        // Генерируем первую схему
+        std::stringstream circuitA;
+        circuitA << "* SPICE NETLIST\n"
+            << "***************************************\n"
+            << ".SUBCKT BigCircuit x1 x2 x3 x4 y1 vdd! gnd!\n"
+            << "** N=4 EP=4 IP=32 FDC=8\n";
+
+        int instanceNum = 0;
+        for (const auto& comp : components) {
+            circuitA << generateComponentLine(comp, instanceNum) << "\n";
+        }
+
+        // Подключаем выход
+        if (!components.empty()) {
+            circuitA << "X" << instanceNum++ << " "
+                << components.back().nodes.back() << " " << outputNet
+                << " y1 vdd! gnd! NAND\n";
+        }
+
+        circuitA << ".ENDS\n"
+            << "***************************************\n"
+            << generateNandSubcircuit(false)
+            << generateNotSubcircuit();
+
+        // Генерируем вторую схему с добавлением NotNot
+        std::stringstream circuitB;
+        circuitB << "* SPICE NETLIST\n"
+            << "***************************************\n"
+            << ".SUBCKT BigCircuit x1 x2 x3 x4 y1 vdd! gnd!\n"
+            << "** N=4 EP=4 IP=32 FDC=8\n";
+
+        // Выбираем случайное место для вставки NotNot
+        int insertPos = compDist(gen);
+        instanceNum = 0;
+
+        // Копируем компоненты до точки вставки
+        for (int i = 0; i < insertPos && i < numComponents; i++) {
+            circuitB << generateComponentLine(components[i], instanceNum) << "\n";
+        }
+
+        // Вставляем NotNot
+        if (insertPos < numComponents) {
+            std::string originalNet = components[insertPos].nodes[0];
+            std::string newNet1 = generateRandomNetName(netCounter);
+            std::string newNet2 = generateRandomNetName(netCounter);
+
+            // Модифицируем следующий компонент, чтобы он использовал выход NotNot
+            if (insertPos < numComponents - 1) {
+                components[insertPos + 1].nodes[0] = newNet2;
+            }
+
+            // Добавляем NotNot
+            circuitB << "X" << instanceNum++ << " " << originalNet << " "
+                << newNet1 << " vdd! gnd! NOT\n";
+            circuitB << "X" << instanceNum++ << " " << newNet1 << " "
+                << newNet2 << " vdd! gnd! NOT\n";
+        }
+
+        // Копируем остальные компоненты
+        for (int i = insertPos; i < numComponents; i++) {
+            circuitB << generateComponentLine(components[i], instanceNum) << "\n";
+        }
+
+        // Подключаем выход
+        if (!components.empty()) {
+            circuitB << "X" << instanceNum++ << " "
+                << components.back().nodes.back() << " " << outputNet
+                << " y1 vdd! gnd! NAND\n";
+        }
+
+        circuitB << ".ENDS\n"
+            << "***************************************\n"
+            << generateNandSubcircuit(true)  // С ошибкой
+            << generateNotNotSubcircuit()
+            << generateNotSubcircuit();
+
+        return { circuitA.str(), circuitB.str() };
+    }
 }

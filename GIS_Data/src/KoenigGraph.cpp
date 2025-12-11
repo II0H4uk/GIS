@@ -3,261 +3,167 @@
 #include <Subcircuit.h>
 
 namespace GIS_Data {
-    KoenigGraph::KoenigGraph(const Circuits::Utils::Subcircuit& circuit, int tagsLevel) :
-        nodeCount(circuit.components.size()),
-        hyperEdgeCount(circuit.netsCount),
-        tagsLevel(tagsLevel),
-        adjList(nodeCount + hyperEdgeCount),
-        adjListT(nodeCount + hyperEdgeCount),
-        netList(hyperEdgeCount),
-        netName(hyperEdgeCount),
-        inputChains(circuit.pins.size()) {
-
-        for (int i = 0; i < inputChains.size(); ++i)
-            inputChains[i] = i + nodeCount;
+    KoenigGraph::KoenigGraph(const Circuits::Utils::Subcircuit& circuit) :
+        node_count(circuit.components.size()),
+        hyper_edge_count(circuit.netsCount),
+        adj_list(node_count + hyper_edge_count),
+        adj_list_t(node_count + hyper_edge_count),
+        net_name(hyper_edge_count) {
 
         for (int i = 0; i < circuit.components.size(); ++i) {
-            elemsType[circuit.components[i].id[0]].push_back(i);
-            for (int j = 0; j < circuit.components[i].chainInt.size(); ++j)
-                netList[circuit.components[i].chainInt[j]].push_back(i);
+            blocks_type[std::string{ circuit.components[i].id[0] }].push_back(i);
         }
 
         for (auto net : circuit.netsToInt) {
             for (int i = 0; i < net.second.size(); ++i) {
-                netName[net.second[i]] = net.first;
+                net_name[net.second[i]] = net.first;
             }
         }
 
-        /*std::unordered_map<std::string, int> a;
-        std::unordered_map<std::string, int> b;
-        for (int i = 0; i < circuit.components.size(); ++i) {
-            if (circuit.components[i].id[0] == 'M') {
-                a[circuit.components[i].typeComponent]++;
-                b[circuit.components[i].channelType]++;
-            }
-        }*/
-
-        for (int i = 0; i < nodeCount; ++i) {
+        for (int i = 0; i < node_count; ++i) {
             for (int j = 0; j < circuit.components[i].chainInt.size(); ++j) {
-                int currNet = circuit.components[i].chainInt[j] + nodeCount;
+                int currNet = circuit.components[i].chainInt[j] + node_count;
                 if (circuit.components[i].id[0] == 'M' || circuit.components[i].id[0] == 'C') {
                     if (j == 0)
-                        AddEdge(i, currNet);
+                        addEdge(i, currNet);
                     else
-                        AddEdge(currNet, i);
+                        addEdge(currNet, i);
                     continue;
                 }
                 if (j == 0)
-                    AddEdge(i, currNet);
+                    addEdge(i, currNet);
                 else
-                    AddEdge(currNet, i);
+                    addEdge(currNet, i);
             }
         }
 
-        for (int i = 0; i < hyperEdgeCount; ++i) {
-            elemsType['N'].push_back(nodeCount + i);
+        for (int i = 0; i < hyper_edge_count; ++i) {
+            blocks_type["Net"].push_back(node_count + i);
         }
 
-        std::vector<int> to_remove;
-        for (int idx : inputChains)
-            if (adjListT[idx].size() > 0)
-                to_remove.push_back(idx);
-        for (int idx : to_remove)
-            inputChains.erase(std::find(inputChains.begin(), inputChains.end(), idx));
+        for (int i = 0; i < adj_list_t.size(); ++i)
+            if (adj_list_t[i].size() == 0)
+                input_chains.push_back(i);
 
-        InitElems(circuit, false);
+        initBlocks(circuit);
     }
 
-    KoenigGraph::KoenigGraph() {
+    KoenigGraph::KoenigGraph(const std::vector<GIS_Data::LogicBlock>& blocks,
+        std::vector<int> input_chains) :
+        node_count(blocks.size()),
+        hyper_edge_count(0),
+        input_chains(input_chains),
+        net_name(net_name),
+        blocks(blocks) {
 
-    }
+        std::unordered_map<int, int> net_map;
 
-    void KoenigGraph::AddEdge(int start, int end) {
-        adjList[start].push_back(end);
-        adjListT[end].push_back(start);
-    }
+        for (int i = 0; i < blocks.size(); ++i) {
+            for (int net : blocks[i].getInputs())
+                if (net_map.find(net) == net_map.end())
+                    net_map[net] = node_count + hyper_edge_count++;
+            for (int net : blocks[i].getOutputs())
+                if (net_map.find(net) == net_map.end())
+                    net_map[net] = node_count + hyper_edge_count++;
+        }
 
-    void KoenigGraph::NormalizeGraph(int diff, int offset, bool isNode) {
+        adj_list = std::vector<std::vector<int>>(node_count + hyper_edge_count);
+        adj_list_t = std::vector<std::vector<int>>(node_count + hyper_edge_count);
 
-        adjList.insert(adjList.begin() + offset, diff, std::vector<int>{});
-
-        if (isNode) {
-            nodeCount += diff;
-            for (int i = 0; i < diff; ++i) {
-                elements.push_back(Element("empty", "", {}, {}, {}, 0, 0));
+        for (int i = 0; i < blocks.size(); ++i) {
+            for (int net : blocks[i].getInputs()) {
+                adj_list[net_map[net]].push_back(i);
+                adj_list_t[i].push_back(net_map[net]);
             }
-        }
-        else {
-            hyperEdgeCount += diff;
-        }
-    }
-
-    std::vector<std::vector<int>> KoenigGraph::CalcNeighDeg() {
-        int totalVertices = adjList.size();
-        std::vector<std::vector<int>> neighDeg(totalVertices, std::vector<int>(tagsLevel + 1));
-
-        for (int start = 0; start < totalVertices; ++start) {
-            std::vector<bool> visited(totalVertices, false);
-            std::queue<std::pair<int, int>> q;
-            visited[start] = true;
-            q.push({start, 0});
-            neighDeg[start][0] = adjList[start].size();
-
-            while (!q.empty()) {
-                auto [v, depth] = q.front();
-                q.pop();
-
-                if (depth == tagsLevel) continue;
-
-                for (int neighbor : adjList[v]) {
-                    if (visited[neighbor])
-                        continue;
-
-                    visited[neighbor] = true;
-                    if (depth < tagsLevel - 1) {
-                        q.push({ neighbor, depth + 1 });
-                    }
-                    if (depth + 1 <= tagsLevel) {
-                        neighDeg[start][depth + 1] += adjList[neighbor].size();
-                    }
-                }
+            for (int net : blocks[i].getOutputs()) {
+                adj_list[i].push_back(net_map[net]);
+                adj_list_t[net_map[net]].push_back(i);
             }
         }
 
-        return neighDeg;
+        for (int i = 0; i < blocks.size(); ++i)
+            blocks_type[blocks[i].getType()].push_back(i);
     }
 
-    std::vector<std::vector<int>> KoenigGraph::CalcAdjLevels() {
-
-        std::vector<int> startNodes = FindStart();
-        std::vector<int> endNodes = FindEnd();
-
-        std::vector<int> forwardLv = Levels(adjList, startNodes);
-
-        std::vector<std::vector<int>> revList = TranspAdjList();
-        std::vector<int> backwardLv = Levels(revList, endNodes);
-
-        return {forwardLv, backwardLv};
+    void KoenigGraph::addEdge(int start, int end) {
+        adj_list[start].push_back(end);
+        adj_list_t[end].push_back(start);
     }
 
-    std::vector<int> KoenigGraph::Levels(const std::vector<std::vector<int>>& adjList, const std::vector<int>& startNodes) {
-        std::vector<int> levels(adjList.size(), -1);
-        std::queue<int> q;
+    void KoenigGraph::initBlocks(const Circuits::Utils::Subcircuit& circuit) {
 
-        for (int i = 0; i < startNodes.size(); ++i) {
-            levels[startNodes[i]] = 0;
-            q.push(startNodes[i]);
-        }
-
-        while (!q.empty()) {
-            int curr = q.front();
-            q.pop();
-
-            for (int i = 0; i < adjList[curr].size(); ++i) {
-                if (levels[adjList[curr][i]] == -1) {
-                    levels[adjList[curr][i]] = levels[curr] + 1;
-                    q.push(adjList[curr][i]);
-                }
+        for (int i = 0; i < node_count; ++i) {
+            std::string type = circuit.components[i].id;
+            std::string tr_t = circuit.components[i].channelType;
+            
+            if (type[0] == 'M') {
+                std::string mos_type = std::string{ type[0] };
+                if (tr_t[0] == 'n')
+                    blocks.push_back(LogicBlock(mos_type, tr_t, adj_list_t[i], adj_list[i], { i },
+                        [](const std::vector<int>& inputs) -> std::vector<int> {
+                            if (inputs[0] == 1) return { inputs[1] };
+                            return { -1 };
+                        }));
+                if (tr_t[0] == 'p')
+                    blocks.push_back(LogicBlock(mos_type, tr_t, adj_list_t[i], adj_list[i], { i },
+                        [](const std::vector<int>& inputs) -> std::vector<int> {
+                            if (inputs[0] == 0) return { inputs[1] };
+                            return { -1 };
+                        }));
+                continue;
             }
-        }
-
-        return levels;
-    }
-
-    void KoenigGraph::InitElems(const Circuits::Utils::Subcircuit& circuit, bool topology) {
-
-        std::vector<std::vector<int>> neighDeg;
-        std::vector<std::vector<int>> adjLv;
-
-        if (topology) {
-            neighDeg = CalcNeighDeg();
-            adjLv = CalcAdjLevels();
-        }
-
-        std::vector<Circuits::Utils::TopologyComponent> c = circuit.components;
-        for (int i = 0; i < nodeCount; ++i)
-            if (topology)
-                elements.push_back(Element(c[i].id, c[i].channelType, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, neighDeg[i], adjLv[0][i], adjLv[1][i]));
-            else
-                elements.push_back(Element(c[i].id, c[i].channelType, c[i].chainInt, { c[i].lengthComponent, c[i].widthComponent }, { }, -1, -1));
-
-    }
-
-    const std::vector<std::vector<int>> KoenigGraph::TranspAdjList() const {
-        std::vector<std::vector<int>> revList(adjList.size());
-        for (int i = 0; i < adjList.size(); ++i) {
-            for (int j = 0; j < adjList[i].size(); ++j) {
-                revList[adjList[i][j]].push_back(i);
+            if (type[0] == 'C') {
+                std::string cap_type = std::string{ type[0] };
+                blocks.push_back(LogicBlock(cap_type, tr_t, adj_list_t[i], adj_list[i], { i },
+                    [](const std::vector<int>& inputs) -> std::vector<int> {
+                        if (inputs[0] == 1) return { inputs[1] };
+                        return { -1 };
+                    }));
+                continue;
             }
+            if (type[0] == 'D') {
+                std::string dio_type = std::string{ type[0] };
+                blocks.push_back(LogicBlock(dio_type, tr_t, adj_list_t[i], adj_list[i], { i },
+                    [](const std::vector<int>& inputs) -> std::vector<int> {
+                        return { inputs[0] };
+                    }));
+                continue;
+            }
+            blocks.push_back(LogicBlock(type, tr_t, adj_list_t[i], adj_list[i], { i },
+                [](const std::vector<int>& inputs) -> std::vector<int> {
+                    return { inputs[0] };
+                }));
         }
-        
-        return revList;
     }
 
-    std::vector<int> KoenigGraph::FindStart() {
+    std::vector<int> KoenigGraph::findStart() {
         std::vector<int> startNodes;
 
-        std::vector<bool> isUsed(hyperEdgeCount);
-        for (int i = 0; i < nodeCount; ++i) {
-            for (int j = 0; j < adjList[i].size(); ++j) {
-                isUsed[adjList[i][j] - nodeCount] = true;
+        std::vector<bool> isUsed(hyper_edge_count);
+        for (int i = 0; i < node_count; ++i) {
+            for (int j = 0; j < adj_list[i].size(); ++j) {
+                isUsed[adj_list[i][j] - node_count] = true;
             }
         }
 
         for (int i = 0; i < isUsed.size(); ++i) {
             if (!isUsed[i])
-                startNodes.push_back(nodeCount + i);
+                startNodes.push_back(node_count + i);
         }
 
         return startNodes;
     }
 
-    std::vector<int> KoenigGraph::FindEnd() {
+    std::vector<int> KoenigGraph::findEnd() {
         std::vector<int> endNodes;
 
-        for (int i = 0; i < hyperEdgeCount; ++i) {
-            int netNode = nodeCount + i;
+        for (int i = 0; i < hyper_edge_count; ++i) {
+            int netNode = node_count + i;
 
-            if (adjList[netNode].size() == 0)
+            if (adj_list[netNode].size() == 0)
                 endNodes.push_back(netNode);
         }
 
         return endNodes;
-    }
-
-    const std::vector<std::vector<int>>& KoenigGraph::GetAdjList() const {
-        return adjList;
-    }
-
-    const std::vector<std::vector<int>>& KoenigGraph::GetAdjListT() const {
-        return adjListT;
-    }
-
-    const std::vector<std::vector<int>>& KoenigGraph::GetNetList() const {
-        return netList;
-    }
-
-    const std::vector<std::string>& KoenigGraph::GetNetName() const {
-        return netName;
-    }
-
-    const std::vector<Element>& KoenigGraph::GetElements() const {
-        return elements;
-    }
-
-    const std::vector<int>& KoenigGraph::GetInputChains() const {
-        return inputChains;
-    }
-
-    const int KoenigGraph::GetNodeCount() const {
-        return nodeCount;
-    }
-
-    const int KoenigGraph::GetHyperEdgeCount() const {
-        return hyperEdgeCount;
-    }
-
-    const std::unordered_map<char, std::vector<int>>& KoenigGraph::GetElemsType() const {
-        return elemsType;
     }
 }
