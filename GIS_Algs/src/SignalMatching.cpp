@@ -3,6 +3,7 @@
 #include <KoenigGraph.h>
 #include <SignalMatching.h>
 #include <thread>
+#include <omp.h>
 
 namespace GIS_Algs {
 
@@ -12,17 +13,18 @@ namespace GIS_Algs {
         std::vector<int> inputs1 = GetInputNets(g1);
         std::vector<int> inputs2 = GetInputNets(g2);
 
-        std::vector<int> vddId;
-        std::vector<int> gndId;
-        /*findPowerNets(g1.getNetName(), "vdd", vddId, g1.getNodeCount());
-        findPowerNets(g1.getNetName(), "gnd", gndId, g1.getNodeCount());*/
-
-        //MatchInputs(g1, inputs1, g2, inputs2);
-
-        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1, config.GetSignalIterations(), vddId, gndId);
-
         std::vector<int> topo1 = GetTopoOrder(g1, inputs1);
         std::vector<int> topo2 = GetTopoOrder(g2, inputs2);
+
+        std::vector<InputSignature> sig1 = ComputeInputSignatures(g1, topo1, inputs1, 500);
+
+        std::vector<InputSignature> sig2 = ComputeInputSignatures(g2, topo2, inputs2, 500);
+
+        std::vector<int> match12 = MatchInputsStochastic(sig1, sig2, 0.85);
+
+        MatchInputs(g1, inputs1, g2, inputs2);
+
+        std::vector<std::vector<int>> inputSignals = GenerateSignals(inputs1, g1, g2, config);
 
         std::vector<std::vector<int>> S1 = RunStochastic(g1, topo1, inputs1, config.GetSignalIterations(), inputSignals);
         std::vector<std::vector<int>> S2 = RunStochastic(g2, topo2, inputs2, config.GetSignalIterations(), inputSignals);
@@ -47,9 +49,6 @@ namespace GIS_Algs {
 
     // Отрефакторено
     std::vector<int> SignalMatching::GetInputNets(const GIS_Data::KoenigGraph& g) {
-
-        //if (g.getInputChains().size() != 0) //временное решение, так-то должно быть закомиченным
-        //    return g.getInputChains();
 
         std::vector<int> inputs;
         for (int i = g.getNodeCount(); i < g.getNodeCount() + g.getHyperEdgeCount(); ++i)
@@ -196,16 +195,23 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<std::vector<int>> SignalMatching::GenerateSignals(std::vector<int> inputs, int iterations, const std::vector<int>& vdd, const std::vector<int>& gnd) {
+    std::vector<std::vector<int>> SignalMatching::GenerateSignals(const std::vector<int>& inputs, const GIS_Data::KoenigGraph& g1, const GIS_Data::KoenigGraph& g2, const GIS_Data::Config& config) {
+
         std::mt19937 rng;
         std::uniform_int_distribution<> signals(0, 1);
+        int it = config.GetSignalIterations();
 
-        std::vector<std::vector<int>> inputSignals(iterations, std::vector<int>(inputs.size(), 0));
-        for (int it = 0; it < iterations; ++it)
-            for (int i = 0; i < inputSignals[it].size(); ++i)
-                inputSignals[it][i] = signals(rng);
+        std::vector<std::vector<int>> inputSignals(it, std::vector<int>(inputs.size(), 0));
+        for (int i = 0; i < it; ++i)
+            for (int j = 0; j < inputSignals[i].size(); ++j)
+                inputSignals[i][j] = signals(rng);
 
-        /*for (int i = 0; i < iterations; ++i) {
+        /*std::vector<int> vdd;
+        std::vector<int> gnd;
+        findPowerNets(g1.getNetName(), "vdd", vdd, g1.getNodeCount());
+        findPowerNets(g1.getNetName(), "gnd", gnd, g1.getNodeCount());
+
+        for (int i = 0; i < it; ++i) {
             for (int j = 0; j < vdd.size(); ++j) {
                 int vdd_i = std::find(std::begin(inputs), std::end(inputs), vdd[j]) - std::begin(inputs);
                 inputSignals[i][vdd_i] = 1;
@@ -246,6 +252,85 @@ namespace GIS_Algs {
         return order;
     }
 
+    std::vector<InputSignature> SignalMatching::ComputeInputSignatures(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputs, int numSimulations) {
+        
+        int N = g.getNodeCount() + g.getHyperEdgeCount();
+
+        std::vector<InputSignature> sig(inputs.size());
+        std::vector<double> sum(inputs.size(), 0.0);
+        std::vector<double> sumSq(inputs.size(), 0.0);
+
+        std::vector<int> value(N, 0);
+        std::vector<int> inputBits(inputs.size());
+
+        std::mt19937 rng(123456);
+        std::bernoulli_distribution bitDist(0.5);
+
+        for (int iter = 0; iter < numSimulations; ++iter) {
+            for (int i = 0; i < inputs.size(); ++i)
+                inputBits[i] = bitDist(rng);
+
+            SimulateOnce(g, topoOrder, inputs, inputBits, value);
+
+            // агрегируем влияние каждого входа
+            for (int i = 0; i < inputs.size(); ++i) {
+                double acc = 0.0;
+                int cnt = 0;
+
+                for (int v : topoOrder) {
+                    if (v >= g.getNodeCount()) continue;
+                    acc += value[v];
+                    ++cnt;
+                }
+
+                acc /= std::max(1, cnt);
+                sum[i] += acc;
+                sumSq[i] += acc * acc;
+            }
+        }
+
+        for (int i = 0; i < inputs.size(); ++i) {
+            double mean = sum[i] / numSimulations;
+            double var = sumSq[i] / numSimulations - mean * mean;
+            sig[i] = { mean, var };
+        }
+
+        return sig;
+    }
+
+    double SignalMatching::Similarity(const InputSignature& a, const InputSignature& b) {
+        double dMean = std::abs(a.mean - b.mean);
+        double dVar = std::abs(a.variance - b.variance);
+        return std::exp(-(dMean + dVar));
+    }
+
+    std::vector<int> SignalMatching::MatchInputsStochastic(const std::vector<InputSignature>& A, const std::vector<InputSignature>& B, double threshold) {
+        
+        std::vector<int> matchA(A.size(), -1);
+        std::vector<bool> usedB(B.size(), false);
+
+        for (int i = 0; i < A.size(); ++i) {
+            double bestScore = threshold;
+            int bestJ = -1;
+
+            for (int j = 0; j < B.size(); ++j) {
+                if (usedB[j]) continue;
+                double s = Similarity(A[i], B[j]);
+                if (s > bestScore) {
+                    bestScore = s;
+                    bestJ = j;
+                }
+            }
+
+            if (bestJ != -1) {
+                matchA[i] = bestJ;
+                usedB[bestJ] = true;
+            }
+        }
+
+        return matchA;
+    }
+
     void SignalMatching::Process6TSRAM(std::vector<int>& order, std::vector<int>& visDeg, std::vector<bool>& isTrigger, const GIS_Data::KoenigGraph& g, int firstCh) {
 
         if (g.getAdjListT()[firstCh].size() != 3 || g.getAdjList()[firstCh].size() != 2)
@@ -283,17 +368,24 @@ namespace GIS_Algs {
 
     // Отрефакторено
     std::vector<std::vector<int>> SignalMatching::RunStochastic(const GIS_Data::KoenigGraph& g, const std::vector<int>& topoOrder, const std::vector<int>& inputNetsG, int iterations, std::vector<std::vector<int>>& inputBits) {
-        std::vector<std::vector<int>> values(g.getNodeCount() + g.getHyperEdgeCount());
+        std::vector<std::vector<int>> values(iterations);
         for (int i = 0; i < values.size(); ++i)
-            values[i].reserve(iterations);
+            values[i].resize(g.getNodeCount() + g.getHyperEdgeCount(), -1);
 
-        for (int i = 0; i < iterations; ++i) {
-            std::vector<int> buf = SimulateOnce(g, topoOrder, inputNetsG, inputBits[i]);
+        omp_set_num_threads(2);
+        #pragma omp parallel for
+        for (int i = 0; i < iterations; ++i)
+            SimulateOnce(g, topoOrder, inputNetsG, inputBits[i], values[i]);
 
-            for (int j = 0; j < values.size(); ++j)
-                values[j].push_back(buf[j]);
+        std::vector<std::vector<int>> transposed(values[0].size(), std::vector<int>(values.size()));
+
+        for (size_t i = 0; i < values.size(); ++i) {
+            for (size_t j = 0; j < values[0].size(); ++j) {
+                transposed[j][i] = values[i][j];
+            }
         }
-        return values;
+
+        return transposed;
     }
 
     // Отрефакторено
@@ -354,14 +446,13 @@ namespace GIS_Algs {
     }
 
     // Отрефакторено
-    std::vector<int> SignalMatching::SimulateOnce(
+    void SignalMatching::SimulateOnce(
         const GIS_Data::KoenigGraph& g,
         const std::vector<int>& topoOrder,
         const std::vector<int>& inputNets,
-        const std::vector<int>& inputBits
+        const std::vector<int>& inputBits,
+        std::vector<int>& value
     ) {
-        std::vector<int> value(g.getNodeCount() + g.getHyperEdgeCount(), -1);
-
         for (int i = 0; i < inputNets.size(); ++i)
             value[inputNets[i]] = inputBits[i];
 
@@ -371,7 +462,7 @@ namespace GIS_Algs {
                 std::vector<int> prev_vals(g.getAdjListT()[e].size());
                 for (int i = 0; i < g.getAdjListT()[e].size(); ++i)
                     prev_vals[i] = value[g.getAdjListT()[e][i]];
-                value[e] = g.getBlocks()[e].execute(prev_vals)[0];
+                value[e] = g.getBlocks()[e].execute({ prev_vals })[0];
             }
             else
             {
@@ -381,8 +472,6 @@ namespace GIS_Algs {
                 value[e] = max_val;
             }
         }
-
-        return value;
     }
 
     // Отрефакторено

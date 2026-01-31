@@ -17,7 +17,9 @@ namespace GIS_Stats {
             return;
 
         std::string statisticsInfo = "Graph Isomorphism Comparison Statistics\n\n";
-        statisticsInfo += "Used algorithm: " + config.GetAlgorithm() + "\n\n";
+        statisticsInfo += "Used algorithm: " + config.GetAlgorithm() + "\n";
+        statisticsInfo += "Iterations: " + std::to_string(config.GetSignalIterations()) + "\n\n";
+        //statisticsInfo += "Iterations: 1000000\n\n";
 
         if (config.GetWriteCircParams()) {
             statisticsInfo += WriteCircuitParams(g1, config.GetCircName1());

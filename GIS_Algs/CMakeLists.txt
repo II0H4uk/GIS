@@ -4,10 +4,12 @@ add_library(GIS_Algs)
 target_sources(GIS_Algs
 	PRIVATE
 		src/SignalMatching.cpp
+		src/SignalMatchEnhanced.cpp
 		src/pch.cpp
 		src/AlgStrat.cpp
 		src/Reduction.cpp
 		include/SignalMatching.h
+		include/SignalMatchEnhanced.h
 		include/AlgStrat.h
 		include/Reduction.h
 )
